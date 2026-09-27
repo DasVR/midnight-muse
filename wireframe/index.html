@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Midnight Muse — Wireframe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top" class="notes-on has-banner">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="draft-banner" id="draft-banner" role="status">
+    <p>WIREFRAME DRAFT — for Dani's review · photos &amp; copy are placeholders where marked</p>
+    <button type="button" id="dismiss-banner">Dismiss</button>
+  </div>
+
+  <header class="site-nav" data-note="Quiet, centered navigation like your Cordelia Rose pin.">
+    <nav class="nav-cluster" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#sets">Sets</a>
+      <a href="#sessions">Sessions</a>
+    </nav>
+    <a class="wordmark" href="#top">Midnight Muse</a>
+    <nav class="nav-cluster right" aria-label="Secondary">
+      <a href="#kind-words">Kind Words</a>
+      <a href="#faq">FAQ</a>
+      <a class="book-link" href="#book">Book <img class="key-icon" src="assets/key.svg" alt=""></a>
+    </nav>
+    <button class="menu-btn" id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-overlay">Menu</button>
+  </header>
+
+  <div class="nav-overlay" id="nav-overlay" hidden>
+    <button class="close-menu" type="button">Close</button>
+    <a href="#work">Work</a>
+    <a href="#sets">Sets</a>
+    <a href="#sessions">Sessions</a>
+    <a href="#kind-words">Kind Words</a>
+    <a href="#faq">FAQ</a>
+    <a class="book-link" href="#book">Book <img class="key-icon" src="assets/key.svg" alt=""></a>
+  </div>
+
+  <main id="main">
+    <section class="hero" data-note="Opens on your candlelit work so goth/alt clients know instantly you're for them.">
+      <img class="hero-photo" src="img/IMG_6754.jpg" alt="Woman with black lipstick reclines on a floral bed holding a candle, a brass candelabra lit behind her against red velvet." fetchpriority="high">
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <h1 class="hero-title">Midnight Muse</h1>
+        <p class="kicker">Alternative portraits · Florida</p>
+        <blockquote class="hero-quote">
+          <p>Only person I've found who captures women the way Dani does.</p>
+          <cite>CHLOE</cite>
+        </blockquote>
+        <a class="btn" href="#book">Unlock your session <img class="key-icon" src="assets/key.svg" alt=""></a>
+      </div>
+    </section>
+
+    <section class="section" id="meet" data-note="Clients book the person. This is where your face and voice go.">
+      <div class="wrap meet">
+        <div class="cameo">
+          <img class="cameo-photo js-photo" src="img/IMG_8034.jpg" alt="Woman in a white lace veil and feathered wings at sunset, standing in for Dani's portrait.">
+          <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
+          <p class="portrait-label">PLACEHOLDER — YOUR PORTRAIT HERE</p>
+        </div>
+        <div>
+          <h2 class="js-reveal">Hello, muse</h2>
+          <p>I photograph the strange, the soft and the romantic. Every shoot starts with your vision. I build the set, find the light, and guide every pose so you never have to know how to model. You just have to show up as yourself.</p>
+          <p class="sign">— Dani</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sets" data-note="Your custom sets are what nobody else offers, so they get their own section.">
+      <div class="wrap">
+        <h2 class="js-reveal">The Sets</h2>
+        <p class="sub">Built by hand, for you</p>
+        <div class="sets-layout">
+          <figure class="set set-1">
+            <img class="js-photo" src="img/IMG_3820.jpg" alt="Woman in a gold dress kneels on red velvet beneath gold number balloons.">
+            <figcaption>Set no. 01 — Red velvet</figcaption>
+          </figure>
+          <figure class="set set-2">
+            <img class="js-photo" src="img/IMG_7042.jpg" alt="Candlelit close portrait of a woman with dark bangs beside a brass candelabra.">
+            <figcaption>Set no. 02 — Candlelight</figcaption>
+          </figure>
+          <figure class="set set-3">
+            <img class="js-photo" src="img/IMG_8200.jpg" alt="A woman in a floral lace dress reflected in an ornate oval mirror, candles at the side.">
+            <figcaption>Set no. 03 — The mirror</figcaption>
+          </figure>
+          <figure class="set set-4">
+            <img class="js-photo" src="img/IMG_5769.jpg" alt="A costumed figure in red and pink stands in a round spotlight against a brick wall.">
+            <figcaption>Set no. 04 — Spotlight</figcaption>
+          </figure>
+          <blockquote class="sets-quote">
+            <p>Created an entire set in my bedroom! The best.</p>
+            <cite>LAURA</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="work" data-note="Galleries sorted by vibe, the way alt clients search.">
+      <div class="wrap">
+        <img class="filigree" src="assets/filigree.svg" alt="">
+        <h2 class="js-reveal">The Work</h2>
+        <div class="work-grid">
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_6064.jpg" alt="Woman in a black leather jacket plays an electric guitar in stage smoke.">
+              <span class="numeral" aria-hidden="true">I</span>
+            </div>
+            <h3>Candlelit &amp; Gothic</h3>
+            <p class="count">18 photographs</p>
+          </article>
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_7984.jpg" alt="Woman in a white lace veil and feathered wings kneels in sunlit grass.">
+              <span class="numeral" aria-hidden="true">II</span>
+            </div>
+            <h3>Lace &amp; Coquette</h3>
+            <p class="count">18 photographs</p>
+          </article>
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_3620.jpg" alt="Close portrait of a woman with pink hair and decorated nails against a purple wall and disco ball.">
+              <span class="numeral" aria-hidden="true">III</span>
+            </div>
+            <h3>Y2K &amp; Pop</h3>
+            <p class="count">18 photographs</p>
+          </article>
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_9442.jpg" alt="Two people share a close portrait against a red curtain, one hand resting on the other's face.">
+              <span class="numeral" aria-hidden="true">IV</span>
+            </div>
+            <h3>Love Stories</h3>
+            <p class="count">18 photographs</p>
+          </article>
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_6802.jpg" alt="Graduate in a black dress holds a blue mortarboard over their face in front of a sticker-covered door.">
+              <span class="numeral" aria-hidden="true">V</span>
+            </div>
+            <h3>Alt Grads</h3>
+            <p class="count">18 photographs</p>
+          </article>
+          <article class="work-card">
+            <div class="work-frame">
+              <img class="work-photo js-work" src="img/IMG_0913.jpg" alt="A couple kisses at a rainy diner window, standing in until Polaroid scans are added.">
+              <span class="numeral" aria-hidden="true">VI</span>
+              <p class="scan-label">POLAROID SCANS COMING</p>
+            </div>
+            <h3>Instant Film</h3>
+            <p class="count">18 photographs</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sessions" data-note="Every package in one consistent layout, read like an old spec sheet.">
+      <div class="lace-edge" aria-hidden="true"></div>
+      <div class="wrap">
+        <h2 class="js-reveal">Sessions</h2>
+        <div class="tabs" role="tablist" aria-label="Session types">
+          <button type="button" role="tab" id="tab-portraits" data-session="portraits" aria-selected="true" aria-controls="session-panel">Portraits</button>
+          <button type="button" role="tab" id="tab-couples" data-session="couples" aria-selected="false" aria-controls="session-panel" tabindex="-1">Couples</button>
+          <button type="button" role="tab" id="tab-graduations" data-session="graduations" aria-selected="false" aria-controls="session-panel" tabindex="-1">Graduations</button>
+          <button type="button" role="tab" id="tab-branding" data-session="branding" aria-selected="false" aria-controls="session-panel" tabindex="-1">Branding</button>
+        </div>
+        <p class="stand-in" id="stand-in" hidden>Layout stand-in — confirm these prices with Dani. Portrait packages are the filled-in menu.</p>
+        <div id="session-panel" role="tabpanel" aria-labelledby="tab-portraits">
+          <div class="tier-scroller" id="tier-scroller"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="kind-words" data-note="Reviews look like handwritten letters and sit right on the home page.">
+      <div class="wrap">
+        <h2 class="js-reveal">Kind Words</h2>
+        <div class="letters">
+          <article class="letter-card">
+            <div class="letter-top">
+              <blockquote>
+                <p>Absolutely loved working with Dani! She's so considerate, communicates everything so well, and truly puts her whole heart into every shoot…</p>
+              </blockquote>
+              <div class="cameo cameo-sm">
+                <img class="cameo-photo js-photo" src="img/IMG_6016.jpg" alt="Client portrait paired with Mel's review: a woman in a leather jacket holds a guitar across her shoulders.">
+                <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
+              </div>
+            </div>
+            <p class="sig">Mel</p>
+            <p class="shoot">Portrait</p>
+          </article>
+          <article class="letter-card">
+            <div class="letter-top">
+              <blockquote>
+                <p>Very sweet and amazing communication! The photos came out so beautifully.</p>
+              </blockquote>
+              <div class="cameo cameo-sm">
+                <img class="cameo-photo js-photo" src="img/IMG_9842.jpg" alt="Client portrait paired with Bradyn and Carter's review: a couple sits together under a sunlit tree.">
+                <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
+              </div>
+            </div>
+            <p class="sig">Bradyn &amp; Carter</p>
+            <p class="shoot">Love story</p>
+          </article>
+          <article class="letter-card">
+            <div class="letter-top">
+              <blockquote>
+                <p>Working with her was comfortable and felt like a collaboration more than just one person's idea at work.</p>
+              </blockquote>
+              <div class="cameo cameo-sm">
+                <img class="cameo-photo js-photo" src="img/IMG_0567.jpg" alt="Client portrait paired with Riley's review: a graduate in a black gown reaches toward purple flowers.">
+                <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
+              </div>
+            </div>
+            <p class="sig">Riley</p>
+            <p class="shoot">Graduation</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" data-note="One shared FAQ instead of repeating it on every pricing page.">
+      <div class="wrap">
+        <h2 class="js-reveal">FAQ</h2>
+        <div class="frame faq-frame faq">
+          <img class="corner tl" src="assets/corner.svg" alt="">
+          <img class="corner tr" src="assets/corner.svg" alt="">
+          <img class="corner br" src="assets/corner.svg" alt="">
+          <img class="corner bl" src="assets/corner.svg" alt="">
+          <details>
+            <summary>Are travel expenses included?</summary>
+            <p class="faq-answer">In most cases around ½ an hour of travel time is included in your session, but there are extra fees for anything further. We can figure out exact costs when discussing location.</p>
+          </details>
+          <details>
+            <summary>This is my first photoshoot, what should I know?</summary>
+            <div class="faq-split">
+              <p class="faq-answer">You will never have to be a model or know how to pose! I will always guide you through posing and do my best to make sure you're comfortable and having fun.</p>
+              <blockquote class="jayme">
+                <p>All nerves melted away so quickly.</p>
+                <cite>JAYME</cite>
+              </blockquote>
+            </div>
+          </details>
+          <details>
+            <summary>What if the weather is bad?</summary>
+            <p class="faq-answer">Florida is very unpredictable, and we can always reschedule for no extra charge if you're not comfortable going out in bad weather.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section book" id="book" data-note="Your booking form, now with email, and the package list matches the shoot type.">
+      <div class="wrap">
+        <img class="book-key" src="assets/key.svg" alt="">
+        <h2 class="js-reveal">Unlock your session</h2>
+        <form class="stationery" id="book-form" action="#" method="post">
+          <div class="field">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="phone">Phone</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel">
+          </div>
+          <div class="field">
+            <label for="instagram">Instagram @</label>
+            <input id="instagram" name="instagram" type="text" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="shoot-type">Shoot type</label>
+            <select id="shoot-type" name="shoot-type">
+              <option value="portraits">Portraits</option>
+              <option value="couples">Couples</option>
+              <option value="graduations">Graduations</option>
+              <option value="branding">Branding</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="package">Package</label>
+            <select id="package" name="package"></select>
+          </div>
+          <div class="field">
+            <label for="pinterest">Pinterest board link</label>
+            <input id="pinterest" name="pinterest" type="url" inputmode="url" placeholder="https://">
+          </div>
+          <div class="field">
+            <label for="vision">Your vision</label>
+            <textarea id="vision" name="vision"></textarea>
+          </div>
+          <div class="field">
+            <label for="dates">Preferred dates</label>
+            <input id="dates" name="dates" type="text" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="hear">How did you hear about me</label>
+            <input id="hear" name="hear" type="text" autocomplete="off">
+          </div>
+          <button class="btn" type="submit">Send your letter</button>
+          <p class="form-status" id="form-status" hidden role="status">This is a wireframe, no message sent</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-note="Closes on your wordmark, the page links, and the corrected Instagram.">
+    <div class="lace-edge" aria-hidden="true"></div>
+    <div class="wrap footer-inner">
+      <p class="footer-mark">Midnight Muse</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="#work">Work</a>
+        <a href="#sets">Sets</a>
+        <a href="#sessions">Sessions</a>
+        <a href="#kind-words">Kind Words</a>
+        <a href="#faq">FAQ</a>
+        <a href="#book">Book</a>
+        <a href="https://www.instagram.com/midnights.muse" rel="noopener noreferrer">Instagram</a>
+      </nav>
+      <p class="copy">© 2026 Midnight Muse · Florida</p>
+    </div>
+    <div class="load-rest" aria-hidden="true">
+      <img src="img/IMG_2636.jpg" alt="Person in a record store holds a Descendents album in front of their face.">
+      <img src="img/IMG_2683.jpg" alt="Woman in a white lace dress sits in a garden with a lace parasol over her face.">
+      <img src="img/IMG_4432.jpg" alt="Two people lie head to head on a floral quilt, photographed from above.">
+      <img src="img/IMG_7504.jpg" alt="Two people sit against a tree with a cat in a harness between them.">
+      <img src="img/IMG_9590.jpg" alt="Person with green-tinted bangs reclines on red fabric in a black mesh top.">
+      <img src="img/IMG_9596.jpg" alt="Person with green-tinted bangs reclines on red velvet, looking upward.">
+    </div>
+  </footer>
+
+  <button class="notes-toggle" id="notes-toggle" type="button" aria-pressed="true">Hide notes</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+---
+description: Midnight Muse project context — always apply
+alwaysApply: true
+---
+
+- This is a website redesign for Midnight Muse, an alternative (goth/alt) photography studio run by Dani in Florida.
+- The design source of truth is `docs/DESIGN_DIRECTION.md` (v3, "Black Lace & Love Letters"). Follow its tokens, fonts and components. Don't invent new colors: the UI is black/ivory/grey and all color comes from the photos.
+- Tasks live in `cursor-tasks/NN-*.md`. Do one task at a time, exactly as written. If something is ambiguous, pick the option closest to the design doc and list the guess in your summary.
+- Never copy images, lace or ornaments from Pinterest or other photographers' sites. Use Dani's photos (`wireframe/img/`) and self-made SVGs.
+- Accessibility: real alt text, AA contrast, `prefers-reduced-motion` respected, works at 390px wide.
