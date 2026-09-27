@@ -13,11 +13,11 @@
   <a class="skip" href="#main">Skip to content</a>
 
   <div class="draft-banner" id="draft-banner" role="status">
-    <p>WIREFRAME DRAFT — for Dani's review · photos &amp; copy are placeholders where marked</p>
+    <p>WIREFRAME DRAFT — for Dani's review<span class="banner-extra"> · photos &amp; copy are placeholders where marked</span> · comment with the button bottom right</p>
     <button type="button" id="dismiss-banner">Dismiss</button>
   </div>
 
-  <header class="site-nav" data-note="Quiet, centered navigation like your Cordelia Rose pin.">
+  <header class="site-nav" id="site-nav" data-note="Quiet, centered navigation like your Cordelia Rose pin.">
     <nav class="nav-cluster" aria-label="Primary">
       <a href="#work">Work</a>
       <a href="#sets">Sets</a>
@@ -64,7 +64,7 @@
           <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
           <p class="portrait-label">PLACEHOLDER — YOUR PORTRAIT HERE</p>
         </div>
-        <div>
+        <div class="letter">
           <h2 class="js-reveal">Hello, muse</h2>
           <p>I photograph the strange, the soft and the romantic. Every shoot starts with your vision. I build the set, find the light, and guide every pose so you never have to know how to model. You just have to show up as yourself.</p>
           <p class="sign">— Dani</p>
@@ -77,27 +77,27 @@
         <h2 class="js-reveal">The Sets</h2>
         <p class="sub">Built by hand, for you</p>
         <div class="sets-layout">
-          <figure class="set set-1">
+          <figure class="set">
             <img class="js-photo" src="img/IMG_3820.jpg" alt="Woman in a gold dress kneels on red velvet beneath gold number balloons.">
             <figcaption>Set no. 01 — Red velvet</figcaption>
           </figure>
-          <figure class="set set-2">
+          <figure class="set">
             <img class="js-photo" src="img/IMG_7042.jpg" alt="Candlelit close portrait of a woman with dark bangs beside a brass candelabra.">
             <figcaption>Set no. 02 — Candlelight</figcaption>
           </figure>
-          <figure class="set set-3">
+          <figure class="set">
             <img class="js-photo" src="img/IMG_8200.jpg" alt="A woman in a floral lace dress reflected in an ornate oval mirror, candles at the side.">
             <figcaption>Set no. 03 — The mirror</figcaption>
           </figure>
-          <figure class="set set-4">
+          <figure class="set">
             <img class="js-photo" src="img/IMG_5769.jpg" alt="A costumed figure in red and pink stands in a round spotlight against a brick wall.">
             <figcaption>Set no. 04 — Spotlight</figcaption>
           </figure>
-          <blockquote class="sets-quote">
-            <p>Created an entire set in my bedroom! The best.</p>
-            <cite>LAURA</cite>
-          </blockquote>
         </div>
+        <blockquote class="sets-quote">
+          <p>Created an entire set in my bedroom! The best.</p>
+          <cite>LAURA</cite>
+        </blockquote>
       </div>
     </section>
 
@@ -258,34 +258,40 @@
         <img class="book-key" src="assets/key.svg" alt="">
         <h2 class="js-reveal">Unlock your session</h2>
         <form class="stationery" id="book-form" action="#" method="post">
-          <div class="field">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" autocomplete="name">
+          <div class="field-row">
+            <div class="field">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email">
+            </div>
           </div>
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" autocomplete="email">
+          <div class="field-row">
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+            </div>
+            <div class="field">
+              <label for="instagram">Instagram @</label>
+              <input id="instagram" name="instagram" type="text" autocomplete="off">
+            </div>
           </div>
-          <div class="field">
-            <label for="phone">Phone</label>
-            <input id="phone" name="phone" type="tel" autocomplete="tel">
-          </div>
-          <div class="field">
-            <label for="instagram">Instagram @</label>
-            <input id="instagram" name="instagram" type="text" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="shoot-type">Shoot type</label>
-            <select id="shoot-type" name="shoot-type">
-              <option value="portraits">Portraits</option>
-              <option value="couples">Couples</option>
-              <option value="graduations">Graduations</option>
-              <option value="branding">Branding</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="package">Package</label>
-            <select id="package" name="package"></select>
+          <div class="field-row">
+            <div class="field">
+              <label for="shoot-type">Shoot type</label>
+              <select id="shoot-type" name="shoot-type">
+                <option value="portraits">Portraits</option>
+                <option value="couples">Couples</option>
+                <option value="graduations">Graduations</option>
+                <option value="branding">Branding</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="package">Package</label>
+              <select id="package" name="package"></select>
+            </div>
           </div>
           <div class="field">
             <label for="pinterest">Pinterest board link</label>
@@ -295,13 +301,15 @@
             <label for="vision">Your vision</label>
             <textarea id="vision" name="vision"></textarea>
           </div>
-          <div class="field">
-            <label for="dates">Preferred dates</label>
-            <input id="dates" name="dates" type="text" autocomplete="off">
-          </div>
-          <div class="field">
-            <label for="hear">How did you hear about me</label>
-            <input id="hear" name="hear" type="text" autocomplete="off">
+          <div class="field-row">
+            <div class="field">
+              <label for="dates">Preferred dates</label>
+              <input id="dates" name="dates" type="text" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="hear">How did you hear about me</label>
+              <input id="hear" name="hear" type="text" autocomplete="off">
+            </div>
           </div>
           <button class="btn" type="submit">Send your letter</button>
           <p class="form-status" id="form-status" hidden role="status">This is a wireframe, no message sent</p>
@@ -340,5 +348,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="main.js"></script>
+  <script src="vendor/agentation.bundle.js"></script>
 </body>
 </html>

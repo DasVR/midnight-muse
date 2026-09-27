@@ -1,0 +1,14 @@
+{
+  "name": "midnight-muse-agentation",
+  "private": true,
+  "description": "Bundles the Agentation feedback toolbar (plus React) into one classic script for the no-build wireframe.",
+  "scripts": {
+    "build": "esbuild entry.jsx --bundle --minify --format=iife --target=es2019 --jsx=automatic --define:process.env.NODE_ENV='\"production\"' --outfile=../../wireframe/vendor/agentation.bundle.js"
+  },
+  "devDependencies": {
+    "agentation": "3.1.2",
+    "esbuild": "0.25.10",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  }
+}

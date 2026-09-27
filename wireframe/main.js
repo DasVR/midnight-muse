@@ -11,6 +11,9 @@
   var scroller = document.getElementById("tier-scroller");
   var standIn = document.getElementById("stand-in");
   var tabs = Array.prototype.slice.call(document.querySelectorAll("[role='tab']"));
+  var nav = document.getElementById("site-nav");
+  var currentSession = "portraits";
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   var sessions = {
     portraits: {
@@ -73,6 +76,12 @@
     window.addEventListener("resize", measureBanner);
   }
 
+  function updateNav() {
+    nav.classList.toggle("is-scrolled", window.scrollY > 40);
+  }
+  updateNav();
+  window.addEventListener("scroll", updateNav, { passive: true });
+
   notesBtn.addEventListener("click", function () {
     var on = document.body.classList.toggle("notes-on");
     notesBtn.setAttribute("aria-pressed", String(on));
@@ -119,6 +128,7 @@
 
   function renderTiers(key) {
     var session = sessions[key];
+    currentSession = key;
     standIn.hidden = !session.standIn;
     scroller.innerHTML = session.tiers.map(function (tier) {
       var rows = tier.rows.map(function (row) {
@@ -131,6 +141,7 @@
         '<h3 class="tier-name">' + tier.name + "</h3>" +
         '<p class="price">' + tier.price + "</p>" +
         '<ul class="specs">' + rows + "</ul>" + perk +
+        '<button class="tier-book" type="button" data-tier="' + tier.num + '">Book ' + tier.name + "</button>" +
         "</article>";
     }).join("");
     scroller.scrollLeft = 0;
@@ -178,6 +189,17 @@
     });
   });
 
+  // "Book" on a tier card jumps to the form with shoot type and package filled in.
+  scroller.addEventListener("click", function (event) {
+    var button = event.target.closest(".tier-book");
+    if (!button) return;
+    shootType.value = currentSession;
+    fillPackages(currentSession);
+    packageField.value = button.getAttribute("data-tier");
+    document.getElementById("book").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    document.getElementById("name").focus({ preventScroll: true });
+  });
+
   shootType.addEventListener("change", function () {
     fillPackages(shootType.value);
   });
@@ -190,7 +212,6 @@
     status.hidden = false;
   });
 
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!reduce && window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     gsap.utils.toArray(".js-reveal").forEach(function (el) {
