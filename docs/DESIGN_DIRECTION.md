@@ -95,7 +95,7 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 6. **Open Dates**: calendar of open tiers per program; a date prefills the booking form
 7. **Blind Date**: proposal, pending Dani's pick of three options
 8. **Maternity Shop**: product grid (rent / buy TBD, needs checkout)
-9. **Doll Houses**: sold as sets only, never single houses (needs checkout)
+9. **Doll Houses**: Dani's dollhouse-style photo series, grouped into sets. Each set is drawn as a house and its photos are the rooms; sets are sold whole, never single photos (needs checkout)
 10. **Kind Words**: letter-style testimonials with lace cameo portraits
 11. **FAQ**: accordion inside an antique frame
 12. **Book**: skeleton key CTA → inquiry form styled like stationery (underlined fields, mono labels)

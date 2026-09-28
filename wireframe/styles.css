@@ -993,35 +993,60 @@ body.notes-on .section{ padding-top:128px; }
   color:var(--bone);
 }
 
-/* Doll house sets */
+/* Doll house photo sets: each set is a house, each photo a room */
 .doll-grid{
   display:grid;
   grid-template-columns:repeat(3, minmax(0, 1fr));
-  gap:18px;
+  gap:36px 22px;
   margin:36px 0 18px;
 }
 
 .doll-set{
   display:flex;
   flex-direction:column;
-  padding:22px 18px 18px;
+  min-width:0;
 }
 
-.doll-row{
+.doll-roof{
+  display:block;
+  width:100%;
+  height:clamp(40px, 5vw, 64px);
+  overflow:visible;
+  fill:none;
+  stroke:var(--pewter);
+  stroke-width:1;
+}
+
+.rooms{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  padding:10px;
+  border:1px solid var(--pewter);
+}
+
+.room{
   display:flex;
-  align-items:flex-end;
+  align-items:center;
   justify-content:center;
-  gap:6px;
-  height:120px;
-  margin-bottom:16px;
-  padding-bottom:4px;
-  border-bottom:1px solid var(--pewter);
+  aspect-ratio:4 / 5;
+  padding:6px;
+  border:1px dashed var(--pewter);
+  background:var(--cloth);
+  text-align:center;
 }
 
-.doll-row img{ height:100%; width:auto; max-width:25%; object-fit:contain; object-position:bottom; }
-.doll-row img:nth-child(even){ height:84%; }
+.room span{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
 
-.doll-set .tier-book{ margin-top:auto; padding-top:18px; }
+.doll-set .tier-num{ margin-top:14px; }
+.doll-set .price{ margin:10px 0 0; }
+.doll-set .tier-book{ margin-top:12px; }
 
 .checkout-note{ margin-top:4px; }
 
@@ -1508,10 +1533,8 @@ body.notes-on .section{ padding-top:128px; }
 
   .work-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .letters{ grid-template-columns:1fr 1fr; }
-  .options,
-  .doll-grid{ grid-template-columns:1fr 1fr; }
-  .options > :last-child,
-  .doll-grid > :last-child{ grid-column:1 / -1; }
+  .options{ grid-template-columns:1fr 1fr; }
+  .options > :last-child{ grid-column:1 / -1; }
   .shop-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .cal-layout{ grid-template-columns:1fr; }
   .letters .letter-card:last-child{ grid-column:1 / -1; }
@@ -1545,8 +1568,7 @@ body.notes-on .section{ padding-top:128px; }
   .field-row{ grid-template-columns:1fr; }
   .options,
   .doll-grid{ grid-template-columns:1fr; }
-  .options > :last-child,
-  .doll-grid > :last-child{ grid-column:auto; }
+  .options > :last-child{ grid-column:auto; }
   .shop-grid{ gap:22px 12px; }
   .product h3{ font-size:20px; }
   .cal{ padding:14px 8px 12px; }
