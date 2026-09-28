@@ -90,11 +90,15 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 1. **Hero**: full-bleed B&W-toned photo (desaturated in CSS, blooms to color on load), "Midnight Muse" in huge script overlapping it, centered minimal nav (Cordelia Rose pin), mono line: "ALTERNATIVE PORTRAITS · FLORIDA"
 2. **Meet Dani**: her portrait in a lace cameo + a short letter-style intro signed in script
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
-4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Alt Grads · Instant Film), each a cover photo with ornamental number + script title
-5. **Sessions & Pricing**: antique frame cards with spec-sheet details
-6. **Kind Words**: letter-style testimonials with lace cameo portraits
-7. **FAQ**: accordion inside an antique frame
-8. **Book**: skeleton key CTA → inquiry form styled like stationery (underlined fields, mono labels)
+4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Instant Film), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
+5. **Sessions & Pricing**: antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
+6. **Open Dates**: calendar of open tiers per program; a date prefills the booking form
+7. **Blind Date**: proposal, pending Dani's pick of three options
+8. **Maternity Shop**: product grid (rent / buy TBD, needs checkout)
+9. **Doll Houses**: Dani's dollhouse-style photo series, grouped into sets. Each set is drawn as a house and its photos are the rooms; sets are sold whole, never single photos (needs checkout)
+10. **Kind Words**: letter-style testimonials with lace cameo portraits
+11. **FAQ**: accordion inside an antique frame
+12. **Book**: skeleton key CTA → inquiry form styled like stationery (underlined fields, mono labels)
 
 ## Assets we need (don't lift from Pinterest)
 
@@ -130,7 +134,7 @@ The pins are other people's work (e.g. the "Cordelia Rose" and "anna sauza" site
 - **Sensitive content:** a few lingerie/boudoir-leaning shots (IMG_9334, 9388). Ask Dani whether she wants a separate, opt-in "Boudoir" category or wants them out
 
 **Recommended re-categorization (browse by aesthetic, the way alt clients search):**
-`Candlelit & Gothic` · `Lace & Coquette` · `Y2K & Pop` · `Love Stories` · `Alt Grads` · `Instant Film` (Polaroids). Keep "Branding" only if she actually markets to businesses.
+`Candlelit & Gothic` · `Lace & Coquette` · `Y2K & Pop` · `Love Stories` · `Grads` · `Instant Film` (Polaroids). Keep "Branding" only if she actually markets to businesses.
 
 **Color:** UI stays monochrome (v3); her red and pink photos supply all the color.
 

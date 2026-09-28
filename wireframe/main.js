@@ -1,5 +1,5 @@
 (function () {
-  var marks = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩"];
+  var marks = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮"];
   var banner = document.getElementById("draft-banner");
   var notesBtn = document.getElementById("notes-toggle");
   var menuBtn = document.getElementById("menu-toggle");
@@ -141,8 +141,10 @@
         '<h3 class="tier-name">' + tier.name + "</h3>" +
         '<p class="price">' + tier.price + "</p>" +
         '<ul class="specs">' + rows + "</ul>" + perk +
+        '<div class="tier-actions">' +
         '<button class="tier-book" type="button" data-tier="' + tier.num + '">Book ' + tier.name + "</button>" +
-        "</article>";
+        '<button class="tier-dates" type="button" data-tier="' + tier.num + '">Dates</button>' +
+        "</div></article>";
     }).join("");
     scroller.scrollLeft = 0;
   }
@@ -170,6 +172,7 @@
     document.getElementById("session-panel").setAttribute("aria-labelledby", tab.id);
     renderTiers(key);
     if (shootType.value === key) fillPackages(key);
+    if (typeof calendar !== "undefined") calendar.show(key, null);
   }
 
   tabs.forEach(function (tab, index) {
@@ -190,15 +193,194 @@
   });
 
   // "Book" on a tier card jumps to the form with shoot type and package filled in.
-  scroller.addEventListener("click", function (event) {
-    var button = event.target.closest(".tier-book");
-    if (!button) return;
-    shootType.value = currentSession;
-    fillPackages(currentSession);
-    packageField.value = button.getAttribute("data-tier");
+  function prefillBooking(program, tierNum, dateText) {
+    shootType.value = program;
+    fillPackages(program);
+    packageField.value = tierNum;
+    if (dateText) document.getElementById("dates").value = dateText;
     document.getElementById("book").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
     document.getElementById("name").focus({ preventScroll: true });
+  }
+
+  scroller.addEventListener("click", function (event) {
+    var book = event.target.closest(".tier-book");
+    var dates = event.target.closest(".tier-dates");
+    if (book) prefillBooking(currentSession, book.getAttribute("data-tier"));
+    if (dates) {
+      calendar.show(currentSession, dates.getAttribute("data-tier"));
+      document.getElementById("availability").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    }
   });
+
+  // Shop and doll house buttons have no checkout behind them yet.
+  document.querySelectorAll("#shop .tier-book, #doll-houses .tier-book").forEach(function (el) {
+    el.addEventListener("click", function () {
+      var section = el.closest("section");
+      var note = section.querySelector(".checkout-note");
+      if (!note) {
+        note = document.createElement("p");
+        note.className = "form-status checkout-note";
+        note.setAttribute("role", "status");
+        note.textContent = "This is a wireframe: checkout isn't built yet.";
+        section.querySelector(".wrap").appendChild(note);
+      }
+    });
+  });
+
+  // Availability calendar. Dates are generated, not real: in production this
+  // reads Dani's booking calendar.
+  var calendar = (function () {
+    var programSelect = document.getElementById("cal-program");
+    var tierBox = document.getElementById("cal-tiers");
+    var daysBox = document.getElementById("cal-days");
+    var monthLabel = document.getElementById("cal-month");
+    var detail = document.getElementById("cal-detail");
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var state = { program: "portraits", tier: null, month: new Date(today.getFullYear(), today.getMonth(), 1), selected: null };
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    // Show next month straight away when this one is nearly over.
+    if (new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() - today.getDate() < 7) {
+      state.month = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    }
+
+    function seeded(date, salt) {
+      var n = date.getFullYear() * 372 + date.getMonth() * 31 + date.getDate() + salt * 977;
+      n = Math.sin(n) * 10000;
+      return n - Math.floor(n);
+    }
+
+    // Which tier numerals are open on a date for a program.
+    function openTiers(date, program) {
+      var tiers = sessions[program].tiers;
+      var dow = date.getDay();
+      if (date < today || dow === 0 || dow === 1) return [];
+      var salt = Object.keys(sessions).indexOf(program) + 1;
+      return tiers.filter(function (tier, i) {
+        var last = i === tiers.length - 1;
+        if (dow === 6 && i > 1) return false;        // Saturdays are mini days
+        if (last && dow !== 4 && dow !== 5) return false; // the top tier needs a full set build: Thu/Fri
+        return seeded(date, salt + i) > 0.38;         // some slots already booked
+      }).map(function (tier) { return tier.num; });
+    }
+
+    function tierByNum(num) {
+      return sessions[state.program].tiers.filter(function (t) { return t.num === num; })[0];
+    }
+
+    function renderTierChips() {
+      var chips = [{ num: null, label: "All tiers" }].concat(sessions[state.program].tiers.map(function (t) {
+        return { num: t.num, label: t.num + " " + t.name };
+      }));
+      tierBox.innerHTML = chips.map(function (c) {
+        return '<button type="button" class="chip" data-tier="' + (c.num || "") + '" aria-pressed="' + (state.tier === c.num) + '">' + c.label + "</button>";
+      }).join("");
+    }
+
+    function renderDays() {
+      var year = state.month.getFullYear();
+      var month = state.month.getMonth();
+      var count = new Date(year, month + 1, 0).getDate();
+      var tiers = sessions[state.program].tiers;
+      var html = "";
+      monthLabel.textContent = monthNames[month] + " " + year;
+      for (var b = 0; b < state.month.getDay(); b += 1) html += '<span class="cal-blank"></span>';
+      for (var d = 1; d <= count; d += 1) {
+        var date = new Date(year, month, d);
+        var open = openTiers(date, state.program);
+        var usable = state.tier ? open.indexOf(state.tier) > -1 : open.length > 0;
+        var pips = tiers.map(function (t) {
+          var cls = "pip" + (open.indexOf(t.num) > -1 ? " on" : "") + (state.tier === t.num ? " focus" : "");
+          return '<span class="' + cls + '"></span>';
+        }).join("");
+        var label = dayNames[date.getDay()] + " " + monthNames[month] + " " + d + ": " +
+          (open.length ? "open tiers " + open.join(", ") : "nothing open");
+        var selected = state.selected && state.selected.getTime() === date.getTime();
+        html += '<button type="button" class="cal-day' + (selected ? " is-selected" : "") + '" data-day="' + d + '"' +
+          (usable ? "" : " disabled") + ' aria-label="' + label + '"' + (selected ? ' aria-pressed="true"' : "") + ">" +
+          '<span class="cal-num">' + d + '</span><span class="pips" aria-hidden="true">' + pips + "</span></button>";
+      }
+      daysBox.innerHTML = html;
+      document.getElementById("cal-prev").disabled =
+        year === today.getFullYear() && month <= today.getMonth();
+    }
+
+    function renderDetail() {
+      if (!state.selected) {
+        detail.innerHTML = '<p class="cal-detail-empty">Pick a date to see which sessions are open.</p>';
+        return;
+      }
+      var date = state.selected;
+      var dateText = dayNames[date.getDay()].slice(0, 3) + ", " + monthNames[date.getMonth()].slice(0, 3) + " " + date.getDate() + ", " + date.getFullYear();
+      var open = openTiers(date, state.program).filter(function (num) { return !state.tier || num === state.tier; });
+      detail.innerHTML = '<p class="cal-detail-date">' + dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate() + "</p>" +
+        '<ul class="cal-open">' + open.map(function (num) {
+          var t = tierByNum(num);
+          return '<li><span class="cal-open-name">' + t.num + " " + t.name + '</span><span class="cal-open-price">' + t.price + "</span>" +
+            '<button type="button" class="tier-book" data-tier="' + t.num + '" data-date="' + dateText + '">Book this date</button></li>';
+        }).join("") + "</ul>";
+    }
+
+    function render() {
+      renderTierChips();
+      renderDays();
+      renderDetail();
+    }
+
+    function show(program, tier) {
+      state.program = program;
+      state.tier = tier || null;
+      programSelect.value = program;
+      if (state.selected && openTiers(state.selected, program).indexOf(state.tier) < 0 && state.tier) state.selected = null;
+      render();
+    }
+
+    programSelect.addEventListener("change", function () {
+      state.selected = null;
+      show(programSelect.value, null);
+    });
+
+    tierBox.addEventListener("click", function (event) {
+      var chip = event.target.closest(".chip");
+      if (!chip) return;
+      show(state.program, chip.getAttribute("data-tier") || null);
+    });
+
+    daysBox.addEventListener("click", function (event) {
+      var day = event.target.closest(".cal-day");
+      if (!day || day.disabled) return;
+      state.selected = new Date(state.month.getFullYear(), state.month.getMonth(), Number(day.getAttribute("data-day")));
+      renderDays();
+      renderDetail();
+      // On phones the detail panel sits under the calendar; bring it into view.
+      if (detail.getBoundingClientRect().top > window.innerHeight - 120) {
+        detail.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+      }
+    });
+
+    detail.addEventListener("click", function (event) {
+      var book = event.target.closest(".tier-book");
+      if (book) prefillBooking(state.program, book.getAttribute("data-tier"), book.getAttribute("data-date"));
+    });
+
+    function shiftMonth(delta) {
+      state.month = new Date(state.month.getFullYear(), state.month.getMonth() + delta, 1);
+      state.selected = null;
+      renderDays();
+      renderDetail();
+    }
+    document.getElementById("cal-prev").addEventListener("click", function () { shiftMonth(-1); });
+    document.getElementById("cal-next").addEventListener("click", function () { shiftMonth(1); });
+
+    // Program and tier pages can link here, e.g. ?program=couples&tier=III#availability
+    var params = new URLSearchParams(window.location.search);
+    var linkedProgram = sessions[params.get("program")] ? params.get("program") : "portraits";
+    show(linkedProgram, params.get("tier"));
+
+    return { show: show };
+  })();
 
   shootType.addEventListener("change", function () {
     fillPackages(shootType.value);
