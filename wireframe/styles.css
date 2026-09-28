@@ -442,7 +442,7 @@ body.notes-on .section{ padding-top:128px; }
   z-index:3;
   margin:0;
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.08em;
   line-height:1.35;
   text-align:center;
@@ -700,7 +700,7 @@ body.notes-on .section{ padding-top:128px; }
   border:1px solid var(--smoke);
   color:var(--ivory);
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.14em;
   text-transform:uppercase;
 }
@@ -802,7 +802,7 @@ body.notes-on .section{ padding-top:128px; }
 .cal-weekdays span{
   padding:4px 0;
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.12em;
   text-transform:uppercase;
   color:var(--pewter);
@@ -850,7 +850,7 @@ body.notes-on .section{ padding-top:128px; }
   gap:6px;
   margin:12px 0 0;
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.08em;
   text-transform:uppercase;
   color:var(--bone);
@@ -906,7 +906,7 @@ body.notes-on .section{ padding-top:128px; }
 .option-tag{
   margin:0;
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.14em;
   text-transform:uppercase;
   color:var(--bone);
@@ -969,7 +969,7 @@ body.notes-on .section{ padding-top:128px; }
 
 .product-photo span{
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.14em;
   text-transform:uppercase;
   color:var(--bone);
@@ -1038,8 +1038,8 @@ body.notes-on .section{ padding-top:128px; }
 
 .room span{
   font-family:var(--mono);
-  font-size:9px;
-  letter-spacing:0.12em;
+  font-size:11px;
+  letter-spacing:0.1em;
   text-transform:uppercase;
   color:var(--bone);
 }
@@ -1205,7 +1205,7 @@ body.notes-on .section{ padding-top:128px; }
   background:var(--ivory);
   color:var(--ink);
   font-family:var(--mono);
-  font-size:10px;
+  font-size:11px;
   letter-spacing:0.12em;
 }
 
@@ -1564,7 +1564,7 @@ body.notes-on .section{ padding-top:128px; }
   .letters .letter-card:last-child{ grid-column:auto; }
 
   .sets-layout{ gap:18px 12px; }
-  .set figcaption{ font-size:10px; letter-spacing:0.08em; }
+  .set figcaption{ font-size:11px; letter-spacing:0.06em; }
   .field-row{ grid-template-columns:1fr; }
   .options,
   .doll-grid{ grid-template-columns:1fr; }
@@ -1603,3 +1603,72 @@ body.notes-on .section{ padding-top:128px; }
 
   .work-card.is-unlocking .lock{ opacity:0; }
 }
+
+/* Hit areas: every control is at least 44px on its short side */
+.nav-cluster a,
+.wordmark,
+.footer-links a,
+.tabs button,
+.tier-book,
+.tier-dates,
+.chip,
+.draft-banner button,
+.close-menu{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+}
+
+.menu-btn{ min-width:44px; min-height:44px; align-items:center; justify-content:center; }
+.tier-dates{ min-width:44px; justify-content:flex-end; }
+.chip{ padding-block:0; }
+.cal-nav{ width:44px; height:44px; }
+.notes-toggle{ min-height:44px; }
+.btn{ min-height:44px; }
+.field input,
+.field select{ min-height:44px; }
+.tier-actions{ padding-top:6px; }
+.tabs{ gap:0 20px; margin:14px 0 10px; }
+.footer-links{ gap:0 18px; }
+.nav-cluster{ gap:0 22px; }
+.draft-banner{ min-height:44px; }
+
+/* Press feedback and smooth state changes (150ms, named properties only) */
+.btn,
+.chip,
+.cal-day,
+.cal-nav,
+.notes-toggle{
+  transition-property:scale, background-color, color, border-color;
+  transition-duration:150ms;
+  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
+}
+
+.btn:active,
+.chip:active,
+.cal-day:active:not(:disabled),
+.cal-nav:active:not(:disabled),
+.notes-toggle:active{ scale:0.96; }
+
+.tabs button,
+.tier-book,
+.tier-dates,
+.nav-cluster a,
+.footer-links a{
+  transition-property:color, border-color, text-decoration-color;
+  transition-duration:150ms;
+  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Photos get a faint white outline so their edges hold against the black */
+.set img,
+.work-frame,
+.letter-card .cameo-photo{
+  outline:1px solid oklch(1 0 0 / 0.1);
+  outline-offset:-1px;
+}
+
+.nav-cluster a,
+.footer-links a{ min-width:44px; justify-content:center; }
+.price-ribbon{ min-height:44px; align-items:center; }
+.skip{ padding:14px 14px; }
