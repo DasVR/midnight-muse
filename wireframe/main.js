@@ -309,7 +309,12 @@
 
     function renderDetail() {
       if (!state.selected) {
-        detail.innerHTML = '<p class="cal-detail-empty">Pick a date to see which sessions are open.</p>';
+        var anyOpen = daysBox.querySelector(".cal-day:not([disabled])");
+        var what = state.tier ? state.tier + " " + tierByNum(state.tier).name : "any tier";
+        detail.innerHTML = anyOpen
+          ? '<p class="cal-detail-empty">Pick a date to see which sessions are open.</p>'
+          : '<p class="cal-detail-empty">No open dates for ' + what + " in " + monthNames[state.month.getMonth()] +
+            '. Try next month, or <a href="#book">write to Dani</a> for a custom date.</p>';
         return;
       }
       var date = state.selected;
@@ -331,7 +336,7 @@
 
     function show(program, tier) {
       state.program = program;
-      state.tier = tier || null;
+      state.tier = tier && sessions[program].tiers.some(function (t) { return t.num === tier; }) ? tier : null;
       programSelect.value = program;
       if (state.selected && openTiers(state.selected, program).indexOf(state.tier) < 0 && state.tier) state.selected = null;
       render();
