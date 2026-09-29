@@ -527,6 +527,9 @@ body.notes-on .section{ padding-top:128px; }
   display:block;
   width:min(320px, 70%);
   height:auto;
+  aspect-ratio:330 / 40;
+  overflow:visible;
+  color:var(--pewter);
   margin:0 auto 28px;
 }
 
@@ -1937,4 +1940,48 @@ body.notes-on #book{ padding-top:160px; }
   .cal-day.is-selected .cal-count{ color:var(--ink); }
   .cal-legend-desktop{ display:none; }
   .cal-legend-phone{ display:inline; }
+}
+
+
+/* Motion 7: two scroll moments, each played once (main.js adds .motion-ready) */
+.motion-ready .filigree path{
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  stroke-opacity:0;
+}
+
+/* Each stroke stays invisible until its own draw starts, so round caps don't leave dots */
+.motion-ready .filigree.is-drawn path{
+  stroke-dashoffset:0;
+  stroke-opacity:1;
+  transition:
+    stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1) var(--draw-delay, 0ms),
+    stroke-opacity 1ms linear var(--draw-delay, 0ms);
+}
+
+.motion-ready .doll-roof{ clip-path:inset(0 100% 0 0); }
+
+.motion-ready .doll-house.is-drawn .doll-roof{
+  clip-path:inset(0 0 0 0);
+  transition:clip-path 700ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.motion-ready .room{ opacity:0.18; }
+
+/* Rooms light like windows at night: scattered order, a small lamp flicker */
+.motion-ready .doll-house.is-drawn .room{
+  animation:lamp 460ms ease-out both;
+  animation-delay:650ms;
+}
+
+.motion-ready .doll-house.is-drawn .room:nth-child(1){ animation-delay:870ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(2){ animation-delay:650ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(3){ animation-delay:980ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(4){ animation-delay:760ms; }
+
+@keyframes lamp{
+  0%{ opacity:0.18; }
+  40%{ opacity:0.85; }
+  55%{ opacity:0.5; }
+  100%{ opacity:1; }
 }

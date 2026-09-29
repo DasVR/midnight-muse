@@ -90,13 +90,39 @@
     notesBtn.textContent = on ? "Hide notes" : "Show notes";
   });
 
+  var menuAnim = null;
+
   function setMenu(open) {
-    overlay.hidden = !open;
     menuBtn.setAttribute("aria-expanded", String(open));
     document.body.classList.toggle("menu-open", open);
+    if (menuAnim) menuAnim.cancel();
     if (open) {
+      overlay.hidden = false;
       var close = overlay.querySelector("button, a");
       if (close) close.focus();
+      if (reduce) return;
+      var r = menuBtn.getBoundingClientRect();
+      var x = r.left + r.width / 2;
+      var y = r.top + r.height / 2;
+      var radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+      menuAnim = overlay.animate([
+        { clipPath: "circle(0px at " + x + "px " + y + "px)" },
+        { clipPath: "circle(" + radius + "px at " + x + "px " + y + "px)" }
+      ], { duration: 350, easing: "cubic-bezier(0.32, 0.72, 0, 1)" });
+      overlay.querySelectorAll("a").forEach(function (link, i) {
+        link.animate([
+          { opacity: 0, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" }
+        ], { duration: 220, delay: 80 + i * 25, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" });
+      });
+    } else {
+      if (reduce || overlay.hidden) {
+        overlay.hidden = true;
+        return;
+      }
+      var closing = overlay.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 150, easing: "ease-out" });
+      menuAnim = closing;
+      closing.onfinish = function () { overlay.hidden = true; };
     }
   }
 
@@ -495,6 +521,15 @@
       state.selected = null;
       renderDays();
       renderDetail();
+      if (reduce) return;
+      // The new month arrives from the side of the arrow that was pressed.
+      [daysBox, monthLabel].forEach(function (el) {
+        el.getAnimations().forEach(function (a) { a.cancel(); });
+        el.animate([
+          { opacity: 0, transform: "translateX(" + delta * 24 + "px)" },
+          { opacity: 1, transform: "translateX(0)" }
+        ], { duration: 220, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
+      });
     }
     document.getElementById("cal-prev").addEventListener("click", function () { shiftMonth(-1); });
     document.getElementById("cal-next").addEventListener("click", function () { shiftMonth(1); });
@@ -564,6 +599,28 @@
       anim.addEventListener("finish", function () { if (running === anim) running = null; });
     });
   });
+
+  if (!reduce && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("motion-ready");
+    // Filigree strokes start at the centre diamond and ink outward.
+    var filigree = document.querySelector(".filigree");
+    if (filigree) {
+      var center = 160;
+      filigree.querySelectorAll("path").forEach(function (path) {
+        var box = path.getBBox();
+        var distance = Math.abs(box.x + box.width / 2 - center);
+        path.style.setProperty("--draw-delay", Math.round(distance * 3) + "ms");
+      });
+    }
+    var once = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-drawn");
+        once.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll(".filigree, .doll-house").forEach(function (el) { once.observe(el); });
+  }
 
   placeInk();
   requestAnimationFrame(function () { document.querySelector(".tabs").classList.add("ink-ready"); });
