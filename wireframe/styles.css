@@ -1871,29 +1871,6 @@ body.notes-on .section{ padding-top:128px; }
   pointer-events:none;
 }
 
-/* Send: the button itself confirms */
-.send-labels{ display:grid; }
-.send-labels > span{
-  grid-area:1 / 1;
-  transition-property:opacity, filter;
-  transition-duration:200ms;
-  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
-}
-
-.send-done{ opacity:0; filter:blur(2px); }
-.send-btn.is-sent .send-idle{ opacity:0; filter:blur(2px); }
-.send-btn.is-sent .send-done{ opacity:1; filter:blur(0); }
-
-.send-key{
-  opacity:0;
-  scale:0.25;
-  filter:blur(4px);
-  transition-property:opacity, scale, filter;
-  transition-duration:300ms;
-  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
-}
-
-.send-btn.is-sent .send-key{ opacity:1; scale:1; filter:blur(0); }
 .form-status:empty{ display:none; }
 
 /* FAQ bodies slide */
@@ -1966,22 +1943,287 @@ body.notes-on #book{ padding-top:160px; }
   transition:clip-path 700ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-.motion-ready .room{ opacity:0.18; }
+/* Rooms start with the lights off: a dark layer over each room (so the photo
+   or label underneath is never faded itself), lifted like a lamp coming on. */
+.room{ position:relative; }
 
-/* Rooms light like windows at night: scattered order, a small lamp flicker */
-.motion-ready .doll-house.is-drawn .room{
+.motion-ready .room::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:var(--ink);
+  opacity:0.82;
+  pointer-events:none;
+}
+
+.motion-ready .doll-house.is-drawn .room::after{
   animation:lamp 460ms ease-out both;
   animation-delay:650ms;
 }
 
-.motion-ready .doll-house.is-drawn .room:nth-child(1){ animation-delay:870ms; }
-.motion-ready .doll-house.is-drawn .room:nth-child(2){ animation-delay:650ms; }
-.motion-ready .doll-house.is-drawn .room:nth-child(3){ animation-delay:980ms; }
-.motion-ready .doll-house.is-drawn .room:nth-child(4){ animation-delay:760ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(1)::after{ animation-delay:870ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(2)::after{ animation-delay:650ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(3)::after{ animation-delay:980ms; }
+.motion-ready .doll-house.is-drawn .room:nth-child(4)::after{ animation-delay:760ms; }
 
 @keyframes lamp{
-  0%{ opacity:0.18; }
-  40%{ opacity:0.85; }
-  55%{ opacity:0.5; }
-  100%{ opacity:1; }
+  0%{ opacity:0.82; }
+  40%{ opacity:0.12; }
+  55%{ opacity:0.45; }
+  100%{ opacity:0; }
+}
+
+
+/* ---------- Sending: form → letter → envelope → mail slot (letter.js) ---------- */
+.mail-layer{
+  position:fixed;
+  inset:0;
+  z-index:120;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.mail-flight{ position:absolute; inset:0; }
+
+.mail-center{
+  position:absolute;
+  perspective:1400px;
+}
+
+.letter-sheet{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:var(--lh);
+  box-sizing:border-box;
+  padding:clamp(20px, 6%, 34px) clamp(20px, 7%, 40px);
+  background:var(--ivory);
+  color:var(--ink);
+  transform-origin:0 0;
+  overflow:hidden;
+  box-shadow:0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.letter-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:10px;
+  border-bottom:1px solid var(--pewter);
+}
+
+.letter-key{ height:26px; width:auto; filter:invert(1); }
+
+.letter-date{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--smoke);
+}
+
+.letter-greeting,
+.letter-signature{
+  margin:18px 0 6px;
+  font-family:var(--script);
+  font-size:clamp(30px, 7vw, 38px);
+  line-height:1.1;
+  color:var(--ink);
+}
+
+.letter-body,
+.letter-closing{
+  margin:0 0 6px;
+  font-family:var(--serif);
+  font-size:clamp(15px, 3.8vw, 18px);
+  line-height:1.45;
+  color:var(--ink);
+}
+
+.letter-closing{ margin-top:14px; }
+.letter-signature{ margin-top:0; }
+.letter-line{ display:block; white-space:nowrap; }
+
+/* The fold: the bottom half turns up over the top half */
+.letter-fold{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:var(--lh);
+  perspective:1400px;
+  z-index:2;
+}
+
+.fold-half{
+  position:absolute;
+  left:0;
+  width:100%;
+  height:50%;
+}
+
+.fold-top{ top:0; overflow:hidden; }
+.fold-top .letter-sheet{ box-shadow:none; }
+
+.fold-bottom{
+  top:50%;
+  transform-origin:50% 0;
+  transform-style:preserve-3d;
+}
+
+.fold-face{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.fold-front .letter-sheet{ top:calc(var(--lh) / -2); box-shadow:none; }
+
+.fold-back{
+  transform:rotateX(180deg);
+  background:var(--bone);
+  border-top:1px solid var(--pewter);
+}
+
+.fold-shade{
+  position:absolute;
+  inset:0;
+  background:var(--ink);
+  opacity:0;
+  pointer-events:none;
+}
+
+/* Envelope: back behind the letter, pocket and flap in front */
+.env-back,
+.env-pocket,
+.env-flap{
+  position:absolute;
+  left:-14px;
+  width:var(--env-w);
+}
+
+.env-back{
+  top:-14px;
+  height:var(--env-h);
+  z-index:1;
+  background:var(--bone);
+  opacity:0;
+  box-shadow:0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+.env-pocket{
+  top:calc(-14px + var(--env-h) * 0.28);
+  height:calc(var(--env-h) * 0.72);
+  z-index:3;
+  opacity:0;
+}
+
+.env-pocket svg,
+.env-flap svg{ display:block; width:100%; height:100%; }
+
+.env-pocket path{ fill:var(--ivory); stroke:var(--pewter); stroke-width:1; }
+
+.env-flap{
+  top:-14px;
+  height:calc(var(--env-h) * 0.58);
+  z-index:4;
+  opacity:0;
+  transform:rotateX(180deg);
+  transform-origin:50% 0;
+  backface-visibility:visible;
+}
+
+.env-flap path{ fill:var(--bone); stroke:var(--pewter); stroke-width:1; }
+
+.env-stamp{
+  position:absolute;
+  top:-2px;
+  right:-2px;
+  width:48px;
+  z-index:5;
+  color:var(--ink);
+  opacity:0;
+  filter:drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+.env-stamp svg{
+  display:block;
+  width:100%;
+}
+
+.env-postmark{
+  position:absolute;
+  top:4px;
+  right:30px;
+  width:84px;
+  z-index:5;
+  color:var(--smoke);
+  opacity:0;
+}
+
+.env-postmark svg{ display:block; width:100%; }
+
+.mail-slot{
+  position:fixed;
+  z-index:121;
+  transform:translate(-50%, -50%);
+  background:var(--ink);
+  border:1px solid var(--ivory);
+  border-radius:6px;
+  box-shadow:inset 0 0 0 3px var(--cloth), 0 0 0 1px var(--smoke);
+  pointer-events:none;
+}
+
+.mail-slot-v{ width:12px; height:var(--slot-length); }
+.mail-slot-h{ width:var(--slot-length); height:12px; }
+
+.mail-skip{
+  position:absolute;
+  left:50%;
+  bottom:28px;
+  margin:0;
+  transform:translateX(-50%);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--bone);
+  pointer-events:none;
+}
+
+/* After sending */
+.sent-note{
+  width:min(640px, 100%);
+  margin:28px auto 0;
+  padding:32px 28px;
+  border:1px solid var(--pewter);
+  text-align:center;
+}
+
+.sent-note:focus{ outline:none; }
+.sent-note:focus-visible{ outline:1px solid var(--ivory); outline-offset:4px; }
+
+.sent-title{
+  margin:0;
+  font-family:var(--script);
+  font-weight:400;
+  font-size:clamp(40px, 6vw, 56px);
+  line-height:1;
+  color:var(--ivory);
+}
+
+.sent-body{ margin:14px 0 0; color:var(--bone); }
+.sent-note .form-status{ margin:10px 0 0; }
+.sent-note .btn{ margin-top:22px; }
+
+.mail-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:119;
+  background:var(--ink);
+  opacity:0;
+  pointer-events:none;
 }

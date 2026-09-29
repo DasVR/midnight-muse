@@ -549,19 +549,7 @@
   renderTiers("portraits");
   fillPackages("portraits");
 
-  var sendBtn = form.querySelector(".send-btn");
-  var sentTimer;
   form.setAttribute("tabindex", "-1");
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    sendBtn.classList.add("is-sent");
-    status.textContent = "Wireframe: nothing was actually sent.";
-    clearTimeout(sentTimer);
-    sentTimer = setTimeout(function () {
-      sendBtn.classList.remove("is-sent");
-      status.textContent = "";
-    }, 3500);
-  });
 
   // FAQ answers slide open and closed instead of snapping.
   document.querySelectorAll(".faq details").forEach(function (details) {
