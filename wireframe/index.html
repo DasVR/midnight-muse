@@ -433,7 +433,7 @@
       </div>
     </section>
 
-    <section class="section book" id="book" data-note="Your booking form, now with email, and the package list matches the shoot type.">
+    <section class="section book" id="book" data-note="Sending turns your form into a letter: it writes itself, folds, goes into an envelope, gets stamped and slides into a mail slot.">
       <div class="wrap">
         <img class="book-key" src="assets/key.svg" alt="">
         <h2>Unlock your session</h2>
@@ -441,11 +441,11 @@
           <div class="field-row">
             <div class="field">
               <label for="name">Name</label>
-              <input id="name" name="name" type="text" autocomplete="name">
+              <input id="name" name="name" type="text" autocomplete="name" required>
             </div>
             <div class="field">
               <label for="email">Email</label>
-              <input id="email" name="email" type="email" autocomplete="email">
+              <input id="email" name="email" type="email" autocomplete="email" required>
             </div>
           </div>
           <div class="field-row">
@@ -491,10 +491,7 @@
               <input id="hear" name="hear" type="text" autocomplete="off">
             </div>
           </div>
-          <button class="btn send-btn" type="submit">
-            <span class="send-labels"><span class="send-idle">Send your letter</span><span class="send-done" aria-hidden="true">Letter sent</span></span>
-            <img class="key-icon send-key" src="assets/key.svg" alt="">
-          </button>
+          <button class="btn send-btn" type="submit">Send your letter <img class="key-icon" src="assets/key.svg" alt=""></button>
           <p class="form-status" id="form-status" role="status"></p>
         </form>
       </div>
@@ -534,6 +531,7 @@
 
   <script src="unlock.js"></script>
   <script src="main.js"></script>
+  <script src="letter.js"></script>
   <script src="vendor/agentation.bundle.js"></script>
 </body>
 </html>
