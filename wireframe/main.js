@@ -9,6 +9,8 @@
   var shootType = document.getElementById("shoot-type");
   var packageField = document.getElementById("package");
   var scroller = document.getElementById("tier-scroller");
+  var tierTable = document.getElementById("tier-table");
+  var sessionPanel = document.getElementById("session-panel");
   var standIn = document.getElementById("stand-in");
   var tabs = Array.prototype.slice.call(document.querySelectorAll("[role='tab']"));
   var nav = document.getElementById("site-nav");
@@ -21,7 +23,7 @@
       tiers: [
         { num: "I", name: "Mini", price: "$100", rows: [["Session", "30 min"], ["Edited photos", "5–10+"], ["Locations", "1"], ["Travel", "20 min"]] },
         { num: "II", name: "Basic", price: "$175", rows: [["Session", "1 hr"], ["Edited photos", "15–25+"], ["Locations", "1–2"], ["Travel", "35 min"]] },
-        { num: "III", name: "Styled", price: "$250", badge: "MOST BOOKED", perk: "+ outfit options", rows: [["Session", "1 hr"], ["Edited photos", "20+"], ["Locations", "1–2"], ["Travel", "35 min"]] },
+        { num: "III", name: "Styled", price: "$250", perk: "+ outfit options", rows: [["Session", "1 hr"], ["Edited photos", "20+"], ["Locations", "1–2"], ["Travel", "35 min"]] },
         { num: "IV", name: "Complete", price: "$325", perk: "+ curated outfits & props", rows: [["Session", "1.5 hr"], ["Edited photos", "20+"], ["Locations", "1–2"], ["Travel", "40 min"]] },
         { num: "V", name: "Muse", price: "$475", perk: "+ curated outfits, props & backdrop", rows: [["Session", "2 hr"], ["Edited photos", "25+"], ["Locations", "1"]] }
       ]
@@ -134,9 +136,8 @@
       var rows = tier.rows.map(function (row) {
         return "<li><span>" + row[0] + "</span><span class=\"leader\" aria-hidden=\"true\"></span><span>" + row[1] + "</span></li>";
       }).join("");
-      var badge = tier.badge ? '<p class="badge">' + tier.badge + "</p>" : "";
       var perk = tier.perk ? '<p class="perk">' + tier.perk + "</p>" : "";
-      return '<article class="tier frame">' + corners() + badge +
+      return '<article class="tier frame">' + corners() +
         '<p class="tier-num">' + tier.num + "</p>" +
         '<h3 class="tier-name">' + tier.name + "</h3>" +
         '<p class="price">' + tier.price + "</p>" +
@@ -147,6 +148,31 @@
         "</div></article>";
     }).join("");
     scroller.scrollLeft = 0;
+    renderTable(session);
+  }
+
+  // Desktop reads the packages side by side, like a spec sheet.
+  function renderTable(session) {
+    var labels = [];
+    session.tiers.forEach(function (tier) {
+      tier.rows.forEach(function (row) { if (labels.indexOf(row[0]) < 0) labels.push(row[0]); });
+    });
+    var head = session.tiers.map(function (t) {
+      return '<th scope="col"><span class="tier-num">' + t.num + '</span><span class="tier-name">' + t.name + '</span><span class="price">' + t.price + "</span></th>";
+    }).join("");
+    var body = labels.map(function (label) {
+      return '<tr><th scope="row">' + label + "</th>" + session.tiers.map(function (t) {
+        var row = t.rows.filter(function (r) { return r[0] === label; })[0];
+        return row ? "<td>" + row[1] + "</td>" : '<td class="none"><span aria-hidden="true">·</span><span class="sr-only">Not listed</span></td>';
+      }).join("") + "</tr>";
+    }).join("");
+    var extras = '<tr><th scope="row">Extras</th>' + session.tiers.map(function (t) {
+      return t.perk ? "<td>" + t.perk.replace(/^\+\s*/, "") + "</td>" : '<td class="none"><span aria-hidden="true">·</span><span class="sr-only">None</span></td>';
+    }).join("") + "</tr>";
+    var actions = '<tr class="tier-table-actions"><th scope="row"><span class="sr-only">Actions</span></th>' + session.tiers.map(function (t) {
+      return '<td><button class="tier-book" type="button" data-tier="' + t.num + '">Book ' + t.name + '</button><button class="tier-dates" type="button" data-tier="' + t.num + '">Dates</button></td>';
+    }).join("") + "</tr>";
+    tierTable.innerHTML = corners() + '<table class="tier-table"><caption class="sr-only">Packages compared</caption><thead><tr><td></td>' + head + "</tr></thead><tbody>" + body + extras + actions + "</tbody></table>";
   }
 
   function fillPackages(key) {
@@ -155,15 +181,27 @@
     sessions[key].tiers.forEach(function (tier) {
       var option = document.createElement("option");
       option.value = tier.num;
-      option.textContent = tier.num + " " + tier.name + " — " + tier.price;
+      option.textContent = tier.num + " " + tier.name + " · " + tier.price;
       packageField.appendChild(option);
     });
     if (previous) packageField.value = previous;
     if (packageField.selectedIndex < 0) packageField.selectedIndex = 0;
   }
 
+  var tabInk = document.querySelector(".tab-ink");
+  var tabIndex = 0;
+
+  function placeInk() {
+    var selected = tabs.filter(function (t) { return t.getAttribute("aria-selected") === "true"; })[0];
+    tabInk.style.transform = "translate(" + selected.offsetLeft + "px, " + (selected.offsetTop + selected.offsetHeight - 10) + "px) scaleX(" + selected.offsetWidth + ")";
+  }
+
   function selectTab(tab) {
     var key = tab.getAttribute("data-session");
+    var newIndex = tabs.indexOf(tab);
+    var direction = newIndex >= tabIndex ? 1 : -1;
+    var changed = newIndex !== tabIndex;
+    tabIndex = newIndex;
     tabs.forEach(function (item) {
       var selected = item === tab;
       item.setAttribute("aria-selected", String(selected));
@@ -171,6 +209,15 @@
     });
     document.getElementById("session-panel").setAttribute("aria-labelledby", tab.id);
     renderTiers(key);
+    placeInk();
+    if (changed && !reduce) {
+      [tierTable, scroller].forEach(function (el) {
+        el.animate([
+          { opacity: 0, transform: "translateX(" + direction * 8 + "px)" },
+          { opacity: 1, transform: "translateX(0)" }
+        ], { duration: 200, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      });
+    }
     if (shootType.value === key) fillPackages(key);
     if (typeof calendar !== "undefined") calendar.show(key, null);
   }
@@ -193,16 +240,88 @@
   });
 
   // "Book" on a tier card jumps to the form with shoot type and package filled in.
+  var datesField = document.getElementById("dates");
+  var WRITE = { duration: 620, easing: "cubic-bezier(0.37, 0, 0.2, 1)" };
+
+  function inkFor(field) {
+    var wrap = field.closest(".field");
+    if (!wrap.querySelector(".ink")) {
+      wrap.insertAdjacentHTML("beforeend", '<span class="ink" aria-hidden="true"></span><span class="nib" aria-hidden="true"></span>');
+    }
+    return wrap;
+  }
+
+  function stopWriting(field) {
+    var wrap = inkFor(field);
+    [field, wrap.querySelector(".ink"), wrap.querySelector(".nib")].forEach(function (el) {
+      el.getAnimations().forEach(function (a) { a.cancel(); });
+    });
+    field.style.clipPath = "";
+  }
+
+  // Wait until the smooth scroll has settled so the writing happens in view.
+  function afterScroll(done) {
+    var last = -1;
+    var still = 0;
+    var started = performance.now();
+    (function tick() {
+      var y = window.scrollY;
+      still = Math.abs(y - last) < 1 ? still + 1 : 0;
+      last = y;
+      if (still > 4 || performance.now() - started > 1600) done();
+      else requestAnimationFrame(tick);
+    })();
+  }
+
+  function writeFields(fields) {
+    fields.forEach(function (field) {
+      stopWriting(field);
+      var wrap = inkFor(field);
+      wrap.classList.add("is-inked");
+      if (!reduce) field.style.clipPath = "inset(0 100% 0 0)";
+    });
+    if (reduce) return;
+    afterScroll(function () {
+      fields.forEach(function (field, i) {
+        var wrap = field.closest(".field");
+        var width = field.offsetWidth;
+        var timing = { duration: WRITE.duration, easing: WRITE.easing, delay: i * 320, fill: "backwards" };
+        field.style.clipPath = "";
+        field.animate([{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)" }], timing);
+        wrap.querySelector(".ink").animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], timing);
+        wrap.querySelector(".nib").animate([
+          { transform: "translateX(0)", opacity: 0 },
+          { transform: "translateX(" + width * 0.08 + "px)", opacity: 1, offset: 0.08 },
+          { transform: "translateX(" + width * 0.94 + "px)", opacity: 1, offset: 0.92 },
+          { transform: "translateX(" + width + "px)", opacity: 0 }
+        ], { duration: WRITE.duration, easing: WRITE.easing, delay: i * 320, fill: "backwards" });
+      });
+    });
+  }
+
+  // Editing a written-in field by hand takes the ink off it.
+  [shootType, packageField, datesField].forEach(function (field) {
+    field.addEventListener("change", function () { field.closest(".field").classList.remove("is-inked"); });
+    field.addEventListener("input", function () { field.closest(".field").classList.remove("is-inked"); });
+  });
+
   function prefillBooking(program, tierNum, dateText) {
     shootType.value = program;
     fillPackages(program);
     packageField.value = tierNum;
-    if (dateText) document.getElementById("dates").value = dateText;
-    document.getElementById("book").scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-    document.getElementById("name").focus({ preventScroll: true });
+    var written = [shootType, packageField];
+    if (dateText) {
+      datesField.value = dateText;
+      written.push(datesField);
+    }
+    // Land with the fields being written in the middle of the screen.
+    packageField.closest(".field").scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    // Focus the form itself: keyboard users land there, and phones don't pop the keyboard mid-animation.
+    form.focus({ preventScroll: true });
+    writeFields(written);
   }
 
-  scroller.addEventListener("click", function (event) {
+  sessionPanel.addEventListener("click", function (event) {
     var book = event.target.closest(".tier-book");
     var dates = event.target.closest(".tier-dates");
     if (book) prefillBooking(currentSession, book.getAttribute("data-tier"));
@@ -300,7 +419,8 @@
         var selected = state.selected && state.selected.getTime() === date.getTime();
         html += '<button type="button" class="cal-day' + (selected ? " is-selected" : "") + '" data-day="' + d + '"' +
           (usable ? "" : " disabled") + ' aria-label="' + label + '"' + (selected ? ' aria-pressed="true"' : "") + ">" +
-          '<span class="cal-num">' + d + '</span><span class="pips" aria-hidden="true">' + pips + "</span></button>";
+          '<span class="cal-num">' + d + '</span><span class="pips" aria-hidden="true">' + pips + "</span>" +
+          '<span class="cal-count" aria-hidden="true">' + (usable ? (state.tier ? "1" : String(open.length)) : "") + "</span></button>";
       }
       daysBox.innerHTML = html;
       document.getElementById("cal-prev").disabled =
@@ -318,7 +438,7 @@
         return;
       }
       var date = state.selected;
-      var dateText = dayNames[date.getDay()].slice(0, 3) + ", " + monthNames[date.getMonth()].slice(0, 3) + " " + date.getDate() + ", " + date.getFullYear();
+      var dateText = dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
       var open = openTiers(date, state.program).filter(function (num) { return !state.tier || num === state.tier; });
       detail.innerHTML = '<p class="cal-detail-date">' + dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate() + "</p>" +
         '<ul class="cal-open">' + open.map(function (num) {
@@ -394,50 +514,64 @@
   renderTiers("portraits");
   fillPackages("portraits");
 
+  var sendBtn = form.querySelector(".send-btn");
+  var sentTimer;
+  form.setAttribute("tabindex", "-1");
   form.addEventListener("submit", function (event) {
     event.preventDefault();
-    status.hidden = false;
+    sendBtn.classList.add("is-sent");
+    status.textContent = "Wireframe: nothing was actually sent.";
+    clearTimeout(sentTimer);
+    sentTimer = setTimeout(function () {
+      sendBtn.classList.remove("is-sent");
+      status.textContent = "";
+    }, 3500);
   });
 
-  if (!reduce && window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.utils.toArray(".js-reveal").forEach(function (el) {
-      gsap.from(el, {
-        y: 16,
-        autoAlpha: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 88%" }
-      });
+  // FAQ answers slide open and closed instead of snapping.
+  document.querySelectorAll(".faq details").forEach(function (details) {
+    var summary = details.querySelector("summary");
+    var body = document.createElement("div");
+    body.className = "faq-body";
+    Array.prototype.slice.call(details.children).forEach(function (child) {
+      if (child !== summary) body.appendChild(child);
     });
-    gsap.utils.toArray(".js-photo").forEach(function (el) {
-      gsap.fromTo(el, { filter: "grayscale(1)" }, {
-        filter: "grayscale(0)",
-        duration: 0.9,
-        ease: "power1.out",
-        scrollTrigger: { trigger: el, start: "top 85%" }
-      });
+    details.appendChild(body);
+    var running = null;
+    summary.addEventListener("click", function (event) {
+      if (reduce) return;
+      event.preventDefault();
+      // A closed <details> can still report its content's height in newer
+      // Chrome, so a fully closed answer always opens from zero.
+      var from = details.open ? body.getBoundingClientRect().height : 0;
+      if (running) running.cancel();
+      var opening = !details.open || details.classList.contains("is-closing");
+      details.classList.remove("is-closing");
+      if (opening) {
+        details.open = true;
+        running = body.animate([{ height: from + "px", opacity: from ? 1 : 0 }, { height: body.scrollHeight + "px", opacity: 1 }],
+          { duration: 250, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
+      } else {
+        details.classList.add("is-closing");
+        running = body.animate([{ height: from + "px", opacity: 1 }, { height: "0px", opacity: 0 }],
+          { duration: 200, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
+        running.onfinish = function () {
+          details.open = false;
+          details.classList.remove("is-closing");
+        };
+      }
+      var anim = running;
+      anim.addEventListener("finish", function () { if (running === anim) running = null; });
     });
-    gsap.utils.toArray(".js-work").forEach(function (el) {
-      gsap.fromTo(el, { filter: "grayscale(1)" }, {
-        filter: "grayscale(0.6)",
-        duration: 0.9,
-        ease: "power1.out",
-        scrollTrigger: { trigger: el, start: "top 85%" },
-        onComplete: function () {
-          el.style.filter = "";
-          el.classList.add("is-resting");
-        }
-      });
-    });
-    gsap.utils.toArray(".js-lace").forEach(function (el) {
-      gsap.from(el, {
-        scale: 0.96,
-        duration: 0.8,
-        ease: "power2.out",
-        transformOrigin: "center center",
-        scrollTrigger: { trigger: el, start: "top 85%" }
-      });
-    });
-  }
+  });
+
+  placeInk();
+  requestAnimationFrame(function () { document.querySelector(".tabs").classList.add("ink-ready"); });
+  window.addEventListener("resize", function () {
+    var tabsEl = document.querySelector(".tabs");
+    tabsEl.classList.remove("ink-ready");
+    placeInk();
+    requestAnimationFrame(function () { tabsEl.classList.add("ink-ready"); });
+  });
+
 })();
