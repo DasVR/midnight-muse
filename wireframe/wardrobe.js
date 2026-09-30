@@ -129,7 +129,7 @@
     if (!list.length) {
       emptyNote.textContent = "";
       emptyNote.appendChild(el("p", "", state.cat === "film" ? "The Polaroid scans are still on their way." : "Nothing pinned here yet."));
-      var all = el("button", "btn", "See all photographs");
+      var all = el("button", "btn btn-ghost", "See all photographs");
       all.type = "button";
       all.addEventListener("click", function () { show("all", true); });
       emptyNote.appendChild(all);
@@ -219,67 +219,119 @@
     door.style.width = rect.width + "px";
     door.style.height = rect.height + "px";
     if (src) door.style.backgroundImage = "url(" + JSON.stringify(src) + ")";
+    var vignette = el("div", "portal-vignette");
     var laceL = el("div", "portal-lace portal-lace-l");
     var laceR = el("div", "portal-lace portal-lace-r");
+    var seam = el("div", "portal-seam");
+    var flash = el("div", "portal-flash");
     var snow = el("div", "portal-snow");
-    [dim, door, laceL, laceR, snow].forEach(function (n) { layer.appendChild(n); });
+    [dim, door, vignette, laceL, laceR, seam, flash, snow].forEach(function (n) { layer.appendChild(n); });
     document.body.appendChild(layer);
     overlay.style.opacity = "0";
 
+    var running = [];
+    var timers = [];
     function play(node, frames, opts) {
-      var a = node.animate(frames, Object.assign({ fill: "forwards" }, opts));
+      var a = node.animate(frames, Object.assign({ fill: "both" }, opts));
+      running.push(a);
       if (skipping) a.finish();
-      return a.finished;
+      return a;
     }
     function done() {
       if (!layer.isConnected) return;
       layer.remove();
       overlay.style.opacity = "";
+      overlay.getAnimations().forEach(function (a) { a.finish(); });
       document.removeEventListener("keydown", onKey, true);
     }
     function skip() {
+      if (skipping) return;
       skipping = true;
-      layer.getAnimations({ subtree: true }).forEach(function (a) { a.finish(); });
-      overlay.getAnimations({ subtree: true }).forEach(function (a) { a.finish(); });
+      timers.forEach(clearTimeout);
+      running.forEach(function (a) { a.finish(); });
+      done();
     }
     function onKey(event) { if (event.key === "Escape") { event.stopPropagation(); skip(); } }
     layer.addEventListener("click", skip);
     document.addEventListener("keydown", onKey, true);
 
-    // 1. Walk into the doorway: the cover grows past the edges of the screen.
-    var scale = Math.max(vw / rect.width, vh / rect.height) * 1.2;
+    // One timeline, measured from the tap. Every stage overlaps the next so
+    // nothing cross-fades on top of anything else.
+    var ZOOM = 900;        // the cover rushes toward you
+    var CLOSE_AT = 380;    // lace starts drawing shut while the photo is still growing
+    var CLOSE = 560;
+    var GLOW_AT = CLOSE_AT + CLOSE - 60; // light appears at the seam
+    var PART_AT = GLOW_AT + 300;         // the curtains are pushed apart
+    var PART = 760;
+    var ROOM_AT = PART_AT + 60;
+    var END = PART_AT + PART + 240;
+
+    // 1. Walk into the doorway: the cover rushes past the edges of the screen,
+    //    brightening; it only softens right at the end, behind the lace.
+    var scale = Math.max(vw / rect.width, vh / rect.height) * 1.35;
     var tx = vw / 2 - (rect.left + rect.width / 2);
     var ty = vh / 2 - (rect.top + rect.height / 2);
-    play(dim, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: "ease-out" });
+    play(dim, [{ opacity: 0 }, { opacity: 1 }], { duration: 260, easing: "ease-out" });
     play(door, [
       { transform: "none", filter: "brightness(1) blur(0px)" },
-      { transform: "translate(" + tx + "px, " + ty + "px) scale(" + scale + ")", filter: "brightness(1.5) blur(6px)" }
-    ], { duration: 820, easing: "cubic-bezier(0.7, 0, 0.2, 1)" });
+      { transform: "translate(" + tx * 0.6 + "px, " + ty * 0.6 + "px) scale(" + scale * 0.45 + ")", filter: "brightness(1.15) blur(0px)", offset: 0.55 },
+      { transform: "translate(" + tx + "px, " + ty + "px) scale(" + scale + ")", filter: "brightness(1.45) blur(5px)" }
+    ], { duration: ZOOM, easing: "cubic-bezier(0.55, 0, 0.25, 1)" });
+    play(vignette, [{ opacity: 0 }, { opacity: 1 }], { duration: ZOOM, easing: "ease-in" });
 
-    // 2. Hanging lace fills the view just as the door does.
-    wait(520).then(function () {
-      return Promise.all([
-        play(laceL, [{ opacity: 0, transform: "scale(1.12)" }, { opacity: 1, transform: "scale(1)" }], { duration: 300, easing: "ease-out" }),
-        play(laceR, [{ opacity: 0, transform: "scale(1.12)" }, { opacity: 1, transform: "scale(1)" }], { duration: 300, easing: "ease-out" })
-      ]);
-    })
-      // 3. Push through: the lace parts, snow drifts down, and the room is there.
-      .then(function () {
-        door.style.opacity = "0";
-        dim.style.opacity = "0";
-        overlay.style.opacity = "";
-        dim.getAnimations().forEach(function (a) { a.cancel(); });
-        letItSnow(snow, vw, vh, skipping);
-        pinsLand();
-        play(laceL, [{ transform: "translateX(0)" }, { transform: "translateX(-104%) scaleX(0.92)" }], { duration: 720, easing: "cubic-bezier(0.65, 0, 0.35, 1)" });
-        return play(laceR, [{ transform: "translateX(0)" }, { transform: "translateX(104%) scaleX(0.92)" }], { duration: 720, easing: "cubic-bezier(0.65, 0, 0.35, 1)" });
-      })
-      .then(function () { return skipping ? null : wait(700); })
-      .then(done, done);
+    // 2. The lace draws shut from both sides, catching the photo through its holes,
+    //    and sways a little as it settles.
+    var closeTiming = { duration: CLOSE, delay: CLOSE_AT, easing: "cubic-bezier(0.22, 1, 0.36, 1)" };
+    play(laceL, [
+      { transform: "translateX(-100%) skewX(0deg)" },
+      { transform: "translateX(2%) skewX(-3deg)", offset: 0.7 },
+      { transform: "translateX(0) skewX(0deg)" }
+    ], closeTiming);
+    play(laceR, [
+      { transform: "translateX(100%) skewX(0deg)" },
+      { transform: "translateX(-2%) skewX(3deg)", offset: 0.7 },
+      { transform: "translateX(0) skewX(0deg)" }
+    ], closeTiming);
 
-    function wait(ms) {
-      return skipping ? Promise.resolve() : new Promise(function (r) { setTimeout(r, ms); });
-    }
+    // 3. Light gathers in the gap between the curtains.
+    play(seam, [
+      { opacity: 0, transform: "scaleY(0.2) scaleX(1)" },
+      { opacity: 1, transform: "scaleY(1) scaleX(1)", offset: 0.55 },
+      { opacity: 1, transform: "scaleY(1) scaleX(1.6)" }
+    ], { duration: PART_AT - GLOW_AT + 120, delay: GLOW_AT, easing: "ease-out" });
+
+    // 4. Push through: the curtains part with a sway, the light floods out and
+    //    fades, and the room settles in behind it.
+    var partTiming = { duration: PART, delay: PART_AT, easing: "cubic-bezier(0.65, 0, 0.35, 1)" };
+    play(laceL, [
+      { transform: "translateX(0) skewX(0deg) scaleX(1)" },
+      { transform: "translateX(-40%) skewX(6deg) scaleX(0.96)", offset: 0.45 },
+      { transform: "translateX(-106%) skewX(2deg) scaleX(0.9)" }
+    ], Object.assign({ fill: "forwards" }, partTiming));
+    play(laceR, [
+      { transform: "translateX(0) skewX(0deg) scaleX(1)" },
+      { transform: "translateX(40%) skewX(-6deg) scaleX(0.96)", offset: 0.45 },
+      { transform: "translateX(106%) skewX(-2deg) scaleX(0.9)" }
+    ], Object.assign({ fill: "forwards" }, partTiming));
+    play(seam, [{ opacity: 1, transform: "scaleX(1.6)" }, { opacity: 0, transform: "scaleX(14)" }],
+      { duration: 420, delay: PART_AT, easing: "ease-out", fill: "forwards" });
+    play(flash, [{ opacity: 0 }, { opacity: 0.85, offset: 0.25 }, { opacity: 0 }],
+      { duration: 700, delay: PART_AT, easing: "ease-out" });
+    play(door, [{ opacity: 1 }, { opacity: 0 }], { duration: 200, delay: PART_AT + 120, fill: "forwards" });
+    play(vignette, [{ opacity: 1 }, { opacity: 0 }], { duration: 500, delay: PART_AT + 120, fill: "forwards" });
+    play(dim, [{ opacity: 1 }, { opacity: 0 }], { duration: 300, delay: PART_AT + 120, fill: "forwards" });
+
+    timers.push(setTimeout(function () {
+      if (skipping) return;
+      overlay.style.opacity = "";
+      overlay.animate([
+        { opacity: 0, transform: "scale(1.06)", filter: "blur(4px)" },
+        { opacity: 1, transform: "scale(1)", filter: "blur(0px)" }
+      ], { duration: 640, easing: "cubic-bezier(0.22, 1, 0.36, 1)" });
+      letItSnow(snow, vw, vh, false);
+      pinsLand();
+    }, ROOM_AT));
+    timers.push(setTimeout(done, END + 600));
   }
 
   // A short flurry, once, as you arrive.

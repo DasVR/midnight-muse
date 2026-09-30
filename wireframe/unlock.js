@@ -47,7 +47,7 @@
       '<span class="lock-door lock-door-l" aria-hidden="true"><span class="plate-half">' + PLATE + "</span></span>" +
       '<span class="lock-door lock-door-r" aria-hidden="true"><span class="plate-half">' + PLATE + "</span></span>" +
       '<span class="lock-mech" aria-hidden="true">' + KEY + "</span>" +
-      '<span class="lock-hint" aria-hidden="true">Sealed · tap to unlock</span>';
+      '<span class="lock-hint" aria-hidden="true"><span class="hint-long">Sealed · </span>Tap to unlock</span>';
     frame.appendChild(lock);
 
     lock.addEventListener("click", function () {
