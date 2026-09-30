@@ -2227,3 +2227,317 @@ body.notes-on #book{ padding-top:160px; }
   opacity:0;
   pointer-events:none;
 }
+
+/* ---------- The wardrobe: a portal into the work (wardrobe.js) ---------- */
+.step-inside{
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:4;
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 16px;
+  border:1px solid var(--ivory);
+  background:rgba(10, 10, 10, 0.72);
+  color:var(--ivory);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition-property:background-color, color, scale;
+  transition-duration:150ms;
+  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
+}
+
+.step-inside:active{ scale:0.96; }
+.work-card.is-locked .step-inside,
+.work-card.is-unlocking .step-inside{ display:none; }
+
+@media (hover:hover) and (pointer:fine){
+  .step-inside:hover{ background:var(--ivory); color:var(--ink); }
+}
+
+.wardrobe-cta{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:48px;
+  text-align:center;
+}
+
+.wardrobe-cta .sub{ margin-top:10px; }
+
+html.wardrobe-open{ overflow:hidden; }
+
+/* The passage: door, lace, snow */
+.portal{
+  position:fixed;
+  inset:0;
+  z-index:140;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.portal-dim{ position:absolute; inset:0; background:var(--ink); opacity:0; }
+
+.portal-door{
+  position:absolute;
+  background-size:cover;
+  background-position:center;
+  transform-origin:50% 50%;
+  box-shadow:0 0 0 1px var(--ivory);
+}
+
+.portal-lace{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:52%;
+  opacity:0;
+  /* Hanging lace: soft folds in the cloth, fine net holes and larger open rosettes */
+  background:repeating-linear-gradient(90deg, var(--ivory) 0 26px, var(--bone) 44px, var(--ivory) 62px);
+  -webkit-mask:
+    radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3.2px) 0 0 / 11px 11px,
+    radial-gradient(circle at 50% 50%, transparent 9px, #000 10px, #000 12px, transparent 12.5px, transparent 14px, #000 14.5px) 0 0 / 55px 55px;
+  -webkit-mask-composite:source-in;
+  mask:
+    radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3.2px) 0 0 / 11px 11px,
+    radial-gradient(circle at 50% 50%, transparent 9px, #000 10px, #000 12px, transparent 12.5px, transparent 14px, #000 14.5px) 0 0 / 55px 55px;
+  mask-composite:intersect;
+}
+
+.portal-lace::after{
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:18px;
+  background:radial-gradient(circle at 0 50%, var(--ivory) 8px, transparent 8.5px) 0 0 / 18px 22px repeat-y;
+}
+
+.portal-lace-l{ left:0; transform-origin:0 50%; }
+.portal-lace-l::after{ right:-9px; }
+.portal-lace-r{ right:0; transform-origin:100% 50%; }
+.portal-lace-r::after{ left:-9px; transform:scaleX(-1); }
+
+.portal-snow{ position:absolute; inset:0; pointer-events:none; }
+
+.flake{
+  position:absolute;
+  top:0;
+  border-radius:50%;
+  background:var(--ivory);
+  opacity:0;
+}
+
+/* The room inside */
+.wardrobe{
+  position:fixed;
+  inset:0;
+  z-index:130;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(242, 238, 230, 0.06), transparent 60%),
+    var(--ink);
+}
+
+.wardrobe[hidden]{ display:none; }
+
+.wardrobe-bar{
+  position:relative;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px 24px;
+  padding:16px var(--pad);
+  border-bottom:1px solid var(--smoke);
+}
+
+.wardrobe-heading{ display:flex; align-items:baseline; gap:14px; margin-right:auto; }
+
+
+.wardrobe-title{
+  margin:0;
+  font-family:var(--script);
+  font-weight:400;
+  font-size:clamp(34px, 4vw, 48px);
+  line-height:1;
+  color:var(--ivory);
+}
+
+.wardrobe-count{
+  margin:0;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+
+.wardrobe-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+
+.wardrobe-close{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  padding:0 16px;
+  border:1px solid var(--ivory);
+  background:transparent;
+  color:var(--ivory);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.wardrobe-board{
+  position:relative;
+  flex:1;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:28px var(--pad) 60px;
+}
+
+.board-inner{ position:relative; width:100%; }
+
+.board-empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  padding:60px 20px;
+  text-align:center;
+  color:var(--bone);
+}
+
+.board-empty[hidden]{ display:none; }
+.board-empty p{ margin:0; font-size:20px; }
+
+/* Pinned photographs: tilted, overlapping; the one you look at comes forward */
+.pin{
+  position:absolute;
+  padding:6px 6px 22px;
+  border:0;
+  background:var(--ivory);
+  cursor:zoom-in;
+  transform:rotate(var(--r, 0deg));
+  box-shadow:0 10px 26px rgba(0, 0, 0, 0.55);
+  transition-property:transform, box-shadow;
+  transition-duration:200ms;
+  transition-timing-function:cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pin img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:var(--cloth);
+}
+
+.pin:focus-visible{
+  z-index:999 !important;
+  transform:rotate(0deg) scale(1.05);
+  outline:1px solid var(--ivory);
+  outline-offset:4px;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .pin:hover{
+    z-index:999 !important;
+    transform:rotate(0deg) scale(1.05);
+    box-shadow:0 18px 40px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* One photograph up close */
+.lightbox{
+  position:absolute;
+  inset:0;
+  z-index:1000;
+  display:grid;
+  place-items:center;
+  padding:64px 72px 72px;
+  background:rgba(10, 10, 10, 0.94);
+}
+
+.lightbox[hidden]{ display:none; }
+
+.lightbox-figure{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  max-width:100%;
+  max-height:100%;
+  touch-action:pan-y;
+}
+
+.lightbox-img{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:min(100%, 1100px);
+  max-height:calc(100vh - 180px);
+  outline:1px solid oklch(1 0 0 / 0.1);
+  outline-offset:-1px;
+}
+
+.lightbox-caption{
+  margin-top:12px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+
+.lightbox-nav,
+.lightbox-close{
+  position:absolute;
+  min-height:44px;
+  min-width:44px;
+  padding:0 14px;
+  border:1px solid var(--smoke);
+  background:rgba(10, 10, 10, 0.6);
+  color:var(--ivory);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+.lightbox-prev{ left:16px; top:50%; transform:translateY(-50%); }
+.lightbox-next{ right:16px; top:50%; transform:translateY(-50%); }
+.lightbox-close{ top:14px; right:16px; }
+
+@media (max-width:700px){
+  .wardrobe-bar{ padding:12px var(--pad); }
+  .wardrobe-heading{ width:100%; flex-wrap:wrap; gap:4px 12px; padding-right:150px; }
+  .wardrobe-chips{ order:3; width:100%; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+  .wardrobe-chips .chip{ flex:0 0 auto; }
+  .wardrobe-close{ position:absolute; top:12px; right:var(--pad); }
+  .pin{ padding:4px 4px 14px; }
+  .lightbox{ padding:60px 12px 84px; }
+  .lightbox-prev,
+  .lightbox-next{ top:auto; bottom:16px; transform:none; }
+  .step-inside{ right:8px; bottom:8px; padding:0 12px; }
+}
+
+/* Desktop: title, galleries and the way out on one line */
+@media (min-width:701px){
+  .wardrobe-bar{ flex-wrap:nowrap; }
+  .wardrobe-heading{ flex:0 0 auto; }
+  .wardrobe-title{ white-space:nowrap; }
+  .wardrobe-count{ white-space:nowrap; }
+  .wardrobe-chips{ flex:1 1 auto; flex-wrap:nowrap; overflow-x:auto; min-width:0; scrollbar-width:none; }
+  /* Right-aligned without justify-content, so overflowing chips stay scrollable */
+  .wardrobe-chips .chip:first-child{ margin-left:auto; }
+  .wardrobe-chips .chip{ flex:0 0 auto; }
+  .wardrobe-close{ flex:0 0 auto; }
+}

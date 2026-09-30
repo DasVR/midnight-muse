@@ -105,47 +105,47 @@
       </div>
     </section>
 
-    <section class="section" id="work" data-note="Galleries sorted by vibe.">
+    <section class="section" id="work" data-note="Galleries sorted by vibe. Unlock a cover and step inside: you pass through the wardrobe into all of Dani's photos, pinned up together.">
       <div class="wrap">
         <svg class="filigree" viewBox="-4 0 330 40" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M160 7l10 13-10 13-10-13 10-13z"/><path pathLength="1" d="M148 20H34"/><path pathLength="1" d="M34 20c0-8-12-8-16 0 4 8 16 8 16 0z"/><path pathLength="1" d="M18 20H6"/><path pathLength="1" d="M6 20c0-5-8-5-8 0s8 5 8 0z"/><path pathLength="1" d="M96 20c0-7 14-7 14 0s-14 7-14 0z"/><path pathLength="1" d="M122 20c6-9 20-8 24 0"/><path pathLength="1" d="M122 20c6 9 20 8 24 0"/><path pathLength="1" d="M172 20h114"/><path pathLength="1" d="M286 20c0-8 12-8 16 0-4 8-16 8-16 0z"/><path pathLength="1" d="M302 20h12"/><path pathLength="1" d="M314 20c0-5 8-5 8 0s-8 5-8 0z"/><path pathLength="1" d="M224 20c0-7-14-7-14 0s14 7 14 0z"/><path pathLength="1" d="M198 20c-6-9-20-8-24 0"/><path pathLength="1" d="M198 20c-6 9-20 8-24 0"/></g></svg>
         <h2>The Work</h2>
         <div class="work-grid">
-          <article class="work-card">
+          <article class="work-card" data-gallery="candlelit">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_6064.jpg" alt="Woman in a black leather jacket plays an electric guitar in stage smoke.">
               <span class="numeral" aria-hidden="true">I</span>
             </div>
             <h3>Candlelit &amp; Gothic</h3>
           </article>
-          <article class="work-card">
+          <article class="work-card" data-gallery="coquette">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_7984.jpg" alt="Woman in a white lace veil and feathered wings kneels in sunlit grass.">
               <span class="numeral" aria-hidden="true">II</span>
             </div>
             <h3>Lace &amp; Coquette</h3>
           </article>
-          <article class="work-card">
+          <article class="work-card" data-gallery="y2k">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_3620.jpg" alt="Close portrait of a woman with pink hair and decorated nails against a purple wall and disco ball.">
               <span class="numeral" aria-hidden="true">III</span>
             </div>
             <h3>Y2K &amp; Pop</h3>
           </article>
-          <article class="work-card">
+          <article class="work-card" data-gallery="love">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_9442.jpg" alt="Two people share a close portrait against a red curtain, one hand resting on the other's face.">
               <span class="numeral" aria-hidden="true">IV</span>
             </div>
             <h3>Love Stories</h3>
           </article>
-          <article class="work-card">
+          <article class="work-card" data-gallery="grads">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_6802.jpg" alt="Graduate in a black dress holds a blue mortarboard over their face in front of a sticker-covered door.">
               <span class="numeral" aria-hidden="true">V</span>
             </div>
             <h3>Grads</h3>
           </article>
-          <article class="work-card">
+          <article class="work-card" data-gallery="film">
             <div class="work-frame">
               <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_0913.jpg" alt="A couple kisses at a rainy diner window, standing in until Polaroid scans are added.">
               <span class="numeral" aria-hidden="true">VI</span>
@@ -153,6 +153,10 @@
             </div>
             <h3>Instant Film</h3>
           </article>
+        </div>
+        <div class="wardrobe-cta">
+          <button class="btn" id="enter-wardrobe" type="button">Walk through the wardrobe <img class="key-icon" src="assets/key.svg" alt=""></button>
+          <p class="sub" id="wardrobe-count"></p>
         </div>
       </div>
     </section>
@@ -532,6 +536,8 @@
   <script src="unlock.js"></script>
   <script src="main.js"></script>
   <script src="letter.js"></script>
+  <script src="gallery-data.js"></script>
+  <script src="wardrobe.js"></script>
   <script src="vendor/agentation.bundle.js"></script>
 </body>
 </html>
