@@ -69,8 +69,13 @@
     card.classList.remove("is-locked", "is-unlocking");
     card.classList.add("is-unlocked");
     lock.remove();
-    card.setAttribute("tabindex", "-1");
-    card.focus({ preventScroll: true });
+    var door = card.querySelector(".step-inside");
+    if (door) {
+      door.focus({ preventScroll: true });
+    } else {
+      card.setAttribute("tabindex", "-1");
+      card.focus({ preventScroll: true });
+    }
   }
 
   function unlock(card, lock, photo) {
