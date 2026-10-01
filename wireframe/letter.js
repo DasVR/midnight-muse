@@ -110,7 +110,7 @@
     note.appendChild(el("h3", "sent-title", "Your letter is on its way"));
     note.appendChild(el("p", "sent-body", "Dani will write back to " + (value("email") || "you") + "."));
     note.appendChild(el("p", "form-status", "Wireframe: nothing was actually sent."));
-    var again = el("button", "btn", "Write another letter");
+    var again = el("button", "btn btn-ghost", "Write another letter");
     again.type = "button";
     again.addEventListener("click", function () {
       form.reset();

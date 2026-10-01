@@ -2294,18 +2294,12 @@ html.wardrobe-open{ overflow:hidden; }
   position:absolute;
   top:0;
   bottom:0;
-  width:52%;
-  opacity:0;
-  /* Hanging lace: soft folds in the cloth, fine net holes and larger open rosettes */
-  background:repeating-linear-gradient(90deg, var(--ivory) 0 26px, var(--bone) 44px, var(--ivory) 62px);
-  -webkit-mask:
-    radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3.2px) 0 0 / 11px 11px,
-    radial-gradient(circle at 50% 50%, transparent 9px, #000 10px, #000 12px, transparent 12.5px, transparent 14px, #000 14.5px) 0 0 / 55px 55px;
-  -webkit-mask-composite:source-in;
-  mask:
-    radial-gradient(circle at 50% 50%, transparent 2.6px, #000 3.2px) 0 0 / 11px 11px,
-    radial-gradient(circle at 50% 50%, transparent 9px, #000 10px, #000 12px, transparent 12.5px, transparent 14px, #000 14.5px) 0 0 / 55px 55px;
-  mask-composite:intersect;
+  width:53%;
+  /* Hand-drawn lace tile: rosettes, petals and eyelets cut out of ivory, so the
+     photograph shows through the holes as the curtains draw shut. */
+  background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='64'%20height='64'%3E%3Cpath%20fill='%23F2EEE6'%20fill-rule='evenodd'%20d='M0%200H64V64H0ZM27.5%2032a4.5%204.5%200%201%200%209.0%200a4.5%204.5%200%201%200%20-9.0%200ZM40.8%2032.0a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM36.989999999999995%2041.19a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM27.8%2045.0a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM18.61%2041.19a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM14.8%2032.0a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM18.61%2022.81a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM27.8%2019.0a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM36.989999999999995%2022.81a4.2%204.2%200%201%200%208.4%200a4.2%204.2%200%201%200%20-8.4%200ZM-9%200a9%209%200%201%200%2018%200a9%209%200%201%200%20-18%200ZM55%200a9%209%200%201%200%2018%200a9%209%200%201%200%20-18%200ZM-9%2064a9%209%200%201%200%2018%200a9%209%200%201%200%20-18%200ZM55%2064a9%209%200%201%200%2018%200a9%209%200%201%200%20-18%200ZM29%200a3%203%200%201%200%206%200a3%203%200%201%200%20-6%200ZM-3%2032a3%203%200%201%200%206%200a3%203%200%201%200%20-6%200ZM61%2032a3%203%200%201%200%206%200a3%203%200%201%200%20-6%200ZM29%2064a3%203%200%201%200%206%200a3%203%200%201%200%20-6%200ZM14.2%2016a1.8%201.8%200%201%200%203.6%200a1.8%201.8%200%201%200%20-3.6%200ZM46.2%2016a1.8%201.8%200%201%200%203.6%200a1.8%201.8%200%201%200%20-3.6%200ZM14.2%2048a1.8%201.8%200%201%200%203.6%200a1.8%201.8%200%201%200%20-3.6%200ZM46.2%2048a1.8%201.8%200%201%200%203.6%200a1.8%201.8%200%201%200%20-3.6%200Z'/%3E%3C/svg%3E");
+  background-size:64px 64px;
+  filter:drop-shadow(0 0 1px rgba(10, 10, 10, 0.5));
 }
 
 .portal-lace::after{
@@ -2317,12 +2311,58 @@ html.wardrobe-open{ overflow:hidden; }
   background:radial-gradient(circle at 0 50%, var(--ivory) 8px, transparent 8.5px) 0 0 / 18px 22px repeat-y;
 }
 
-.portal-lace-l{ left:0; transform-origin:0 50%; }
+.portal-lace::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  /* Soft folds in the cloth, and shade gathering toward the gap so the light there glows */
+  background:
+    repeating-linear-gradient(90deg, rgba(10, 10, 10, 0) 0 34px, rgba(10, 10, 10, 0.16) 52px, rgba(10, 10, 10, 0) 70px),
+    linear-gradient(90deg, rgba(10, 10, 10, 0) 45%, rgba(10, 10, 10, 0.62) 100%);
+}
+
+.portal-lace-r::before{ transform:scaleX(-1); }
+
+.portal-lace-l{ left:0; transform-origin:0 50%; transform:translateX(-100%); }
 .portal-lace-l::after{ right:-9px; }
-.portal-lace-r{ right:0; transform-origin:100% 50%; }
+.portal-lace-r{ right:0; transform-origin:100% 50%; transform:translateX(100%); }
 .portal-lace-r::after{ left:-9px; transform:scaleX(-1); }
 
 .portal-snow{ position:absolute; inset:0; pointer-events:none; }
+
+/* Darkening at the edges as you walk in */
+.portal-vignette{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  background:radial-gradient(ellipse at 50% 50%, transparent 38%, var(--ink) 100%);
+  pointer-events:none;
+}
+
+/* Light through the gap between the curtains */
+.portal-seam{
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:50%;
+  width:4px;
+  margin-left:-2px;
+  z-index:1;
+  opacity:0;
+  background:var(--ivory);
+  box-shadow:0 0 18px 6px var(--ivory), 0 0 60px 24px rgba(242, 238, 230, 0.45);
+  filter:blur(1px);
+  pointer-events:none;
+}
+
+.portal-flash{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  background:radial-gradient(ellipse at 50% 50%, var(--ivory) 0%, rgba(242, 238, 230, 0.5) 35%, transparent 75%);
+  pointer-events:none;
+}
 
 .flake{
   position:absolute;
@@ -2540,4 +2580,272 @@ html.wardrobe-open{ overflow:hidden; }
   .wardrobe-chips .chip:first-child{ margin-left:auto; }
   .wardrobe-chips .chip{ flex:0 0 auto; }
   .wardrobe-close{ flex:0 0 auto; }
+}
+
+/* ==========================================================================
+   Buttons: one antique-frame language, three sizes.
+   Primary  = an ivory card with a fine ink rule inset, like a calling card.
+   Ghost    = the same frame drawn in ivory on the dark page.
+   Card     = a quieter ghost that fills its card, for Book / Choose / Buy.
+   Words are set in the serif, sentence case; mono caps stay for labels only.
+   ========================================================================== */
+:root{
+  --btn-h:52px;
+  --btn-h-sm:44px;
+  --rule-in:rgba(242, 238, 230, 0.4);
+}
+
+.btn,
+.tier-book,
+.step-inside,
+.wardrobe-close,
+.lightbox-nav,
+.lightbox-close{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  border:0;
+  border-radius:0;
+  font-family:var(--serif);
+  font-weight:500;
+  letter-spacing:0.01em;
+  text-transform:none;
+  text-decoration:none;
+  line-height:1.1;
+  white-space:nowrap;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  transition-property:scale, background-color, color, box-shadow;
+  transition-duration:150ms;
+  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
+}
+
+.btn{
+  min-height:var(--btn-h);
+  padding:0 26px;
+  margin-top:24px;
+  font-size:20px;
+  background:var(--ivory);
+  color:var(--ink);
+  box-shadow:inset 0 0 0 4px var(--ivory), inset 0 0 0 5px var(--ink);
+}
+
+.btn .key-icon{ height:20px; filter:invert(1); }
+
+.btn-ghost,
+.step-inside,
+.wardrobe-close,
+.lightbox-nav,
+.lightbox-close{
+  background:transparent;
+  color:var(--ivory);
+  box-shadow:inset 0 0 0 1px var(--ivory), inset 0 0 0 4px transparent, inset 0 0 0 5px var(--rule-in);
+}
+
+.btn-ghost .key-icon{ filter:none; }
+
+.step-inside,
+.wardrobe-close,
+.lightbox-nav,
+.lightbox-close{
+  min-height:var(--btn-h-sm);
+  padding:0 18px;
+  font-size:18px;
+}
+
+/* On a photograph the ghost needs a dark ground to stay legible */
+.step-inside,
+.lightbox-nav,
+.lightbox-close{ background:rgba(10, 10, 10, 0.72); }
+
+/* Card actions fill their card and sit quietly until pointed at */
+.tier-book{
+  width:100%;
+  min-height:var(--btn-h-sm);
+  padding:0 14px;
+  margin:0;
+  font-size:18px;
+  background:transparent;
+  color:var(--ivory);
+  box-shadow:inset 0 0 0 1px rgba(242, 238, 230, 0.55);
+}
+
+.tier-dates{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:var(--btn-h-sm);
+  padding:0;
+  background:none;
+  border:0;
+  color:var(--bone);
+  font-family:var(--serif);
+  font-size:16px;
+  letter-spacing:0;
+  text-transform:none;
+  text-decoration:underline;
+  text-decoration-color:var(--pewter);
+  text-underline-offset:4px;
+  cursor:pointer;
+}
+
+.tier-actions{
+  flex-direction:column;
+  align-items:stretch;
+  gap:2px;
+  padding-top:16px;
+}
+
+.tier-table-actions td{ padding-bottom:4px; }
+.tier-table-actions .tier-book{ margin-bottom:2px; }
+.cal-open .tier-book{ margin-top:6px; }
+.product .tier-book,
+.doll-set .tier-book{ margin-top:12px; }
+
+.btn:active,
+.tier-book:active,
+.step-inside:active,
+.wardrobe-close:active,
+.lightbox-nav:active,
+.lightbox-close:active{ scale:0.96; }
+
+.btn:focus-visible,
+.tier-book:focus-visible,
+.tier-dates:focus-visible,
+.step-inside:focus-visible,
+.wardrobe-close:focus-visible,
+.lightbox-nav:focus-visible,
+.lightbox-close:focus-visible{
+  outline:1px solid var(--ivory);
+  outline-offset:4px;
+}
+
+.btn:disabled,
+.tier-book:disabled{ opacity:0.45; cursor:not-allowed; scale:1; }
+
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{
+    background:var(--ink);
+    color:var(--ivory);
+    box-shadow:inset 0 0 0 1px var(--ivory), inset 0 0 0 4px var(--ink), inset 0 0 0 5px var(--rule-in);
+  }
+  .btn:hover .key-icon{ filter:none; }
+  .btn-ghost:hover,
+  .step-inside:hover,
+  .wardrobe-close:hover,
+  .lightbox-nav:hover,
+  .lightbox-close:hover,
+  .tier-book:hover{
+    background:var(--ivory);
+    color:var(--ink);
+    box-shadow:inset 0 0 0 4px var(--ivory), inset 0 0 0 5px var(--ink);
+  }
+  .btn-ghost:hover .key-icon{ filter:invert(1); }
+  .tier-dates:hover{ color:var(--ivory); text-decoration-color:var(--ivory); }
+}
+
+/* Chips and tabs: serif words, and the chosen one is filled, not just outlined */
+.chip{
+  min-height:var(--btn-h-sm);
+  padding:0 16px;
+  font-family:var(--serif);
+  font-size:17px;
+  letter-spacing:0;
+  text-transform:none;
+  color:var(--bone);
+  border-color:rgba(242, 238, 230, 0.28);
+}
+
+.chip[aria-pressed="true"]{
+  background:var(--ivory);
+  border-color:var(--ivory);
+  color:var(--ink);
+}
+
+.tabs button{
+  font-family:var(--serif);
+  font-size:20px;
+  letter-spacing:0;
+  text-transform:none;
+}
+
+.cal-nav{ font-family:var(--serif); font-size:24px; line-height:1; }
+
+.footer-links a{ font-size:12px; }
+
+/* ---------- Phones: nothing too small, nothing wrapping into rags ---------- */
+@media (max-width:700px){
+  /* Labels read at 12px on a phone */
+  .field label,
+  .set figcaption,
+  .count,
+  .shoot,
+  .product-price,
+  .specs li,
+  .perk,
+  .kicker,
+  .option-tag,
+  .wardrobe-count,
+  .lightbox-caption,
+  .copy,
+  .letter-date,
+  .cal-weekdays span,
+  .cal-count{ font-size:12px; }
+
+  .btn{ font-size:19px; padding:0 22px; }
+
+  /* Tabs and chip rows scroll sideways instead of wrapping into ragged rows */
+  .tabs,
+  .cal-tiers{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    margin-right:calc(var(--pad) * -1);
+    padding-right:var(--pad);
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar,
+  .cal-tiers::-webkit-scrollbar{ display:none; }
+  .tabs button,
+  .cal-tiers .chip{ flex:0 0 auto; }
+  .tabs{ gap:0 22px; }
+
+  /* The key hint says less so it fits a two-up cover */
+  .lock-hint .hint-long{ display:none; }
+  .lock-hint{ white-space:nowrap; width:auto; }
+
+  /* Cover titles and the door button fit the half-width card */
+  .step-inside{ right:8px; bottom:8px; padding:0 14px; font-size:16px; }
+
+  /* Doll houses: rooms speak through their frames, a price stays a line */
+  .room span{ display:none; }
+  .price-tbc{ font-size:26px; }
+}
+
+@media (max-width:360px){
+  .wordmark{ font-size:25px; padding:0 6px; }
+  .btn{ font-size:18px; padding:0 18px; gap:10px; }
+  .work-card h3{ font-size:26px; }
+}
+
+/* Earlier layout rules, brought in line with the button system */
+.cal-open .tier-book{ justify-self:stretch; }
+.tier-table-actions .tier-book,
+.tier-table-actions .tier-dates{ justify-content:center; }
+.tier-table-actions .tier-book{ display:flex; }
+
+/* Smallest phones: the calendar runs edge to edge so each day stays a full 44px target */
+@media (max-width:360px){
+  .cal{
+    margin-inline:calc(var(--pad) * -1);
+    padding:12px 2px 10px;
+    border-left:0;
+    border-right:0;
+  }
+  .cal::before{ display:none; }
+  .cal-grid{ gap:1px; }
+  .cal-head{ padding:0 8px; }
+  .cal-legend{ padding:0 8px; }
 }

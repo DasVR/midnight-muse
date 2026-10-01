@@ -170,7 +170,7 @@
         '<ul class="specs">' + rows + "</ul>" + perk +
         '<div class="tier-actions">' +
         '<button class="tier-book" type="button" data-tier="' + tier.num + '">Book ' + tier.name + "</button>" +
-        '<button class="tier-dates" type="button" data-tier="' + tier.num + '">Dates</button>' +
+        '<button class="tier-dates" type="button" data-tier="' + tier.num + '">See open dates</button>' +
         "</div></article>";
     }).join("");
     scroller.scrollLeft = 0;
@@ -196,7 +196,7 @@
       return t.perk ? "<td>" + t.perk.replace(/^\+\s*/, "") + "</td>" : '<td class="none"><span aria-hidden="true">·</span><span class="sr-only">None</span></td>';
     }).join("") + "</tr>";
     var actions = '<tr class="tier-table-actions"><th scope="row"><span class="sr-only">Actions</span></th>' + session.tiers.map(function (t) {
-      return '<td><button class="tier-book" type="button" data-tier="' + t.num + '">Book ' + t.name + '</button><button class="tier-dates" type="button" data-tier="' + t.num + '">Dates</button></td>';
+      return '<td><button class="tier-book" type="button" data-tier="' + t.num + '">Book ' + t.name + '</button><button class="tier-dates" type="button" data-tier="' + t.num + '">See open dates</button></td>';
     }).join("") + "</tr>";
     tierTable.innerHTML = corners() + '<table class="tier-table"><caption class="sr-only">Packages compared</caption><thead><tr><td></td>' + head + "</tr></thead><tbody>" + body + extras + actions + "</tbody></table>";
   }
