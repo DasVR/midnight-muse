@@ -91,12 +91,12 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 2. **Meet Dani**: her portrait in a lace cameo + a short letter-style intro signed in script
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
 4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Costumes & Cosplay), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
-5. **Sessions & Pricing**: antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
+5. **Sessions & Pricing**: opens on the price ("Portrait sessions from $100" in large numerals beside the heading); antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
 6. **Open Dates**: days only, read from Dani's Cal.com availability (`midnight-muse-jk6nt0`). Nothing is booked on the site: visitors tap up to three open days, which are written into their letter, and Dani confirms by writing back
-7. **Blind Date**: proposal, pending Dani's pick of three options
+7. **Blind Date**: the Mystery Session, told as an offer: book a day, answer five questions, Dani builds a secret set. The two alternatives (Matchmaker, Sealed Envelopes) sit folded under it until Dani picks
 8. **Maternity**: a couples-style session, not birth photography. Layered photos beside what to expect (who, where, what to wear); booked as a Couples session
 9. **Doll Houses**: sample photos of sets Dani has built (The Dollhouse, The Tea Party, The Laundromat, The Rock Room). Each set is drawn as a house and its photos are the rooms. Not for sale; it ends in "Describe your set"
-10. **Kind Words**: letter-style testimonials with lace cameo portraits
+10. **Kind Words**: opens on the first review as a large pull quote (the heading is a small label); the other two letters sit side by side beneath, each with a lace cameo portrait
 11. **FAQ**: accordion inside an antique frame. Answers Dani still has to give (deposit, turnaround) are marked as drafts on the page
 12. **Book**: skeleton key CTA → inquiry form styled like stationery (underlined fields, mono labels)
 
