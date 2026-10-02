@@ -567,7 +567,6 @@
 
     stopBurning();
     var wax = stage.querySelector(".lb-wax");
-    wax.classList.remove("is-settled");
     wax.style.opacity = "0";
     wax.style.transform = "";
     preview.style.clipPath = "";
@@ -662,16 +661,15 @@
     // they can't drift apart. The edge sits behind the wax's solid body:
     // above it the photo is sharp, below it still blurred.
     var BODY = 16 / 48;            // solid band at the top of the wax drawing
-    var pool = band * 0.62;        // how much of the wax rests in the frame at the end
     var from = -band;
-    var to = height - pool;
+    var to = height + band * 0.2;  // runs clean off the bottom of the frame
     var DURATION = 950;
     var DELAY = 700;
     var t0 = performance.now() + DELAY;
     wax.style.opacity = "1";
     wax.style.transform = "translateY(" + from + "px)";
-    // Gathers speed for three quarters of the drop, then eases as it lands.
-    function ease(t) { return t < 0.75 ? t * t / 0.75 : 1 - (1 - t) * (1 - t) / 0.25; }
+    // Gathers speed all the way down, like a drip letting go.
+    function ease(t) { return t * t * (1.4 - 0.4 * t); }
     function frame(now) {
       if (mine !== showing) return;
       var t = Math.max(0, Math.min(1, (now - t0) / DURATION));
@@ -680,22 +678,12 @@
       wax.style.transform = "translateY(" + y + "px)";
       preview.style.clipPath = "inset(" + edge + "px 0 0 0)";
       if (t < 1) requestAnimationFrame(frame);
-      else settle();
+      else {
+        wax.style.opacity = "0";
+        done();
+      }
     }
     requestAnimationFrame(frame);
-
-    // It comes to rest: the drips draw back into a pool along the bottom.
-    function settle() {
-      preview.style.opacity = "0";
-      var art = wax.querySelector("svg");
-      burning.push(art.animate([
-        { transform: "scaleY(1)" },
-        { transform: "scaleY(1.12)", offset: 0.35 },
-        { transform: "scaleY(0.62)" }
-      ], { duration: 520, easing: "cubic-bezier(0.3, 0.7, 0.3, 1)", fill: "forwards" }));
-      wax.classList.add("is-settled");
-      done();
-    }
   }
 
   // The photos either side load quietly, so stepping through feels instant.
