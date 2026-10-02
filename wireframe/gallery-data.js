@@ -20,10 +20,6 @@ window.GALLERY = {
     {
       "id": "grads",
       "title": "Grads"
-    },
-    {
-      "id": "film",
-      "title": "Instant Film"
     }
   ],
   "photos": [

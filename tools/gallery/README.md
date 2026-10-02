@@ -11,7 +11,6 @@ photo listed in `wireframe/gallery-data.js`. To load a full set:
    wireframe/img/gallery/y2k/         Y2K & Pop
    wireframe/img/gallery/love/        Love Stories
    wireframe/img/gallery/grads/       Grads
-   wireframe/img/gallery/film/        Instant Film
    ```
 
    JPEG, PNG or WebP. Export them around 1600px on the long side so the page

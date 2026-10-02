@@ -357,19 +357,9 @@
     }
   });
 
-  // Shop and doll house buttons have no checkout behind them yet.
-  document.querySelectorAll("#shop .tier-book, #doll-houses .tier-book").forEach(function (el) {
-    el.addEventListener("click", function () {
-      var section = el.closest("section");
-      var note = section.querySelector(".checkout-note");
-      if (!note) {
-        note = document.createElement("p");
-        note.className = "form-status checkout-note";
-        note.setAttribute("role", "status");
-        note.textContent = "This is a wireframe: checkout isn't built yet.";
-        section.querySelector(".wrap").appendChild(note);
-      }
-    });
+  // Maternity books as a Couples session.
+  document.getElementById("plan-maternity").addEventListener("click", function () {
+    prefillBooking("couples", sessions.couples.tiers[0].num);
   });
 
   // Availability calendar, live from Dani's Cal.com. Open days and times come
