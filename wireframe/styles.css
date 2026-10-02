@@ -831,19 +831,6 @@ body.notes-on .section{ padding-top:128px; }
 .cal-day.is-selected{ border-color:var(--ivory); background:var(--ivory); color:var(--ink); }
 .cal-day:disabled{ background:transparent; color:var(--pewter); cursor:default; }
 
-.pips{ display:flex; gap:3px; }
-
-.pip{
-  display:inline-block;
-  width:5px;
-  height:5px;
-  border:1px solid var(--pewter);
-}
-
-.pip.on{ background:var(--ivory); border-color:var(--ivory); }
-.pip.focus{ outline:1px solid var(--ivory); outline-offset:1px; }
-.cal-day.is-selected .pip.on{ background:var(--ink); border-color:var(--ink); }
-.cal-day.is-selected .pip.focus{ outline-color:var(--ink); }
 
 .cal-legend{
   display:flex;
@@ -858,8 +845,6 @@ body.notes-on .section{ padding-top:128px; }
   color:var(--bone);
 }
 
-.cal-legend .pip{ margin-left:8px; }
-.cal-legend .pip:first-child{ margin-left:0; }
 
 .cal-detail{
   padding:18px;
@@ -877,23 +862,6 @@ body.notes-on .section{ padding-top:128px; }
   color:var(--ivory);
 }
 
-.cal-open{ list-style:none; margin:14px 0 0; padding:0; }
-
-.cal-open li{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:4px 12px;
-  padding:12px 0;
-  border-top:1px solid var(--smoke);
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--bone);
-}
-
-.cal-open-price{ color:var(--ivory); }
-.cal-open .tier-book{ grid-column:1 / -1; justify-self:start; }
 
 /* Blind Date proposals */
 .options{
@@ -1570,9 +1538,6 @@ body.notes-on .section{ padding-top:128px; }
   .shop-grid{ gap:22px 12px; }
   .product h3{ font-size:20px; }
   .cal{ padding:14px 8px 12px; }
-  .cal-day{ min-height:50px; font-size:16px; padding:6px 0 7px; }
-  .pip{ width:4px; height:4px; }
-  .pips{ gap:2px; }
   .ribbon-tiers span:nth-child(n+3){ display:none; }
 
   .hero-copy{ margin-left:0; }
@@ -1837,10 +1802,6 @@ body.notes-on .section{ padding-top:128px; }
 .letter-foot .sig{ margin:0; }
 .letter-foot .cameo-sm{ width:72px; flex:0 0 72px; margin:0; }
 
-/* Calendar: bigger pips on desktop, a plain count on phones */
-.pip{ width:7px; height:7px; }
-.cal-count,
-.cal-legend-phone{ display:none; }
 
 /* Booking form: fields filled from the calendar write themselves in */
 .field{ position:relative; }
@@ -1888,11 +1849,6 @@ body.notes-on #kind-words,
 body.notes-on #book{ padding-top:160px; }
 
 @media (max-width:700px){
-  /* Work: two covers per row instead of four screens of scrolling */
-  .work-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); gap:28px 12px; }
-  .lock{ --lk:0.95; }
-  .lock-hint{ white-space:normal; width:calc(100% - 24px); text-align:center; }
-  .work-card h3{ font-size:30px; }
 
   /* Doll houses: a swipeable row */
   .doll-grid{
@@ -1905,18 +1861,6 @@ body.notes-on #book{ padding-top:160px; }
     padding-bottom:8px;
   }
   .doll-set{ flex:0 0 78%; scroll-snap-align:start; }
-
-  .pips{ display:none; }
-  .cal-count{
-    display:block;
-    min-height:14px;
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--bone);
-  }
-  .cal-day.is-selected .cal-count{ color:var(--ink); }
-  .cal-legend-desktop{ display:none; }
-  .cal-legend-phone{ display:inline; }
 }
 
 
@@ -2701,7 +2645,6 @@ html.wardrobe-open{ overflow:hidden; }
 
 .tier-table-actions td{ padding-bottom:4px; }
 .tier-table-actions .tier-book{ margin-bottom:2px; }
-.cal-open .tier-book{ margin-top:6px; }
 .product .tier-book,
 .doll-set .tier-book{ margin-top:12px; }
 
@@ -2792,8 +2735,7 @@ html.wardrobe-open{ overflow:hidden; }
   .lightbox-caption,
   .copy,
   .letter-date,
-  .cal-weekdays span,
-  .cal-count{ font-size:12px; }
+  .cal-weekdays span{ font-size:12px; }
 
   .btn{ font-size:19px; padding:0 22px; }
 
@@ -2812,12 +2754,6 @@ html.wardrobe-open{ overflow:hidden; }
   .cal-tiers .chip{ flex:0 0 auto; }
   .tabs{ gap:0 22px; }
 
-  /* The key hint says less so it fits a two-up cover */
-  .lock-hint .hint-long{ display:none; }
-  .lock-hint{ white-space:nowrap; width:auto; }
-
-  /* Cover titles and the door button fit the half-width card */
-  .step-inside{ right:8px; bottom:8px; padding:0 14px; font-size:16px; }
 
   /* Doll houses: rooms speak through their frames, a price stays a line */
   .room span{ display:none; }
@@ -2827,25 +2763,223 @@ html.wardrobe-open{ overflow:hidden; }
 @media (max-width:360px){
   .wordmark{ font-size:25px; padding:0 6px; }
   .btn{ font-size:18px; padding:0 18px; gap:10px; }
-  .work-card h3{ font-size:26px; }
 }
 
 /* Earlier layout rules, brought in line with the button system */
-.cal-open .tier-book{ justify-self:stretch; }
 .tier-table-actions .tier-book,
 .tier-table-actions .tier-dates{ justify-content:center; }
 .tier-table-actions .tier-book{ display:flex; }
 
-/* Smallest phones: the calendar runs edge to edge so each day stays a full 44px target */
-@media (max-width:360px){
+
+/* ---------- Open Dates: live from Cal.com ---------- */
+.cal-layout{
+  grid-template-columns:minmax(0, 1fr) minmax(280px, 360px);
+  gap:28px;
+}
+
+.cal{ padding:20px 18px 16px; }
+.cal-head{ margin-bottom:14px; }
+.cal-month{ font-size:28px; }
+.cal-grid{ gap:6px; }
+.cal-weekdays{ margin-bottom:6px; }
+
+.cal-day{
+  position:relative;
+  justify-content:center;
+  gap:0;
+  min-height:0;
+  padding-bottom:6px;
+  height:60px;
+  padding:0;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--pewter);
+  font-size:19px;
+}
+
+.cal-day.is-open{
+  border-color:rgba(242, 238, 230, 0.22);
+  background:var(--cloth);
+  color:var(--ivory);
+}
+
+/* An open day carries one small dot under its number */
+.cal-day.is-open::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:9px;
+  width:4px;
+  height:4px;
+  margin-left:-2px;
+  border-radius:50%;
+  background:currentColor;
+}
+
+.cal-day.is-selected{
+  border-color:var(--ivory);
+  background:var(--ivory);
+  color:var(--ink);
+}
+
+.cal-day:disabled{ border-color:transparent; background:transparent; color:var(--pewter); opacity:0.7; }
+
+.cal-day:focus-visible,
+.cal-slot:focus-visible{ outline:1px solid var(--ivory); outline-offset:2px; }
+
+/* While the month loads, the grid breathes instead of going blank */
+.cal-grid.is-loading .cal-day{ animation:cal-breathe 1.2s ease-in-out infinite alternate; }
+@keyframes cal-breathe{ from{ opacity:0.35; } to{ opacity:0.7; } }
+
+.cal-legend{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px 8px;
+  margin:14px 0 0;
+  font-size:16px;
+  color:var(--bone);
+}
+
+.cal-weekdays .wd-rest{ padding:0; }
+
+.cal-dot{ width:6px; height:6px; border-radius:50%; background:var(--ivory); }
+.cal-legend-sep{ color:var(--pewter); }
+
+.cal-detail{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:10px;
+  padding:22px 20px 20px;
+  scroll-margin-top:calc(var(--nav-h) + 16px);
+}
+
+.cal-detail .btn{ margin-top:4px; align-self:flex-start; }
+.cal-detail-empty{ margin:0; font-size:17px; color:var(--bone); }
+.cal-detail-empty a{ color:var(--ivory); text-underline-offset:4px; }
+
+.cal-detail-kicker,
+.cal-slot-label{
+  margin:0;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+
+.cal-detail-date{ font-size:44px; margin:0 0 4px; }
+.cal-slot-label{ margin-top:8px; }
+
+.cal-slots{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(96px, 1fr));
+  gap:8px;
+}
+
+.cal-slot{
+  min-height:48px;
+  padding:0 8px;
+  border:1px solid rgba(242, 238, 230, 0.28);
+  background:transparent;
+  color:var(--ivory);
+  font-family:var(--serif);
+  font-size:18px;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  cursor:pointer;
+  touch-action:manipulation;
+  transition-property:scale, background-color, color, border-color;
+  transition-duration:150ms;
+  transition-timing-function:cubic-bezier(0.2, 0, 0, 1);
+}
+
+.cal-slot:active{ scale:0.96; }
+.cal-slot[aria-pressed="true"]{ background:var(--ivory); border-color:var(--ivory); color:var(--ink); }
+
+@media (hover:hover) and (pointer:fine){
+  .cal-day.is-open:not(.is-selected):hover,
+  .cal-slot:not([aria-pressed="true"]):hover{ border-color:var(--ivory); }
+}
+
+.cal-confirm{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  margin-top:10px;
+  padding-top:16px;
+  border-top:1px solid var(--smoke);
+}
+
+.cal-confirm[hidden]{ display:none; }
+.cal-confirm .btn{ width:100%; margin:0; align-self:stretch; justify-content:center; }
+
+@media (max-width:1024px){
+  .cal-layout{ grid-template-columns:1fr; }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width:700px){
+  .section{ padding:64px 0 56px; }
+  body.notes-on .section{ padding-top:96px; }
+  #work,
+  #kind-words,
+  #book{ padding-top:88px; }
+  body.notes-on #work,
+  body.notes-on #kind-words,
+  body.notes-on #book{ padding-top:112px; }
+  #availability{ padding-top:24px; }
+
+  /* The Sets: one photo at a time, swiped sideways */
+  .sets-layout{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    margin-right:calc(var(--pad) * -1);
+    padding-right:var(--pad);
+    padding-bottom:6px;
+    scrollbar-width:none;
+  }
+  .sets-layout::-webkit-scrollbar{ display:none; }
+  .set{ flex:0 0 84%; scroll-snap-align:start; }
+  .set:nth-child(even){ margin-top:0; }
+
+  /* The Work: one cover per screen width */
+  .work-grid{ grid-template-columns:1fr; gap:44px; }
+  .lock{ --lk:1.3; }
+  .work-card h3{ font-size:40px; }
+
+  .cal-controls{ margin:20px 0 14px; gap:14px; }
+  .cal-controls .field{ width:100%; }
   .cal{
     margin-inline:calc(var(--pad) * -1);
-    padding:12px 2px 10px;
+    padding:14px 6px 12px;
     border-left:0;
     border-right:0;
   }
   .cal::before{ display:none; }
-  .cal-grid{ gap:1px; }
-  .cal-head{ padding:0 8px; }
+  .cal-head,
   .cal-legend{ padding:0 8px; }
+  .cal-grid{ gap:3px; }
+  .cal-day{ height:48px; font-size:18px; }
+  .cal-day.is-open::after{ bottom:7px; }
+  .cal-weekdays .wd-rest{ display:none; }
+  .cal-detail{ padding:20px 16px; }
+  .cal-detail-date{ font-size:40px; }
+  .cal-slots{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  .cal-slot{ font-size:17px; padding:0 4px; }
+  .cal-detail .btn-ghost{ align-self:stretch; justify-content:center; }
+}
+
+.sets-layout:focus-visible{ outline:1px solid var(--ivory); outline-offset:6px; }
+
+/* Smallest phones: thinner gutters so each day stays a full 44px target */
+@media (max-width:360px){
+  .cal{ padding-inline:2px; }
+  .cal-grid{ gap:1px; }
+  .cal-detail{ padding-inline:12px; }
+  .cal-slots{ gap:6px; }
+  .cal-slot{ font-size:15px; padding:0 2px; }
 }

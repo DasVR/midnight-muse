@@ -372,155 +372,329 @@
     });
   });
 
-  // Availability calendar. Dates are generated, not real: in production this
-  // reads Dani's booking calendar.
+  // Availability calendar, live from Dani's Cal.com. Open days and times come
+  // from Cal.com's public slots API; reserving opens Cal.com's own booking
+  // window on top of the page with the session, day and time already chosen.
+  var CAL = {
+    user: "midnight-muse-jk6nt0",
+    // The Cal.com event every session books into until Dani adds one per
+    // package. To give a package its own length, add an event on Cal.com and
+    // map it here, e.g. "portraits:II": "portraits-basic".
+    defaultEvent: "30min",
+    events: {},
+    api: "https://api.cal.com/v2/slots",
+    monthsAhead: 6
+  };
+
   var calendar = (function () {
     var programSelect = document.getElementById("cal-program");
     var tierBox = document.getElementById("cal-tiers");
     var daysBox = document.getElementById("cal-days");
     var monthLabel = document.getElementById("cal-month");
     var detail = document.getElementById("cal-detail");
+    var prevBtn = document.getElementById("cal-prev");
+    var nextBtn = document.getElementById("cal-next");
+    var zone = (Intl.DateTimeFormat().resolvedOptions().timeZone) || "America/New_York";
     var today = new Date();
     today.setHours(0, 0, 0, 0);
-    var state = { program: "portraits", tier: null, month: new Date(today.getFullYear(), today.getMonth(), 1), selected: null };
+    var firstMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    var lastMonth = new Date(today.getFullYear(), today.getMonth() + CAL.monthsAhead, 1);
+    var state = { program: "portraits", tier: "I", month: firstMonth, day: null, slot: null };
+    var cache = {};
     var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var timeFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
 
-    // Show next month straight away when this one is nearly over.
-    if (new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate() - today.getDate() < 7) {
-      state.month = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    }
+    document.getElementById("cal-tz").textContent = zone === "UTC" ? "Times in UTC" : "Times in " + zone.replace(/_/g, " ").replace(/^.*\//, "") + " time";
 
-    function seeded(date, salt) {
-      var n = date.getFullYear() * 372 + date.getMonth() * 31 + date.getDate() + salt * 977;
-      n = Math.sin(n) * 10000;
-      return n - Math.floor(n);
-    }
-
-    // Which tier numerals are open on a date for a program.
-    function openTiers(date, program) {
-      var tiers = sessions[program].tiers;
-      var dow = date.getDay();
-      if (date < today || dow === 0 || dow === 1) return [];
-      var salt = Object.keys(sessions).indexOf(program) + 1;
-      return tiers.filter(function (tier, i) {
-        var last = i === tiers.length - 1;
-        if (dow === 6 && i > 1) return false;        // Saturdays are mini days
-        if (last && dow !== 4 && dow !== 5) return false; // the top tier needs a full set build: Thu/Fri
-        return seeded(date, salt + i) > 0.38;         // some slots already booked
-      }).map(function (tier) { return tier.num; });
-    }
-
+    function wait(ms) { return new Promise(function (done) { setTimeout(done, ms); }); }
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function key(date) { return date.getFullYear() + "-" + pad(date.getMonth() + 1) + "-" + pad(date.getDate()); }
+    function eventSlug() { return CAL.events[state.program + ":" + state.tier] || CAL.events[state.program] || CAL.defaultEvent; }
     function tierByNum(num) {
       return sessions[state.program].tiers.filter(function (t) { return t.num === num; })[0];
     }
+    function bookingUrl(slot) {
+      var params = new URLSearchParams({ notes: packageNote() });
+      if (slot) {
+        params.set("month", slot.day.slice(0, 7));
+        params.set("date", slot.day);
+        params.set("slot", slot.iso);
+      }
+      return "https://cal.com/" + CAL.user + "/" + eventSlug() + "?" + params.toString();
+    }
+    function packageNote() {
+      var t = tierByNum(state.tier);
+      var program = programSelect.options[programSelect.selectedIndex].text;
+      return program + " · " + t.num + " " + t.name + " (" + t.price + ")";
+    }
+
+    // One request per event and month; the answer is { "2026-10-05": [{ start }], ... }.
+    function load(month) {
+      var id = eventSlug() + "|" + key(month);
+      if (cache[id]) return cache[id];
+      var start = month < today ? today : month;
+      var end = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+      var url = CAL.api + "?" + new URLSearchParams({
+        eventTypeSlug: eventSlug(), username: CAL.user, start: key(start), end: key(end), timeZone: zone
+      }).toString();
+      function get() {
+        return fetch(url, { headers: { "cal-api-version": "2024-09-04" } })
+          .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); });
+      }
+      // One quiet retry before showing the fallback: phone networks drop requests.
+      cache[id] = get()
+        .catch(function () { return wait(900).then(get); })
+        .then(function (body) {
+          var days = {};
+          Object.keys(body.data || {}).forEach(function (day) {
+            days[day] = body.data[day].map(function (s) {
+              var at = new Date(s.start);
+              return { day: day, iso: at.toISOString(), at: at, label: timeFormat.format(at) };
+            });
+          });
+          return days;
+        });
+      cache[id].catch(function () { delete cache[id]; });
+      return cache[id];
+    }
 
     function renderTierChips() {
-      var chips = [{ num: null, label: "All tiers" }].concat(sessions[state.program].tiers.map(function (t) {
-        return { num: t.num, label: t.num + " " + t.name };
-      }));
-      tierBox.innerHTML = chips.map(function (c) {
-        return '<button type="button" class="chip" data-tier="' + (c.num || "") + '" aria-pressed="' + (state.tier === c.num) + '">' + c.label + "</button>";
+      tierBox.innerHTML = sessions[state.program].tiers.map(function (t) {
+        return '<button type="button" class="chip" data-tier="' + t.num + '" aria-pressed="' + (state.tier === t.num) + '">' +
+          t.num + " " + t.name + "</button>";
       }).join("");
     }
 
-    function renderDays() {
+    function renderDays(days) {
       var year = state.month.getFullYear();
       var month = state.month.getMonth();
       var count = new Date(year, month + 1, 0).getDate();
-      var tiers = sessions[state.program].tiers;
       var html = "";
       monthLabel.textContent = monthNames[month] + " " + year;
       for (var b = 0; b < state.month.getDay(); b += 1) html += '<span class="cal-blank"></span>';
       for (var d = 1; d <= count; d += 1) {
         var date = new Date(year, month, d);
-        var open = openTiers(date, state.program);
-        var usable = state.tier ? open.indexOf(state.tier) > -1 : open.length > 0;
-        var pips = tiers.map(function (t) {
-          var cls = "pip" + (open.indexOf(t.num) > -1 ? " on" : "") + (state.tier === t.num ? " focus" : "");
-          return '<span class="' + cls + '"></span>';
-        }).join("");
-        var label = dayNames[date.getDay()] + " " + monthNames[month] + " " + d + ": " +
-          (open.length ? "open tiers " + open.join(", ") : "nothing open");
-        var selected = state.selected && state.selected.getTime() === date.getTime();
-        html += '<button type="button" class="cal-day' + (selected ? " is-selected" : "") + '" data-day="' + d + '"' +
-          (usable ? "" : " disabled") + ' aria-label="' + label + '"' + (selected ? ' aria-pressed="true"' : "") + ">" +
-          '<span class="cal-num">' + d + '</span><span class="pips" aria-hidden="true">' + pips + "</span>" +
-          '<span class="cal-count" aria-hidden="true">' + (usable ? (state.tier ? "1" : String(open.length)) : "") + "</span></button>";
+        var slots = days ? days[key(date)] || [] : [];
+        var open = slots.length > 0;
+        var selected = state.day === key(date);
+        var label = dayNames[date.getDay()] + " " + monthNames[month] + " " + d + (days ? (open ? ", " + slots.length + " open times" : ", nothing open") : "");
+        html += '<button type="button" class="cal-day' + (open ? " is-open" : "") + (selected ? " is-selected" : "") + '" data-day="' + key(date) + '"' +
+          (open ? "" : " disabled") + ' aria-label="' + label + '"' + (open ? ' aria-pressed="' + selected + '"' : "") + ">" +
+          '<span class="cal-num">' + d + "</span></button>";
       }
       daysBox.innerHTML = html;
-      document.getElementById("cal-prev").disabled =
-        year === today.getFullYear() && month <= today.getMonth();
+      daysBox.setAttribute("aria-busy", String(!days));
+      daysBox.classList.toggle("is-loading", !days);
+      prevBtn.disabled = state.month <= firstMonth;
+      nextBtn.disabled = state.month >= lastMonth;
     }
 
-    function renderDetail() {
-      if (!state.selected) {
-        var anyOpen = daysBox.querySelector(".cal-day:not([disabled])");
-        var what = state.tier ? state.tier + " " + tierByNum(state.tier).name : "any tier";
-        detail.innerHTML = anyOpen
-          ? '<p class="cal-detail-empty">Pick a date to see which sessions are open.</p>'
-          : '<p class="cal-detail-empty">No open dates for ' + what + " in " + monthNames[state.month.getMonth()] +
-            '. Try next month, or <a href="#book">write to Dani</a> for a custom date.</p>';
+    function firstOpen(days) {
+      return Object.keys(days).sort().filter(function (day) { return days[day].length; })[0];
+    }
+
+    function longDate(day) {
+      var p = day.split("-");
+      var date = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+      return dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate();
+    }
+
+    function renderDetail(days) {
+      if (!days) {
+        detail.innerHTML = '<p class="cal-detail-empty">Loading Dani’s open dates…</p>';
         return;
       }
-      var date = state.selected;
-      var dateText = dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
-      var open = openTiers(date, state.program).filter(function (num) { return !state.tier || num === state.tier; });
-      detail.innerHTML = '<p class="cal-detail-date">' + dayNames[date.getDay()] + ", " + monthNames[date.getMonth()] + " " + date.getDate() + "</p>" +
-        '<ul class="cal-open">' + open.map(function (num) {
-          var t = tierByNum(num);
-          return '<li><span class="cal-open-name">' + t.num + " " + t.name + '</span><span class="cal-open-price">' + t.price + "</span>" +
-            '<button type="button" class="tier-book" data-tier="' + t.num + '" data-date="' + dateText + '">Book this date</button></li>';
-        }).join("") + "</ul>";
+      if (!state.day || !days[state.day]) {
+        var next = firstOpen(days);
+        detail.innerHTML = next
+          ? '<p class="cal-detail-kicker">Next opening</p><p class="cal-detail-date">' + longDate(next) + "</p>" +
+            '<button type="button" class="btn btn-ghost cal-jump" data-day="' + next + '">See times</button>' +
+            '<p class="cal-detail-empty">Or tap any open day on the calendar.</p>'
+          : '<p class="cal-detail-empty">Nothing open in ' + monthNames[state.month.getMonth()] + ".</p>" +
+            (state.month < lastMonth ? '<button type="button" class="btn btn-ghost cal-later">Try ' + monthNames[(state.month.getMonth() + 1) % 12] + "</button>" : "") +
+            '<p class="cal-detail-empty">Or <a href="#book">write to Dani</a> for a custom date.</p>';
+        return;
+      }
+      var slots = days[state.day];
+      var groups = [["Morning", 0, 12], ["Afternoon", 12, 17], ["Evening", 17, 24]];
+      var html = '<p class="cal-detail-kicker">' + packageNote() + '</p><p class="cal-detail-date">' + longDate(state.day) + "</p>";
+      groups.forEach(function (g) {
+        var list = slots.filter(function (s) { var h = s.at.getHours(); return h >= g[1] && h < g[2]; });
+        if (!list.length) return;
+        html += '<p class="cal-slot-label">' + g[0] + '</p><div class="cal-slots" role="group" aria-label="' + g[0] + ' times">' +
+          list.map(function (s) {
+            var on = state.slot && state.slot.iso === s.iso;
+            return '<button type="button" class="cal-slot" data-iso="' + s.iso + '" aria-pressed="' + Boolean(on) + '">' + s.label + "</button>";
+          }).join("") + "</div>";
+      });
+      html += '<div class="cal-confirm"' + (state.slot ? "" : " hidden") + ">" +
+        '<button type="button" class="btn cal-reserve">Reserve ' + (state.slot ? state.slot.label : "") + ' <img class="key-icon" src="assets/key.svg" alt=""></button>' +
+        '<button type="button" class="tier-dates cal-letter">Or send a letter instead</button></div>' +
+        (state.slot ? "" : '<p class="cal-detail-empty cal-pick">Pick a time to reserve it.</p>');
+      detail.innerHTML = html;
     }
 
+    function failed() {
+      daysBox.classList.remove("is-loading");
+      detail.innerHTML = '<p class="cal-detail-empty">The live calendar didn’t load.</p>' +
+        '<a class="btn btn-ghost" href="' + bookingUrl(null) + '" target="_blank" rel="noopener">Open Dani’s booking page</a>' +
+        '<button type="button" class="tier-dates cal-retry">Try again</button>' +
+        '<p class="cal-detail-empty">Or <a href="#book">write to Dani</a> and she’ll find a date with you.</p>';
+    }
+
+    var ticket = 0;
     function render() {
+      var mine = ++ticket;
+      var month = state.month;
       renderTierChips();
-      renderDays();
-      renderDetail();
+      var pending = load(month);
+      var settled = false;
+      pending.then(function () { settled = true; }, function () { settled = true; });
+      // Only flash the loading state if the month isn't already cached.
+      Promise.resolve().then(function () {
+        if (settled || mine !== ticket) return;
+        renderDays(null);
+        renderDetail(null);
+      });
+      pending.then(function (days) {
+        if (mine !== ticket) return;
+        renderDays(days);
+        renderDetail(days);
+      }, function () {
+        if (mine === ticket) failed();
+      });
+      // Warm the next month so the arrow feels instant.
+      if (month < lastMonth) load(new Date(month.getFullYear(), month.getMonth() + 1, 1)).catch(function () {});
     }
 
     function show(program, tier) {
       state.program = program;
-      state.tier = tier && sessions[program].tiers.some(function (t) { return t.num === tier; }) ? tier : null;
+      var tiers = sessions[program].tiers;
+      state.tier = tier && tiers.some(function (t) { return t.num === tier; }) ? tier : (tiers.some(function (t) { return t.num === state.tier; }) ? state.tier : tiers[0].num);
       programSelect.value = program;
-      if (state.selected && openTiers(state.selected, program).indexOf(state.tier) < 0 && state.tier) state.selected = null;
+      state.slot = null;
       render();
     }
 
+    function pickDay(day) {
+      state.day = day;
+      state.slot = null;
+      var p = day.split("-");
+      var month = new Date(Number(p[0]), Number(p[1]) - 1, 1);
+      if (month.getTime() !== state.month.getTime()) state.month = month;
+      render();
+      // On phones the times sit under the calendar; bring them into view.
+      load(state.month).then(function () {
+        requestAnimationFrame(function () {
+          if (detail.getBoundingClientRect().top > window.innerHeight - 160) {
+            detail.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+          }
+        });
+      }, function () {});
+    }
+
     programSelect.addEventListener("change", function () {
-      state.selected = null;
+      state.day = null;
       show(programSelect.value, null);
     });
 
     tierBox.addEventListener("click", function (event) {
       var chip = event.target.closest(".chip");
       if (!chip) return;
-      show(state.program, chip.getAttribute("data-tier") || null);
+      show(state.program, chip.getAttribute("data-tier"));
     });
 
     daysBox.addEventListener("click", function (event) {
       var day = event.target.closest(".cal-day");
-      if (!day || day.disabled) return;
-      state.selected = new Date(state.month.getFullYear(), state.month.getMonth(), Number(day.getAttribute("data-day")));
-      renderDays();
-      renderDetail();
-      // On phones the detail panel sits under the calendar; bring it into view.
-      if (detail.getBoundingClientRect().top > window.innerHeight - 120) {
-        detail.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
-      }
+      if (day && !day.disabled) pickDay(day.getAttribute("data-day"));
     });
 
     detail.addEventListener("click", function (event) {
-      var book = event.target.closest(".tier-book");
-      if (book) prefillBooking(state.program, book.getAttribute("data-tier"), book.getAttribute("data-date"));
+      var jump = event.target.closest(".cal-jump");
+      var later = event.target.closest(".cal-later");
+      var slotBtn = event.target.closest(".cal-slot");
+      if (jump) pickDay(jump.getAttribute("data-day"));
+      if (later) shiftMonth(1);
+      if (event.target.closest(".cal-retry")) render();
+      if (slotBtn) {
+        load(state.month).then(function (days) {
+          state.slot = days[state.day].filter(function (s) { return s.iso === slotBtn.getAttribute("data-iso"); })[0];
+          renderDetail(days);
+          var reserve = detail.querySelector(".cal-reserve");
+          reserve.focus({ preventScroll: true });
+          if (reserve.getBoundingClientRect().bottom > window.innerHeight - 24) {
+            reserve.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+          }
+        });
+      }
+      if (event.target.closest(".cal-reserve") && state.slot) reserve(state.slot);
+      if (event.target.closest(".cal-letter") && state.slot) {
+        prefillBooking(state.program, state.tier, longDate(state.day) + ", " + state.day.slice(0, 4) + " at " + state.slot.label);
+      }
     });
 
+    // Cal.com's embed loads on the first reservation, not with the page.
+    function reserve(slot) {
+      var url = bookingUrl(slot);
+      var opened = false;
+      function fallback() {
+        if (opened) return;
+        opened = true;
+        window.open(url, "_blank", "noopener");
+      }
+      try {
+        if (!window.Cal) {
+          (function (C, A, L) {
+            var p = function (a, ar) { a.q.push(ar); };
+            var d = C.document;
+            C.Cal = C.Cal || function () {
+              var cal = C.Cal; var ar = arguments;
+              if (!cal.loaded) {
+                cal.ns = {}; cal.q = cal.q || [];
+                var s = d.head.appendChild(d.createElement("script"));
+                s.src = A;
+                s.onerror = fallback;
+                cal.loaded = true;
+              }
+              if (ar[0] === L) {
+                var api = function () { p(api, arguments); };
+                var namespace = ar[1];
+                api.q = api.q || [];
+                if (typeof namespace === "string") {
+                  cal.ns[namespace] = cal.ns[namespace] || api;
+                  p(cal.ns[namespace], ar);
+                  p(cal, ["initNamespace", namespace]);
+                } else p(cal, ar);
+                return;
+              }
+              p(cal, ar);
+            };
+          })(window, "https://app.cal.com/embed/embed.js", "init");
+          window.Cal("init", "muse", { origin: "https://cal.com" });
+          window.Cal.ns.muse("ui", {
+            theme: "dark",
+            cssVarsPerTheme: { dark: { "cal-brand": "#F2EEE6" } },
+            layout: "month_view"
+          });
+        }
+        var params = new URL(url).searchParams;
+        var config = { layout: "month_view", theme: "dark" };
+        params.forEach(function (value, name) { config[name] = value; });
+        window.Cal.ns.muse("modal", { calLink: CAL.user + "/" + eventSlug(), config: config });
+        opened = true;
+      } catch (err) {
+        fallback();
+      }
+    }
+
     function shiftMonth(delta) {
-      state.month = new Date(state.month.getFullYear(), state.month.getMonth() + delta, 1);
-      state.selected = null;
-      renderDays();
-      renderDetail();
+      var next = new Date(state.month.getFullYear(), state.month.getMonth() + delta, 1);
+      if (next < firstMonth || next > lastMonth) return;
+      state.month = next;
+      state.day = null;
+      state.slot = null;
+      render();
       if (reduce) return;
       // The new month arrives from the side of the arrow that was pressed.
       [daysBox, monthLabel].forEach(function (el) {
@@ -531,8 +705,8 @@
         ], { duration: 220, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
       });
     }
-    document.getElementById("cal-prev").addEventListener("click", function () { shiftMonth(-1); });
-    document.getElementById("cal-next").addEventListener("click", function () { shiftMonth(1); });
+    prevBtn.addEventListener("click", function () { shiftMonth(-1); });
+    nextBtn.addEventListener("click", function () { shiftMonth(1); });
 
     // Program and tier pages can link here, e.g. ?program=couples&tier=III#availability
     var params = new URLSearchParams(window.location.search);

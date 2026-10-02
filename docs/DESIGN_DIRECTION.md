@@ -92,7 +92,7 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
 4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Instant Film), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
 5. **Sessions & Pricing**: antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
-6. **Open Dates**: calendar of open tiers per program; a date prefills the booking form
+6. **Open Dates**: live from Dani's Cal.com (`midnight-muse-jk6nt0`). Pick a session and package, a day, then a time; reserving opens Cal.com's booking window prefilled, or "send a letter instead" fills the form. Per-package Cal.com events map in `CAL.events` in `main.js`
 7. **Blind Date**: proposal, pending Dani's pick of three options
 8. **Maternity Shop**: product grid (rent / buy TBD, needs checkout)
 9. **Doll Houses**: Dani's dollhouse-style photo series, grouped into sets. Each set is drawn as a house and its photos are the rooms; sets are sold whole, never single photos (needs checkout)
