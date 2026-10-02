@@ -80,7 +80,7 @@
       <div class="wrap">
         <h2>The Sets</h2>
         <p class="sub">Built by hand, for you</p>
-        <div class="sets-layout">
+        <div class="sets-layout" tabindex="0" role="region" aria-label="Sets, scroll sideways for more">
           <figure class="set">
             <img loading="lazy" decoding="async" class="js-photo" src="img/IMG_3820.jpg" alt="Woman in a gold dress kneels on red velvet beneath gold number balloons.">
             <figcaption>Set no. 01 · Red velvet</figcaption>
@@ -181,13 +181,13 @@
       </div>
     </section>
 
-    <section class="section" id="availability" data-note="Pick a program and tier to see open dates. Tapping a date fills in the booking form. Dates are made up for the wireframe.">
+    <section class="section" id="availability" data-note="Live from Dani's Cal.com: days and times are her real open hours. Pick a session, a day and a time, then reserve it on Cal.com or send a letter instead.">
       <div class="wrap">
         <h2>Open Dates</h2>
-        <p class="sub">Which sessions are open, and when</p>
+        <p class="sub">Pick a day, then a time</p>
         <div class="cal-controls">
           <div class="field">
-            <label for="cal-program">Program</label>
+            <label for="cal-program">Session</label>
             <select id="cal-program">
               <option value="portraits">Portraits</option>
               <option value="couples">Couples</option>
@@ -195,7 +195,7 @@
               <option value="branding">Branding</option>
             </select>
           </div>
-          <div class="cal-tiers" id="cal-tiers" role="group" aria-label="Filter by tier"></div>
+          <div class="cal-tiers" id="cal-tiers" role="group" aria-label="Package"></div>
         </div>
         <div class="cal-layout">
           <div class="cal frame">
@@ -205,13 +205,13 @@
               <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">&rarr;</button>
             </div>
             <div class="cal-grid cal-weekdays" aria-hidden="true">
-              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+              <span>S<span class="wd-rest">un</span></span><span>M<span class="wd-rest">on</span></span><span>T<span class="wd-rest">ue</span></span><span>W<span class="wd-rest">ed</span></span><span>T<span class="wd-rest">hu</span></span><span>F<span class="wd-rest">ri</span></span><span>S<span class="wd-rest">at</span></span>
             </div>
-            <div class="cal-grid" id="cal-days"></div>
-            <p class="cal-legend"><span class="cal-legend-desktop"><span class="pip on" aria-hidden="true"></span> open package <span class="pip" aria-hidden="true"></span> booked or not offered that day</span><span class="cal-legend-phone">The number under each date is how many sessions are open.</span></p>
+            <div class="cal-grid" id="cal-days" aria-busy="true"></div>
+            <p class="cal-legend"><span class="cal-dot" aria-hidden="true"></span> Open <span class="cal-legend-sep" aria-hidden="true">·</span> <span id="cal-tz"></span></p>
           </div>
           <aside class="cal-detail" id="cal-detail" aria-live="polite">
-            <p class="cal-detail-empty">Pick a date to see which sessions are open.</p>
+            <p class="cal-detail-empty">Loading Dani's open dates…</p>
           </aside>
         </div>
       </div>
