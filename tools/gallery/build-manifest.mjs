@@ -17,7 +17,7 @@ const outFile = path.join(root, "gallery-data.js");
 const CATEGORIES = [
   { id: "candlelit", title: "Candlelit & Gothic" },
   { id: "coquette", title: "Lace & Coquette" },
-  { id: "y2k", title: "Y2K & Pop" },
+  { id: "y2k", title: "Y2K" },
   { id: "love", title: "Love Stories" },
   { id: "grads", title: "Grads" },
   { id: "costume", title: "Costumes & Cosplay" },

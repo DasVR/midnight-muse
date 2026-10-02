@@ -8,7 +8,7 @@ photo listed in `wireframe/gallery-data.js`. To load a full set:
    ```
    wireframe/img/gallery/candlelit/   Candlelit & Gothic
    wireframe/img/gallery/coquette/    Lace & Coquette
-   wireframe/img/gallery/y2k/         Y2K & Pop
+   wireframe/img/gallery/y2k/         Y2K
    wireframe/img/gallery/love/        Love Stories
    wireframe/img/gallery/grads/       Grads
    wireframe/img/gallery/costume/     Costumes & Cosplay

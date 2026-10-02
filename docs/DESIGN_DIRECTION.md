@@ -90,11 +90,12 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 1. **Hero**: full-bleed B&W-toned photo (desaturated in CSS, blooms to color on load), "Midnight Muse" in huge script overlapping it, centered minimal nav (Cordelia Rose pin), mono line: "ALTERNATIVE PORTRAITS · FLORIDA"
 2. **Meet Dani**: her portrait in a lace cameo + a short letter-style intro signed in script
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
-4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Costumes & Cosplay), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
+3b. **Graduation portfolio**: a strip of grad photos beside a short pitch, linking to the full Grads gallery and the Graduations packages
+4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K · Love Stories · Grads · Costumes & Cosplay), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
 5. **Sessions & Pricing**: opens on the price ("Portrait sessions from $100" in large numerals beside the heading); antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
 6. **Open Dates**: days only, read from Dani's Cal.com availability (`midnight-muse-jk6nt0`). Nothing is booked on the site: visitors tap up to three open days, which are written into their letter, and Dani confirms by writing back
-7. **Blind Date**: the Mystery Session, told as an offer: book a day, answer five questions, Dani builds a secret set. The two alternatives (Matchmaker, Sealed Envelopes) sit folded under it until Dani picks
-8. **Maternity**: a couples-style session, not birth photography. Layered photos beside what to expect (who, where, what to wear); booked as a Couples session
+7. **Blind Date**: Dani sets two strangers up on a date and photographs it. Visitors sign up through her Google Form (18+, St. Pete / Tampa, $150 if matched). The Mystery Session (a secret set built for one person) sits beside it as a smaller offer
+8. **Maternity**: a tier under Couples in Sessions, not its own section; shot like a couples session
 9. **Doll Houses**: sample photos of sets Dani has built (The Dollhouse, The Tea Party, The Laundromat, The Rock Room). Each set is drawn as a house and its photos are the rooms. Not for sale; it ends in "Describe your set"
 10. **Kind Words**: opens on the first review as a large pull quote (the heading is a small label); the other two letters sit side by side beneath, each with a lace cameo portrait
 11. **FAQ**: accordion inside an antique frame. Answers Dani still has to give (deposit, turnaround) are marked as drafts on the page
@@ -134,7 +135,7 @@ The pins are other people's work (e.g. the "Cordelia Rose" and "anna sauza" site
 - **Sensitive content:** a few lingerie/boudoir-leaning shots (IMG_9334, 9388). Ask Dani whether she wants a separate, opt-in "Boudoir" category or wants them out
 
 **Recommended re-categorization (browse by aesthetic, the way alt clients search):**
-`Candlelit & Gothic` · `Lace & Coquette` · `Y2K & Pop` · `Love Stories` · `Grads`. Keep "Branding" only if she actually markets to businesses.
+`Candlelit & Gothic` · `Lace & Coquette` · `Y2K` · `Love Stories` · `Grads`. Keep "Branding" only if she actually markets to businesses.
 
 **Color:** UI stays monochrome (v3); her red and pink photos supply all the color.
 
