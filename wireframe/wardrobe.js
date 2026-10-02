@@ -135,7 +135,7 @@
     emptyNote.hidden = list.length > 0;
     if (!list.length) {
       emptyNote.textContent = "";
-      emptyNote.appendChild(el("p", "", state.cat === "film" ? "The Polaroid scans are still on their way." : "Nothing pinned here yet."));
+      emptyNote.appendChild(el("p", "", "Nothing pinned here yet."));
       var all = el("button", "btn btn-ghost", "See all photographs");
       all.type = "button";
       all.addEventListener("click", function () { show("all", true); });

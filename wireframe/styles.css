@@ -439,8 +439,7 @@ body.notes-on .section{ padding-top:128px; }
   pointer-events:none;
 }
 
-.portrait-label,
-.scan-label{
+.portrait-label{
   position:absolute;
   z-index:3;
   margin:0;
@@ -578,14 +577,6 @@ body.notes-on .section{ padding-top:128px; }
   pointer-events:none;
 }
 
-.scan-label{
-  left:12px;
-  bottom:12px;
-  max-width:calc(100% - 24px);
-  padding:4px 7px;
-  background:var(--ivory);
-  color:var(--ink);
-}
 
 .work-card.is-unlocked .work-photo{ filter:grayscale(0); }
 
@@ -597,8 +588,7 @@ body.notes-on .section{ padding-top:128px; }
   transform:scale(1.08);
 }
 
-.work-card.is-locked .numeral,
-.work-card.is-locked .scan-label{ z-index:5; }
+.work-card.is-locked .numeral{ z-index:5; }
 
 .lock{
   position:absolute;
@@ -918,51 +908,6 @@ body.notes-on .section{ padding-top:128px; }
 
 .option-fit span{ color:var(--bone); text-transform:uppercase; letter-spacing:0.14em; margin-right:6px; }
 
-/* Maternity shop */
-.shop-grid{
-  display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:28px 18px;
-  margin:36px 0 18px;
-}
-
-.product{ min-width:0; }
-
-.product-photo{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  aspect-ratio:4 / 5;
-  border:1px dashed var(--pewter);
-  background:var(--cloth);
-}
-
-.product-photo span{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  color:var(--bone);
-}
-
-.product h3{
-  margin:12px 0 0;
-  font-family:var(--serif);
-  font-weight:400;
-  font-size:24px;
-  line-height:1.15;
-  color:var(--ivory);
-}
-
-.product-price{
-  margin:6px 0 10px;
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--bone);
-}
-
 /* Doll house photo sets: each set is a house, each photo a room */
 .doll-grid{
   display:grid;
@@ -1006,19 +951,10 @@ body.notes-on .section{ padding-top:128px; }
   text-align:center;
 }
 
-.room span{
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:0.1em;
-  text-transform:uppercase;
-  color:var(--bone);
-}
 
 .doll-set .tier-num{ margin-top:14px; }
 .doll-set .price{ margin:10px 0 0; }
-.doll-set .tier-book{ margin-top:12px; }
 
-.checkout-note{ margin-top:4px; }
 
 .work-card h3{
   margin:14px 0 0;
@@ -1501,7 +1437,6 @@ body.notes-on .section{ padding-top:128px; }
   .letters{ grid-template-columns:1fr 1fr; }
   .options{ grid-template-columns:1fr 1fr; }
   .options > :last-child{ grid-column:1 / -1; }
-  .shop-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .cal-layout{ grid-template-columns:1fr; }
   .letters .letter-card:last-child{ grid-column:1 / -1; }
 }
@@ -1535,8 +1470,6 @@ body.notes-on .section{ padding-top:128px; }
   .options,
   .doll-grid{ grid-template-columns:1fr; }
   .options > :last-child{ grid-column:auto; }
-  .shop-grid{ gap:22px 12px; }
-  .product h3{ font-size:20px; }
   .cal{ padding:14px 8px 12px; }
   .ribbon-tiers span:nth-child(n+3){ display:none; }
 
@@ -2645,8 +2578,6 @@ html.wardrobe-open{ overflow:hidden; }
 
 .tier-table-actions td{ padding-bottom:4px; }
 .tier-table-actions .tier-book{ margin-bottom:2px; }
-.product .tier-book,
-.doll-set .tier-book{ margin-top:12px; }
 
 .btn:active,
 .tier-book:active,
@@ -2726,7 +2657,6 @@ html.wardrobe-open{ overflow:hidden; }
   .set figcaption,
   .count,
   .shoot,
-  .product-price,
   .specs li,
   .perk,
   .kicker,
@@ -2755,9 +2685,6 @@ html.wardrobe-open{ overflow:hidden; }
   .tabs{ gap:0 22px; }
 
 
-  /* Doll houses: rooms speak through their frames, a price stays a line */
-  .room span{ display:none; }
-  .price-tbc{ font-size:26px; }
 }
 
 @media (max-width:360px){
@@ -2973,7 +2900,8 @@ html.wardrobe-open{ overflow:hidden; }
   .cal-detail .btn-ghost{ align-self:stretch; justify-content:center; }
 }
 
-.sets-layout:focus-visible{ outline:1px solid var(--ivory); outline-offset:6px; }
+.sets-layout:focus-visible,
+.doll-grid:focus-visible{ outline:1px solid var(--ivory); outline-offset:6px; }
 
 /* Smallest phones: thinner gutters so each day stays a full 44px target */
 @media (max-width:360px){
@@ -2982,4 +2910,162 @@ html.wardrobe-open{ overflow:hidden; }
   .cal-detail{ padding-inline:12px; }
   .cal-slots{ gap:6px; }
   .cal-slot{ font-size:15px; padding:0 2px; }
+}
+
+/* The Work: five galleries, two large covers over three */
+@media (min-width:701px){
+  .work-grid{ grid-template-columns:repeat(6, minmax(0, 1fr)); }
+  .work-card{ grid-column:span 2; }
+  .work-card:nth-child(-n+2){ grid-column:span 3; }
+  .work-card:nth-child(-n+2) .work-frame{ aspect-ratio:5 / 4; }
+}
+
+/* Spacing pass */
+.faq-frame{ margin:36px 0 0; }
+
+@media (min-width:701px){
+  .meet{
+    grid-template-columns:minmax(240px, 380px) minmax(0, 34rem);
+    justify-content:center;
+    gap:72px;
+  }
+}
+
+/* The lace edge already divides Work from Sessions, so it needs no extra air above */
+body:not(.notes-on) #sessions{ padding-top:48px; }
+
+@media (max-width:700px){
+  .section{ padding:48px 0 40px; }
+  body.notes-on .section{ padding-top:88px; }
+  #work,
+  #kind-words,
+  #book{ padding-top:64px; }
+  body:not(.notes-on) #sessions{ padding-top:24px; }
+  #availability{ padding-top:16px; }
+  .wardrobe-cta{ margin-top:36px; }
+  .book-key{ height:56px; }
+}
+
+/* ---------- Doll Houses: each house is a set, each room a photo from it ---------- */
+.doll-grid{ grid-template-columns:repeat(4, minmax(0, 1fr)); gap:40px 24px; }
+
+.room{
+  display:block;
+  aspect-ratio:1 / 1;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  border:0;
+  background:var(--cloth);
+  box-shadow:inset 0 0 0 1px var(--rule-in);
+}
+
+.room img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* A three-room house gets an attic that runs the full width */
+.room-attic{ grid-column:1 / -1; }
+
+/* Every house is square inside, however its rooms divide */
+.doll-house .rooms{ aspect-ratio:1 / 1; grid-template-rows:repeat(2, minmax(0, 1fr)); }
+.doll-house .room{ aspect-ratio:auto; }
+.room-attic img{ object-position:center 35%; }
+
+.doll-set .tier-num{ margin-top:16px; }
+.doll-line{ margin:4px 0 0; font-size:17px; line-height:1.4; color:var(--bone); }
+
+.doll-cta{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:12px 28px;
+  margin-top:40px;
+}
+.doll-cta p{ margin:0; max-width:32rem; font-size:19px; color:var(--bone); }
+.doll-cta .btn{ margin:0; }
+
+@media (max-width:1100px){
+  .doll-grid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---------- Maternity: a couples-style session ---------- */
+.maternity{
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) minmax(0, 30rem);
+  gap:72px;
+  align-items:center;
+}
+
+.maternity-photos{
+  display:grid;
+  grid-template-columns:repeat(6, minmax(0, 1fr));
+  grid-template-rows:repeat(6, minmax(0, 1fr));
+  aspect-ratio:1 / 1.05;
+}
+
+.m-photo{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border:6px solid var(--ivory);
+  box-shadow:0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+.m-1{ grid-column:1 / 5; grid-row:1 / 7; }
+.m-2{ grid-column:4 / 7; grid-row:1 / 4; margin:12% 0 0; z-index:1; }
+.m-3{ grid-column:4 / 7; grid-row:4 / 7; margin:6% 10% 0 -20%; z-index:2; width:auto; }
+
+.maternity-lede{ margin:24px 0 0; font-size:20px; line-height:1.55; color:var(--ivory); }
+
+.maternity-notes{ list-style:none; margin:24px 0 0; padding:0; }
+.maternity-notes li{
+  display:grid;
+  grid-template-columns:72px minmax(0, 1fr);
+  gap:12px;
+  padding:12px 0;
+  border-top:1px solid var(--smoke);
+  font-size:18px;
+  line-height:1.45;
+  color:var(--bone);
+}
+.maternity-notes li:last-child{ border-bottom:1px solid var(--smoke); }
+.maternity-notes span{
+  padding-top:4px;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--pewter);
+}
+
+.maternity .btn{ margin-top:28px; }
+.maternity-small{ margin:12px 0 0; font-size:15px; color:var(--pewter); }
+
+@media (max-width:860px){
+  .maternity{ grid-template-columns:1fr; gap:36px; }
+  .maternity-photos{ max-width:520px; }
+}
+
+@media (max-width:700px){
+  .doll-set{ flex:0 0 84%; }
+  .doll-cta{ flex-direction:column; align-items:stretch; }
+  .doll-cta .btn{ justify-content:center; }
+  .maternity .btn{ width:100%; justify-content:center; }
+  .m-photo{ border-width:4px; }
+}
+
+.faq-answer a{ color:var(--ivory); text-underline-offset:4px; }
+.faq-draft{
+  display:inline-block;
+  padding:2px 8px;
+  border:1px dashed var(--pewter);
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.06em;
+  color:var(--bone);
 }
