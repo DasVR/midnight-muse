@@ -2912,14 +2912,6 @@ html.wardrobe-open{ overflow:hidden; }
   .cal-slot{ font-size:15px; padding:0 2px; }
 }
 
-/* The Work: five galleries, two large covers over three */
-@media (min-width:701px){
-  .work-grid{ grid-template-columns:repeat(6, minmax(0, 1fr)); }
-  .work-card{ grid-column:span 2; }
-  .work-card:nth-child(-n+2){ grid-column:span 3; }
-  .work-card:nth-child(-n+2) .work-frame{ aspect-ratio:5 / 4; }
-}
-
 /* Spacing pass */
 .faq-frame{ margin:36px 0 0; }
 

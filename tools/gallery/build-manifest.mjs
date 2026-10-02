@@ -2,7 +2,7 @@
 //
 //   node tools/gallery/build-manifest.mjs
 //
-// Folder names are category ids: candlelit, coquette, y2k, love, grads.
+// Folder names are category ids: candlelit, coquette, y2k, love, grads, costume.
 // Alt text already written for a photo (matched by its path) is kept; new
 // photos get a placeholder alt to replace by hand. No dependencies: image
 // sizes are read straight from the JPEG/PNG/WebP headers.
@@ -20,6 +20,7 @@ const CATEGORIES = [
   { id: "y2k", title: "Y2K & Pop" },
   { id: "love", title: "Love Stories" },
   { id: "grads", title: "Grads" },
+  { id: "costume", title: "Costumes & Cosplay" },
 ];
 
 function jpegSize(buf) {

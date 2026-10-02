@@ -90,7 +90,7 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 1. **Hero**: full-bleed B&W-toned photo (desaturated in CSS, blooms to color on load), "Midnight Muse" in huge script overlapping it, centered minimal nav (Cordelia Rose pin), mono line: "ALTERNATIVE PORTRAITS · FLORIDA"
 2. **Meet Dani**: her portrait in a lace cameo + a short letter-style intro signed in script
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
-4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
+4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Costumes & Cosplay), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
 5. **Sessions & Pricing**: antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
 6. **Open Dates**: live from Dani's Cal.com (`midnight-muse-jk6nt0`). Pick a session and package, a day, then a time; reserving opens Cal.com's booking window prefilled, or "send a letter instead" fills the form. Per-package Cal.com events map in `CAL.events` in `main.js`
 7. **Blind Date**: proposal, pending Dani's pick of three options

@@ -20,6 +20,10 @@ window.GALLERY = {
     {
       "id": "grads",
       "title": "Grads"
+    },
+    {
+      "id": "costume",
+      "title": "Costumes & Cosplay"
     }
   ],
   "photos": [
@@ -392,46 +396,6 @@ window.GALLERY = {
       "thumb": "img/gallery/coquette/thumbs/IMG_4857.webp"
     },
     {
-      "src": "img/gallery/coquette/IMG_5095.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "coquette",
-      "alt": "Woman in a white tutu and knee socks holds a red balloon in front of a graffiti wall at night.",
-      "thumb": "img/gallery/coquette/thumbs/IMG_5095.webp"
-    },
-    {
-      "src": "img/gallery/coquette/IMG_5105.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "coquette",
-      "alt": "Woman in a white ruffled costume with red pom-poms peeks around a graffiti-covered wall.",
-      "thumb": "img/gallery/coquette/thumbs/IMG_5105.webp"
-    },
-    {
-      "src": "img/gallery/coquette/IMG_5139.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "coquette",
-      "alt": "Woman in a white tutu clambers over concrete under red light.",
-      "thumb": "img/gallery/coquette/thumbs/IMG_5139.webp"
-    },
-    {
-      "src": "img/gallery/coquette/IMG_5205.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "coquette",
-      "alt": "Close on white tutu, lace socks and black boots beside red balloons.",
-      "thumb": "img/gallery/coquette/thumbs/IMG_5205.webp"
-    },
-    {
-      "src": "img/gallery/coquette/IMG_5220.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "coquette",
-      "alt": "White tutu and lace gloves against dry grass at night, a scrape on one knee.",
-      "thumb": "img/gallery/coquette/thumbs/IMG_5220.webp"
-    },
-    {
       "src": "img/gallery/coquette/IMG_5637.webp",
       "w": 1600,
       "h": 1067,
@@ -518,38 +482,6 @@ window.GALLERY = {
       "category": "y2k",
       "alt": "Two friends lie head to head on a patterned blanket.",
       "thumb": "img/gallery/y2k/thumbs/IMG_0179.webp"
-    },
-    {
-      "src": "img/gallery/y2k/IMG_0182.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "y2k",
-      "alt": "Cosplayer with long teal pigtails reaches toward the camera in blue light.",
-      "thumb": "img/gallery/y2k/thumbs/IMG_0182.webp"
-    },
-    {
-      "src": "img/gallery/y2k/IMG_0207.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "y2k",
-      "alt": "Cosplayer with teal pigtails sits on a bed among speakers and fabric, lit blue.",
-      "thumb": "img/gallery/y2k/thumbs/IMG_0207.webp"
-    },
-    {
-      "src": "img/gallery/y2k/IMG_0288.webp",
-      "w": 1067,
-      "h": 1600,
-      "category": "y2k",
-      "alt": "Silhouette of a figure with long pigtails against a glowing blue circle.",
-      "thumb": "img/gallery/y2k/thumbs/IMG_0288.webp"
-    },
-    {
-      "src": "img/gallery/y2k/IMG_0344.webp",
-      "w": 1600,
-      "h": 1067,
-      "category": "y2k",
-      "alt": "Hands on a laptop keyboard bathed in teal light, seen from above.",
-      "thumb": "img/gallery/y2k/thumbs/IMG_0344.webp"
     },
     {
       "src": "img/gallery/y2k/IMG_0349.webp",
@@ -1126,6 +1058,78 @@ window.GALLERY = {
       "category": "grads",
       "alt": "Graduate in a black dress holds a blue mortarboard over their face in front of a sticker-covered door.",
       "thumb": "img/gallery/grads/thumbs/IMG_6802.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_0182.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Cosplayer with long teal pigtails reaches toward the camera in blue light.",
+      "thumb": "img/gallery/costume/thumbs/IMG_0182.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_0207.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Cosplayer with teal pigtails sits on a bed among speakers and fabric, lit blue.",
+      "thumb": "img/gallery/costume/thumbs/IMG_0207.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_0288.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Silhouette of a figure with long pigtails against a glowing blue circle.",
+      "thumb": "img/gallery/costume/thumbs/IMG_0288.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_0344.webp",
+      "w": 1600,
+      "h": 1067,
+      "category": "costume",
+      "alt": "Hands on a laptop keyboard bathed in teal light, seen from above.",
+      "thumb": "img/gallery/costume/thumbs/IMG_0344.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_5095.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Woman in a white tutu and knee socks holds a red balloon in front of a graffiti wall at night.",
+      "thumb": "img/gallery/costume/thumbs/IMG_5095.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_5105.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Woman in a white ruffled costume with red pom-poms peeks around a graffiti-covered wall.",
+      "thumb": "img/gallery/costume/thumbs/IMG_5105.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_5139.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Woman in a white tutu clambers over concrete under red light.",
+      "thumb": "img/gallery/costume/thumbs/IMG_5139.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_5205.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "Close on white tutu, lace socks and black boots beside red balloons.",
+      "thumb": "img/gallery/costume/thumbs/IMG_5205.webp"
+    },
+    {
+      "src": "img/gallery/costume/IMG_5220.webp",
+      "w": 1067,
+      "h": 1600,
+      "category": "costume",
+      "alt": "White tutu and lace gloves against dry grass at night, a scrape on one knee.",
+      "thumb": "img/gallery/costume/thumbs/IMG_5220.webp"
     }
   ]
 };

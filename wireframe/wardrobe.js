@@ -152,6 +152,7 @@
     var heights = [];
     for (var c = 0; c < cols; c++) heights.push(seeded(c, 9) * 36);
     var boxes = [];
+    var lastH = [];
 
     list.forEach(function (photo, i) {
       var col = 0;
@@ -159,10 +160,13 @@
       var cardH = cardW * (photo.h / photo.w);
       // Each pin tucks under or over its neighbours, like a crowded board.
       var overlap = heights[col] > 40 ? cardH * (0.16 + seeded(i, 1) * 0.2) : 0;
+      // Never cover more than a third of the photo above, however tall this one is.
+      if (lastH[col]) overlap = Math.min(overlap, lastH[col] * 0.34);
       var left = col * colW - (cardW - colW) / 2 + (seeded(i, 2) - 0.5) * colW * 0.22;
       left = Math.max(0, Math.min(width - cardW, left));
       var top = heights[col] - overlap;
       heights[col] = top + cardH;
+      lastH[col] = cardH;
 
       var pin = el("button", "pin");
       pin.type = "button";
@@ -190,7 +194,7 @@
   }
 
   // A crowded board may tuck a pin almost entirely under its neighbours. Any
-  // pin showing less than about 40% of itself comes up on top, so every photo
+  // pin showing less than about half of itself comes up on top, so every photo
   // stays tappable.
   function raiseBuried(boxes) {
     var top = 61;
@@ -200,6 +204,9 @@
       raised = false;
       boxes.forEach(lift);
     }
+    // A very crowded board can keep trading places. Stacking in board order
+    // settles it: each pin is then only overlapped by the ones placed after it.
+    if (raised) boxes.forEach(function (b, i) { b.z = 1 + i; });
     boxes.forEach(function (b) { b.pin.style.zIndex = String(b.z); });
 
     function lift(b) {
@@ -216,7 +223,7 @@
           if (!covered) seen++;
         }
       }
-      if (seen / samples < 0.4) {
+      if (seen / samples < 0.5) {
         b.z = ++top;
         raised = true;
       }
