@@ -14,9 +14,10 @@ photo listed in `wireframe/gallery-data.js`. To load a full set:
    wireframe/img/gallery/film/        Instant Film
    ```
 
-   JPEG, PNG or WebP. Export them around 1600px on the long side (the current
-   photos are 1067×1600) so the page stays fast; 127 full-size camera files
-   would be several hundred MB.
+   JPEG, PNG or WebP. Export them around 1600px on the long side so the page
+   stays fast (the current set is WebP at 1600px, about 100 KB each). Put a
+   small copy (about 640px) under the same name in that folder's `thumbs/`:
+   the pinned board loads those, and the lightbox loads the full size.
 
 2. Run `node tools/gallery/build-manifest.mjs` from the repo root. It reads
    each photo's size, keeps any alt text already written, and reports photos

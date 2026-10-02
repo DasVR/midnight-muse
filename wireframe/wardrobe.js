@@ -23,7 +23,14 @@
   }
 
   function photosFor(cat) {
-    return cat === "all" ? data.photos.slice() : data.photos.filter(function (p) { return p.category === cat; });
+    if (cat !== "all") return data.photos.filter(function (p) { return p.category === cat; });
+    // The full board deals the galleries out in turn, so every look is mixed in.
+    var piles = data.categories.map(function (c) { return photosFor(c.id); });
+    var mixed = [];
+    for (var round = 0; mixed.length < data.photos.length; round++) {
+      piles.forEach(function (pile) { if (pile[round]) mixed.push(pile[round]); });
+    }
+    return mixed;
   }
 
   // Stable pseudo-random numbers per photo, so the board looks the same every visit.
@@ -144,6 +151,7 @@
     var cardW = colW * 1.22;
     var heights = [];
     for (var c = 0; c < cols; c++) heights.push(seeded(c, 9) * 36);
+    var boxes = [];
 
     list.forEach(function (photo, i) {
       var col = 0;
@@ -163,10 +171,10 @@
       pin.style.top = top + "px";
       pin.style.width = cardW + "px";
       pin.style.height = cardH + "px";
-      pin.style.zIndex = String(1 + Math.round(seeded(i, 3) * 60));
+      boxes.push({ pin: pin, x: left, y: top, w: cardW, h: cardH, z: 1 + Math.round(seeded(i, 3) * 60) });
       pin.style.setProperty("--r", ((seeded(i, 4) - 0.5) * 7).toFixed(2) + "deg");
       var img = el("img");
-      img.src = photo.src;
+      img.src = photo.thumb || photo.src;
       img.alt = photo.alt;
       // The first screenful loads straight away so the board never arrives empty.
       img.loading = i < 12 ? "eager" : "lazy";
@@ -176,8 +184,43 @@
       pin.appendChild(img);
       inner.appendChild(pin);
     });
+    raiseBuried(boxes);
     inner.style.height = Math.max.apply(null, heights) + 40 + "px";
     if (fade) inner.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: "ease-out" });
+  }
+
+  // A crowded board may tuck a pin almost entirely under its neighbours. Any
+  // pin showing less than about 40% of itself comes up on top, so every photo
+  // stays tappable.
+  function raiseBuried(boxes) {
+    var top = 61;
+    var raised = true;
+    // Lifting one pin can bury another, so look again until the board settles.
+    for (var pass = 0; raised && pass < 6; pass++) {
+      raised = false;
+      boxes.forEach(lift);
+    }
+    boxes.forEach(function (b) { b.pin.style.zIndex = String(b.z); });
+
+    function lift(b) {
+      var seen = 0;
+      var samples = 0;
+      for (var sx = 0.1; sx < 1; sx += 0.2) {
+        for (var sy = 0.1; sy < 1; sy += 0.2) {
+          var px = b.x + b.w * sx;
+          var py = b.y + b.h * sy;
+          samples++;
+          var covered = boxes.some(function (o) {
+            return o !== b && o.z > b.z && px > o.x && px < o.x + o.w && py > o.y && py < o.y + o.h;
+          });
+          if (!covered) seen++;
+        }
+      }
+      if (seen / samples < 0.4) {
+        b.z = ++top;
+        raised = true;
+      }
+    }
   }
 
   // ---------- Opening: through the door and the lace ----------
