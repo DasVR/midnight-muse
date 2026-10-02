@@ -92,7 +92,7 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 3. **The Sets**: behind-the-scenes of her built sets, archival-grid layout with small mono captions ("SET NO. 04 — RED VELVET")
 4. **Work**: galleries by aesthetic (Candlelit & Gothic · Lace & Coquette · Y2K & Pop · Love Stories · Grads · Costumes & Cosplay), each a cover photo with ornamental number + script title, sealed until the visitor unlocks it with the key
 5. **Sessions & Pricing**: antique frame cards with spec-sheet details. Prices also show in the hero (price ribbon) and "Pricing" is a top-level nav link
-6. **Open Dates**: live from Dani's Cal.com (`midnight-muse-jk6nt0`). Pick a session and package, a day, then a time; reserving opens Cal.com's booking window prefilled, or "send a letter instead" fills the form. Per-package Cal.com events map in `CAL.events` in `main.js`
+6. **Open Dates**: days only, read from Dani's Cal.com availability (`midnight-muse-jk6nt0`). Nothing is booked on the site: visitors tap up to three open days, which are written into their letter, and Dani confirms by writing back
 7. **Blind Date**: proposal, pending Dani's pick of three options
 8. **Maternity**: a couples-style session, not birth photography. Layered photos beside what to expect (who, where, what to wear); booked as a Couples session
 9. **Doll Houses**: sample photos of sets Dani has built (The Dollhouse, The Tea Party, The Laundromat, The Rock Room). Each set is drawn as a house and its photos are the rooms. Not for sale; it ends in "Describe your set"
@@ -180,3 +180,7 @@ Current page: 9 short quotes, split into 3 blocks that each repeat the heading "
 - Domain: **Cloudflare Registrar** (at-cost pricing, ~$10–11/yr for .com) + free Cloudflare Email Routing (hello@domain → her Gmail)
 - Keep Pixieset (free plan) for client gallery delivery only
 - Content (packages, testimonials, FAQs) in `src/content/*.json|md` so it's editable without touching layout
+
+## Photo loading
+
+Every photograph (any `<img>` with alt text) gets a loading state from `photo-states.js`: a slow developing sheen with a flickering candle (`assets/photo-loading.svg`), still under reduced motion. A photo that fails swaps to `assets/photo-missing.svg`, an empty frame with a cracked corner. In the wardrobe viewer, the photo's small board copy shows immediately, softened, with the candle on top, and sharpens when the full size arrives; the photos either side preload.
