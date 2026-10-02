@@ -1,0 +1,8 @@
+{
+  "name": "midnight-muse-watermark",
+  "private": true,
+  "type": "module",
+  "description": "Stamps the Midnight Muse corner mark into every photo in wireframe/img.",
+  "scripts": { "stamp": "node watermark.mjs" },
+  "dependencies": { "sharp": "^0.33.5" }
+}

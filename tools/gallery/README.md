@@ -29,3 +29,6 @@ photo listed in `wireframe/gallery-data.js`. To load a full set:
 
 Photos appear in folder order (alphabetical by filename), so prefix names with
 numbers (`01-`, `02-`) to choose which ones lead.
+
+4. Stamp the new photos with the watermark: `cd tools/watermark && npm run stamp`
+   (see `tools/watermark/README.md`).

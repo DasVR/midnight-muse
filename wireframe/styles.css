@@ -3149,3 +3149,21 @@ img.is-broken{
   .grad-actions{ align-items:stretch; }
   .grad-actions .btn{ justify-content:center; }
 }
+
+/* Photos can't be long-press saved on iOS or dragged out (the mark is in the file either way) */
+img[alt]:not([alt=""]){ -webkit-touch-callout:none; -webkit-user-drag:none; user-select:none; }
+
+/* Dani's own photos: her portrait in the cameo, the lace veil in the hero */
+.hero-photo{ object-position:55% 32%; }
+#meet .cameo-photo{ object-position:center 30%; }
+/* On wide screens the veil sits to the right so the title never crosses her face */
+@media (min-width:861px){
+  .hero-photo{
+    left:auto;
+    right:0;
+    width:64%;
+    object-position:center 30%;
+    -webkit-mask-image:linear-gradient(to right, transparent 0, #000 28%);
+    mask-image:linear-gradient(to right, transparent 0, #000 28%);
+  }
+}
