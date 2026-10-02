@@ -9,15 +9,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body id="top" class="notes-on has-banner">
+<body id="top">
   <a class="skip" href="#main">Skip to content</a>
 
-  <div class="draft-banner" id="draft-banner" role="status">
-    <p>WIREFRAME DRAFT · for review<span class="banner-extra"> · photos &amp; copy are placeholders where marked</span> · comment with the button bottom right</p>
-    <button type="button" id="dismiss-banner">Dismiss</button>
-  </div>
 
-  <header class="site-nav" id="site-nav" data-note="Pricing is now a top-level link. Kind Words and FAQ moved to the menu and footer to make room for Dates and Shop.">
+  <header class="site-nav" id="site-nav">
     <nav class="nav-cluster" aria-label="Primary">
       <a href="#work">Work</a>
       <a href="#sets">Sets</a>
@@ -46,7 +42,7 @@
   </div>
 
   <main id="main">
-    <section class="hero" data-note="Opens on your candlelit work. Prices now show on the first screen, under the button.">
+    <section class="hero">
       <img class="hero-photo" src="img/IMG_6754.jpg" alt="Woman with black lipstick reclines on a floral bed holding a candle, a brass candelabra lit behind her against red velvet." fetchpriority="high">
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-copy">
@@ -61,7 +57,7 @@
       </div>
     </section>
 
-    <section class="section" id="meet" data-note="Clients book the person. This is where your face and voice go.">
+    <section class="section" id="meet">
       <div class="wrap meet">
         <div class="cameo">
           <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/IMG_8034.jpg" alt="Woman in a white lace veil and feathered wings at sunset, standing in for Dani's portrait.">
@@ -76,7 +72,7 @@
       </div>
     </section>
 
-    <section class="section" id="sets" data-note="Your custom sets are what nobody else offers, so they get their own section.">
+    <section class="section" id="sets">
       <div class="wrap">
         <h2>The Sets</h2>
         <p class="sub">Built by hand, for you</p>
@@ -105,7 +101,7 @@
       </div>
     </section>
 
-    <section class="section" id="work" data-note="Galleries sorted by vibe. Unlock a cover and step inside: you pass through the wardrobe into all of Dani's photos, pinned up together.">
+    <section class="section" id="work">
       <div class="wrap">
         <svg class="filigree" viewBox="-4 0 330 40" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path pathLength="1" d="M160 7l10 13-10 13-10-13 10-13z"/><path pathLength="1" d="M148 20H34"/><path pathLength="1" d="M34 20c0-8-12-8-16 0 4 8 16 8 16 0z"/><path pathLength="1" d="M18 20H6"/><path pathLength="1" d="M6 20c0-5-8-5-8 0s8 5 8 0z"/><path pathLength="1" d="M96 20c0-7 14-7 14 0s-14 7-14 0z"/><path pathLength="1" d="M122 20c6-9 20-8 24 0"/><path pathLength="1" d="M122 20c6 9 20 8 24 0"/><path pathLength="1" d="M172 20h114"/><path pathLength="1" d="M286 20c0-8 12-8 16 0-4 8-16 8-16 0z"/><path pathLength="1" d="M302 20h12"/><path pathLength="1" d="M314 20c0-5 8-5 8 0s-8 5-8 0z"/><path pathLength="1" d="M224 20c0-7-14-7-14 0s14 7 14 0z"/><path pathLength="1" d="M198 20c-6-9-20-8-24 0"/><path pathLength="1" d="M198 20c-6 9-20 8-24 0"/></g></svg>
         <h2>The Work</h2>
@@ -160,11 +156,16 @@
       </div>
     </section>
 
-    <section class="section" id="sessions" data-note="Every package in one consistent layout. Each card links to the days Dani is free.">
+    <section class="section" id="sessions">
       <div class="lace-edge" aria-hidden="true"></div>
       <div class="wrap">
-        <h2>Sessions</h2>
-        <p class="sub">Pricing &amp; packages</p>
+        <div class="sessions-open">
+          <p class="from" aria-live="polite"><span class="from-label" id="from-label">Portrait sessions from</span><span class="from-price" id="from-price">$100</span></p>
+          <div class="sessions-title">
+            <h2>Sessions</h2>
+            <p class="from-range" id="from-range">30 min to 2 hr · 5 to 25+ edited photos</p>
+          </div>
+        </div>
         <div class="tabs" role="tablist" aria-label="Session types">
           <button type="button" role="tab" id="tab-portraits" data-session="portraits" aria-selected="true" aria-controls="session-panel">Portraits</button>
           <button type="button" role="tab" id="tab-couples" data-session="couples" aria-selected="false" aria-controls="session-panel" tabindex="-1">Couples</button>
@@ -180,7 +181,7 @@
       </div>
     </section>
 
-    <section class="section" id="availability" data-note="Days only, read from Dani's Cal.com availability. Nothing is booked here: tapping days adds them to your letter, and Dani confirms by writing back.">
+    <section class="section" id="availability">
       <div class="wrap">
         <h2>Open Dates</h2>
         <p class="sub">When Dani is free to shoot</p>
@@ -204,52 +205,31 @@
       </div>
     </section>
 
-    <section class="section" id="blind-date" data-note="Proposal: three ways a Blind Date could work. Pick one and the other two come out.">
-      <div class="wrap">
-        <h2>Blind Date</h2>
-        <p class="sub">Three ways it could work. Pick one.</p>
-        <div class="options">
-          <article class="option-card frame">
-            <p class="option-tag">Option A · Recommended</p>
-            <h3>The Mystery Session</h3>
-            <p class="option-lede">You book a date and a tier. Dani designs a secret set around you, and you see it when you walk in.</p>
-            <ol class="option-steps">
-              <li>Choose a date and tier from the calendar</li>
-              <li>Answer five short questions about your taste</li>
-              <li>Dani builds the set and styles you in secret</li>
-              <li>The reveal happens on the day</li>
-            </ol>
-            <p class="option-fit"><span>Needs</span> a quiz in the booking form</p>
-          </article>
-          <article class="option-card frame">
-            <p class="option-tag">Option B</p>
-            <h3>The Matchmaker</h3>
-            <p class="option-lede">A short quiz matches you to one of Dani's aesthetics. You see your match before you book.</p>
-            <ol class="option-steps">
-              <li>Take a six-question quiz on the page</li>
-              <li>Get matched to a set: Candlelit, Coquette, Y2K…</li>
-              <li>See photos from that set and its price</li>
-              <li>Book it, or retake the quiz</li>
-            </ol>
-            <p class="option-fit"><span>Needs</span> a quiz page and a result per set</p>
-          </article>
-          <article class="option-card frame">
-            <p class="option-tag">Option C</p>
-            <h3>Sealed Envelopes</h3>
-            <p class="option-lede">A row of sealed envelopes, each hiding a set and a price. You unlock one with the key and book what you get.</p>
-            <ol class="option-steps">
-              <li>Pick an envelope, blind</li>
-              <li>Unlock it with the key (same motion as The Work)</li>
-              <li>See the set, the tier and the price</li>
-              <li>Book it within 48 hours, or it reseals</li>
-            </ol>
-            <p class="option-fit"><span>Needs</span> a pool of ready-to-go sets</p>
-          </article>
+    <section class="section" id="blind-date">
+      <div class="wrap blind">
+        <div class="blind-copy">
+          <p class="kicker">A session you don't see coming</p>
+          <h2>Blind Date</h2>
+          <p class="blind-lede">Book a date, tell Dani a little about your taste, and she builds a secret set around you. You see it for the first time when you walk in.</p>
+          <a class="btn btn-ghost" href="#book">Ask for a blind date</a>
         </div>
+        <ol class="blind-steps">
+          <li><span class="blind-num">I</span><span>Pick a day Dani is free</span></li>
+          <li><span class="blind-num">II</span><span>Answer five short questions about your taste</span></li>
+          <li><span class="blind-num">III</span><span>Dani builds the set and styles you in secret</span></li>
+          <li><span class="blind-num">IV</span><span>The reveal happens on the day</span></li>
+        </ol>
+        <details class="blind-alt">
+          <summary>Two other ways it could work, for Dani to choose</summary>
+          <div class="blind-alt-body">
+            <p><strong>The Matchmaker.</strong> A six-question quiz matches you to one of Dani's sets; you see the photos and the price before you book.</p>
+            <p><strong>Sealed Envelopes.</strong> Pick a sealed envelope, unlock it with the key, and book the set and tier inside within 48 hours.</p>
+          </div>
+        </details>
       </div>
     </section>
 
-    <section class="section" id="maternity" data-note="Maternity is shot like a couples session, not a birth story. The photos here are from a couples shoot, to show the feel. The wardrobe list and what's lent or rented are placeholders.">
+    <section class="section" id="maternity">
       <div class="wrap maternity">
         <div class="maternity-photos">
           <img class="m-photo m-1" loading="lazy" decoding="async" src="img/gallery/love/IMG_5896.webp" alt="A couple rests against a tree in the late sun, one asleep on the other's lap.">
@@ -265,13 +245,13 @@
             <li><span>Where</span> Outdoors in soft evening light, or on a set Dani builds</li>
             <li><span>Wear</span> Your own clothes, or a gown, veil or crown from Dani's wardrobe</li>
           </ul>
-          <button class="btn" type="button" id="plan-maternity">Plan a maternity session <img class="key-icon" src="assets/key.svg" alt=""></button>
+          <button class="btn" type="button" id="plan-maternity">Plan a maternity session</button>
           <p class="maternity-small">Booked as a Couples session. Photos above are from a couples shoot, to show the feel.</p>
         </div>
       </div>
     </section>
 
-    <section class="section" id="doll-houses" data-note="Each house is one set Dani built, and its rooms are photos from that shoot. Samples to show what a set can be, not things to buy.">
+    <section class="section" id="doll-houses">
       <div class="wrap">
         <h2>Doll Houses</h2>
         <p class="sub">Sets Dani has built, room by room</p>
@@ -334,16 +314,16 @@
         </div>
         <div class="doll-cta">
           <p>Every set is built for the person in it. Tell Dani what yours looks like.</p>
-          <a class="btn btn-ghost" href="#book">Describe your set <img class="key-icon" src="assets/key.svg" alt=""></a>
+          <a class="btn btn-ghost" href="#book">Describe your set</a>
         </div>
       </div>
     </section>
 
-    <section class="section" id="kind-words" data-note="Reviews look like handwritten letters and sit right on the home page.">
+    <section class="section" id="kind-words">
       <div class="wrap">
-        <h2>Kind Words</h2>
+        <h2 class="kw-title">Kind words</h2>
         <div class="letters">
-          <article class="letter-card">
+          <article class="letter-card letter-lead">
             <blockquote>
                   <p>Absolutely loved working with Dani! She's so considerate, communicates everything so well, and truly puts her whole heart into every shoot…</p>
                 </blockquote>
@@ -392,7 +372,7 @@
       </div>
     </section>
 
-    <section class="section" id="faq" data-note="One shared FAQ instead of repeating it on every pricing page.">
+    <section class="section" id="faq">
       <div class="wrap">
         <h2>FAQ</h2>
         <div class="frame faq-frame faq">
@@ -446,7 +426,7 @@
       </div>
     </section>
 
-    <section class="section book" id="book" data-note="Sending turns your form into a letter: it writes itself, folds, goes into an envelope, gets stamped and slides into a mail slot.">
+    <section class="section book" id="book">
       <div class="wrap">
         <img class="book-key" src="assets/key.svg" alt="">
         <h2>Unlock your session</h2>
@@ -511,7 +491,7 @@
     </section>
   </main>
 
-  <footer class="site-footer" data-note="Closes on your wordmark, the page links, and the corrected Instagram.">
+  <footer class="site-footer">
     <div class="lace-edge" aria-hidden="true"></div>
     <div class="wrap footer-inner">
       <p class="footer-mark">Midnight Muse</p>
@@ -540,7 +520,6 @@
     </div>
   </footer>
 
-  <button class="notes-toggle" id="notes-toggle" type="button" aria-pressed="true">Hide notes</button>
 
   <script src="photo-states.js"></script>
   <script src="unlock.js"></script>
@@ -548,6 +527,5 @@
   <script src="letter.js"></script>
   <script src="gallery-data.js"></script>
   <script src="wardrobe.js"></script>
-  <script src="vendor/agentation.bundle.js"></script>
 </body>
 </html>

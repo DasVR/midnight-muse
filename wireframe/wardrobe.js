@@ -566,6 +566,11 @@
     var started = performance.now();
 
     stopBurning();
+    var wax = stage.querySelector(".lb-wax");
+    wax.classList.remove("is-settled");
+    wax.style.opacity = "0";
+    wax.style.transform = "";
+    preview.style.clipPath = "";
     stage.style.width = box.w + "px";
     stage.style.height = box.h + "px";
     stage.classList.add("is-loading");
@@ -653,20 +658,44 @@
       { opacity: 0, transform: "translateY(10px) scaleY(0.4)" }
     ], Object.assign({ duration: 360, delay: 520, easing: "ease-in" }, fill)));
 
-    // The wax front and the sharp edge travel together, gathering speed.
-    var flow = { duration: 900, delay: 700, easing: "cubic-bezier(0.55, 0, 0.75, 0.6)", fill: "forwards" };
-    var front = band * 0.55;
-    burning.push(wax.animate([
-      { transform: "translateY(" + -band + "px)", opacity: 1 },
-      { transform: "translateY(" + (height - front) + "px)", opacity: 1, offset: 0.92 },
-      { transform: "translateY(" + (height - front + 8) + "px)", opacity: 0 }
-    ], flow));
-    var last = preview.animate([
-      { clipPath: "inset(0 0 0 0)" },
-      { clipPath: "inset(" + height + "px 0 0 0)" }
-    ], flow);
-    burning.push(last);
-    last.finished.then(function () { if (mine === showing) done(); }, function () {});
+    // The wax and the sharp edge are driven from one value each frame, so
+    // they can't drift apart. The edge sits behind the wax's solid body:
+    // above it the photo is sharp, below it still blurred.
+    var BODY = 16 / 48;            // solid band at the top of the wax drawing
+    var pool = band * 0.62;        // how much of the wax rests in the frame at the end
+    var from = -band;
+    var to = height - pool;
+    var DURATION = 950;
+    var DELAY = 700;
+    var t0 = performance.now() + DELAY;
+    wax.style.opacity = "1";
+    wax.style.transform = "translateY(" + from + "px)";
+    // Gathers speed for three quarters of the drop, then eases as it lands.
+    function ease(t) { return t < 0.75 ? t * t / 0.75 : 1 - (1 - t) * (1 - t) / 0.25; }
+    function frame(now) {
+      if (mine !== showing) return;
+      var t = Math.max(0, Math.min(1, (now - t0) / DURATION));
+      var y = from + (to - from) * ease(t);
+      var edge = Math.min(height, Math.max(0, y + band * BODY * 0.8));
+      wax.style.transform = "translateY(" + y + "px)";
+      preview.style.clipPath = "inset(" + edge + "px 0 0 0)";
+      if (t < 1) requestAnimationFrame(frame);
+      else settle();
+    }
+    requestAnimationFrame(frame);
+
+    // It comes to rest: the drips draw back into a pool along the bottom.
+    function settle() {
+      preview.style.opacity = "0";
+      var art = wax.querySelector("svg");
+      burning.push(art.animate([
+        { transform: "scaleY(1)" },
+        { transform: "scaleY(1.12)", offset: 0.35 },
+        { transform: "scaleY(0.62)" }
+      ], { duration: 520, easing: "cubic-bezier(0.3, 0.7, 0.3, 1)", fill: "forwards" }));
+      wax.classList.add("is-settled");
+      done();
+    }
   }
 
   // The photos either side load quietly, so stepping through feels instant.

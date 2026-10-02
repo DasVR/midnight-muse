@@ -1,7 +1,4 @@
 (function () {
-  var marks = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮"];
-  var banner = document.getElementById("draft-banner");
-  var notesBtn = document.getElementById("notes-toggle");
   var menuBtn = document.getElementById("menu-toggle");
   var overlay = document.getElementById("nav-overlay");
   var form = document.getElementById("book-form");
@@ -50,32 +47,10 @@
         num: numerals[i],
         name: "Package",
         price: "Confirm",
-        rows: [["Session", "—"], ["Edited photos", "—"], ["Locations", "—"], ["Travel", "—"]]
+        rows: [["Session", "TBC"], ["Edited photos", "TBC"], ["Locations", "TBC"], ["Travel", "TBC"]]
       });
     }
     return tiers;
-  }
-
-  function measureBanner() {
-    var height = !banner || banner.hidden ? 0 : banner.offsetHeight;
-    document.documentElement.style.setProperty("--banner-h", height + "px");
-  }
-
-  document.querySelectorAll("[data-note]").forEach(function (el, index) {
-    var tag = document.createElement("p");
-    tag.className = "note-tag";
-    tag.textContent = (marks[index] || String(index + 1)) + " " + el.getAttribute("data-note");
-    el.insertBefore(tag, el.firstChild);
-  });
-
-  if (banner) {
-    document.getElementById("dismiss-banner").addEventListener("click", function () {
-      banner.hidden = true;
-      document.body.classList.remove("has-banner");
-      measureBanner();
-    });
-    measureBanner();
-    window.addEventListener("resize", measureBanner);
   }
 
   function updateNav() {
@@ -83,12 +58,6 @@
   }
   updateNav();
   window.addEventListener("scroll", updateNav, { passive: true });
-
-  notesBtn.addEventListener("click", function () {
-    var on = document.body.classList.toggle("notes-on");
-    notesBtn.setAttribute("aria-pressed", String(on));
-    notesBtn.textContent = on ? "Hide notes" : "Show notes";
-  });
 
   var menuAnim = null;
 
@@ -154,10 +123,26 @@
     }).join("");
   }
 
+  // The section opens on the price: the lowest tier, and what the range covers.
+  function renderFrom(key, session) {
+    var noun = { portraits: "Portrait", couples: "Couples", graduations: "Graduation", branding: "Branding" }[key] || "";
+    var label = noun + " sessions from";
+    var first = session.tiers[0];
+    var last = session.tiers[session.tiers.length - 1];
+    var row = function (tier, what) { return (tier.rows.filter(function (r) { return r[0] === what; })[0] || [])[1]; };
+    document.getElementById("from-label").textContent = session.standIn ? noun + " sessions" : label;
+    document.getElementById("from-price").textContent = session.standIn ? "Prices to come" : first.price;
+    document.getElementById("from-price").classList.toggle("is-tbc", session.standIn);
+    document.getElementById("from-range").textContent = session.standIn
+      ? "Dani is finalising these packages"
+      : row(first, "Session") + " to " + row(last, "Session") + " · " + String(row(first, "Edited photos")).split("–")[0] + " to " + row(last, "Edited photos") + " edited photos";
+  }
+
   function renderTiers(key) {
     var session = sessions[key];
     currentSession = key;
     standIn.hidden = !session.standIn;
+    renderFrom(key, session);
     scroller.innerHTML = session.tiers.map(function (tier) {
       var rows = tier.rows.map(function (row) {
         return "<li><span>" + row[0] + "</span><span class=\"leader\" aria-hidden=\"true\"></span><span>" + row[1] + "</span></li>";
@@ -482,7 +467,7 @@
         return '<li><span>' + longDate(day) + '</span><button type="button" class="cal-unpick" data-day="' + day + '" aria-label="Remove ' + longDate(day) + '">&times;</button></li>';
       }).join("") + "</ul>";
       if (state.picks.length >= CAL.maxPicks) html += '<p class="cal-detail-empty">That’s three. Remove one to swap it.</p>';
-      html += '<button type="button" class="btn cal-write">Write your letter <img class="key-icon" src="assets/key.svg" alt=""></button>';
+      html += '<button type="button" class="btn cal-write">Write your letter</button>';
       detail.innerHTML = html;
     }
 
@@ -611,16 +596,6 @@
 
   if (!reduce && "IntersectionObserver" in window) {
     document.documentElement.classList.add("motion-ready");
-    // Filigree strokes start at the centre diamond and ink outward.
-    var filigree = document.querySelector(".filigree");
-    if (filigree) {
-      var center = 160;
-      filigree.querySelectorAll("path").forEach(function (path) {
-        var box = path.getBBox();
-        var distance = Math.abs(box.x + box.width / 2 - center);
-        path.style.setProperty("--draw-delay", Math.round(distance * 3) + "ms");
-      });
-    }
     var once = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
@@ -628,7 +603,7 @@
         once.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
-    document.querySelectorAll(".filigree, .doll-house").forEach(function (el) { once.observe(el); });
+    document.querySelectorAll(".doll-house").forEach(function (el) { once.observe(el); });
   }
 
   placeInk();
