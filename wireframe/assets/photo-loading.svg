@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="64" viewBox="0 0 40 64" fill="none">
+  <!-- A candle that flickers while a photograph loads -->
+  <path d="M20 6c4 6 7 10 7 15a7 7 0 0 1-14 0c0-5 3-9 7-15Z" fill="#F2EEE6" opacity="0.85">
+    <animateTransform attributeName="transform" type="scale" values="1 1;0.94 1.06;1.04 0.97;0.97 1.04;1 1" dur="1.6s" repeatCount="indefinite" additive="sum"/>
+    <animate attributeName="opacity" values="0.85;0.6;0.9;0.7;0.85" dur="1.6s" repeatCount="indefinite"/>
+  </path>
+  <path d="M20 22v6" stroke="#8C8983" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="13" y="28" width="14" height="30" rx="1" stroke="#8C8983" stroke-width="1.5"/>
+</svg>

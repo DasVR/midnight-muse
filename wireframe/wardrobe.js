@@ -469,6 +469,8 @@
     lightbox.setAttribute("aria-label", "Photograph");
     var figure = el("figure", "lightbox-figure");
     var img = el("img", "lightbox-img");
+    // The viewer handles its own loading state, photo by photo.
+    img.setAttribute("data-manual", "");
     var caption = el("figcaption", "lightbox-caption");
     figure.appendChild(img);
     figure.appendChild(caption);
@@ -503,27 +505,82 @@
     });
   }
 
+  // Size the frame to the photo before it arrives, so the loading state has
+  // the right shape and the previous photo never lingers.
+  function fitBox(photo) {
+    var maxW = Math.min(lightbox.clientWidth - 32, 1100);
+    var maxH = window.innerHeight - 180;
+    var scale = Math.min(maxW / photo.w, maxH / photo.h, 1);
+    return { w: Math.round(photo.w * scale), h: Math.round(photo.h * scale) };
+  }
+
+  var showing = 0;
   function render(direction) {
     var photo = state.list[state.lightboxIndex];
     var img = lightbox.querySelector(".lightbox-img");
-    img.src = photo.src;
+    var figure = lightbox.querySelector(".lightbox-figure");
+    var caption = lightbox.querySelector(".lightbox-caption");
+    var mine = ++showing;
+    var box = fitBox(photo);
+    var label = titles[photo.category] + " · " + (state.lightboxIndex + 1) + " of " + state.list.length;
+
+    // Show this photo's small board copy straight away, softened, with the
+    // candle on top; the full size replaces it when it arrives.
+    img.classList.remove("is-broken");
+    img.classList.add("is-preview", "is-loading");
+    figure.classList.add("is-loading");
+    img.style.width = box.w + "px";
+    img.style.height = box.h + "px";
     img.alt = photo.alt;
     img.width = photo.w;
     img.height = photo.h;
-    lightbox.querySelector(".lightbox-caption").textContent =
-      titles[photo.category] + " · " + (state.lightboxIndex + 1) + " of " + state.list.length;
+    img.src = photo.thumb || photo.src;
+    caption.textContent = label;
+    lightbox.setAttribute("aria-busy", "true");
     if (animate && direction) {
       img.animate([
-        { opacity: 0, transform: "translateX(" + direction * 18 + "px)", filter: "blur(2px)" },
-        { opacity: 1, transform: "none", filter: "blur(0)" }
+        { opacity: 0, transform: "translateX(" + direction * 18 + "px)" },
+        { opacity: 1, transform: "none" }
       ], { duration: 200, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
     }
+
+    var loader = new Image();
+    loader.decoding = "async";
+    loader.onload = function () {
+      if (mine !== showing) return;
+      img.src = photo.src;
+      img.classList.remove("is-preview", "is-loading");
+      figure.classList.remove("is-loading");
+      lightbox.setAttribute("aria-busy", "false");
+      preloadNeighbours();
+    };
+    loader.onerror = function () {
+      if (mine !== showing) return;
+      img.classList.remove("is-preview", "is-loading");
+      img.classList.add("is-broken");
+      figure.classList.remove("is-loading");
+      img.src = window.MusePhotos ? window.MusePhotos.MISSING : "";
+      caption.textContent = label + " · didn't load";
+      lightbox.setAttribute("aria-busy", "false");
+    };
+    loader.src = photo.src;
   }
+
+  // The photos either side load quietly, so stepping through feels instant.
+  function preloadNeighbours() {
+    var n = state.list.length;
+    [1, -1].forEach(function (d) {
+      var next = state.list[(state.lightboxIndex + d + n) % n];
+      if (next) new Image().src = next.src;
+    });
+  }
+
 
   function openLightbox(index, pin) {
     state.lightboxIndex = index;
     state.lightboxFrom = pin;
     lightbox.hidden = false;
+    document.documentElement.classList.add("lightbox-open");
     render(0);
     var img = lightbox.querySelector(".lightbox-img");
     if (animate && pin) {
@@ -552,6 +609,7 @@
     var restore = state.lightboxFrom;
     var hide = function () {
       lightbox.hidden = true;
+      document.documentElement.classList.remove("lightbox-open");
       if (!instant && restore && restore.isConnected) restore.focus({ preventScroll: true });
     };
     if (!animate || instant) return hide();

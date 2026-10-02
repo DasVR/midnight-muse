@@ -160,7 +160,7 @@
       </div>
     </section>
 
-    <section class="section" id="sessions" data-note="Every package in one consistent layout. Each card now links to its open dates.">
+    <section class="section" id="sessions" data-note="Every package in one consistent layout. Each card links to the days Dani is free.">
       <div class="lace-edge" aria-hidden="true"></div>
       <div class="wrap">
         <h2>Sessions</h2>
@@ -180,22 +180,10 @@
       </div>
     </section>
 
-    <section class="section" id="availability" data-note="Live from Dani's Cal.com: days and times are her real open hours. Pick a session, a day and a time, then reserve it on Cal.com or send a letter instead.">
+    <section class="section" id="availability" data-note="Days only, read from Dani's Cal.com availability. Nothing is booked here: tapping days adds them to your letter, and Dani confirms by writing back.">
       <div class="wrap">
         <h2>Open Dates</h2>
-        <p class="sub">Pick a day, then a time</p>
-        <div class="cal-controls">
-          <div class="field">
-            <label for="cal-program">Session</label>
-            <select id="cal-program">
-              <option value="portraits">Portraits</option>
-              <option value="couples">Couples</option>
-              <option value="graduations">Graduations</option>
-              <option value="branding">Branding</option>
-            </select>
-          </div>
-          <div class="cal-tiers" id="cal-tiers" role="group" aria-label="Package"></div>
-        </div>
+        <p class="sub">When Dani is free to shoot</p>
         <div class="cal-layout">
           <div class="cal frame">
             <div class="cal-head">
@@ -207,7 +195,7 @@
               <span>S<span class="wd-rest">un</span></span><span>M<span class="wd-rest">on</span></span><span>T<span class="wd-rest">ue</span></span><span>W<span class="wd-rest">ed</span></span><span>T<span class="wd-rest">hu</span></span><span>F<span class="wd-rest">ri</span></span><span>S<span class="wd-rest">at</span></span>
             </div>
             <div class="cal-grid" id="cal-days" aria-busy="true"></div>
-            <p class="cal-legend"><span class="cal-dot" aria-hidden="true"></span> Open <span class="cal-legend-sep" aria-hidden="true">·</span> <span id="cal-tz"></span></p>
+            <p class="cal-legend"><span class="cal-dot" aria-hidden="true"></span> Open <span class="cal-legend-sep" aria-hidden="true">·</span> Faded days are booked or away</p>
           </div>
           <aside class="cal-detail" id="cal-detail" aria-live="polite">
             <p class="cal-detail-empty">Loading Dani's open dates…</p>
@@ -444,7 +432,7 @@
           </details>
           <details>
             <summary>How do I book, and is there a deposit?</summary>
-            <p class="faq-answer">Pick a day and time under <a href="#availability">Open Dates</a> and reserve it, or send me a letter through the form below. <span class="faq-draft">Deposit and payment details to come from Dani.</span></p>
+            <p class="faq-answer">Check which days I'm free under <a href="#availability">Open Dates</a>, then send me a letter through the form below with the days that suit you. I'll write back to confirm. <span class="faq-draft">Deposit and payment details to come from Dani.</span></p>
           </details>
           <details>
             <summary>When will I get my photos?</summary>
@@ -554,6 +542,7 @@
 
   <button class="notes-toggle" id="notes-toggle" type="button" aria-pressed="true">Hide notes</button>
 
+  <script src="photo-states.js"></script>
   <script src="unlock.js"></script>
   <script src="main.js"></script>
   <script src="letter.js"></script>
