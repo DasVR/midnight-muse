@@ -45,5 +45,13 @@
     });
   }).observe(document.documentElement, { childList: true, subtree: true });
 
+  // A light deterrent only: the real protection is the mark stamped into
+  // every photo file (tools/watermark).
+  ["contextmenu", "dragstart"].forEach(function (type) {
+    document.addEventListener(type, function (event) {
+      if (event.target.tagName === "IMG" && event.target.getAttribute("alt")) event.preventDefault();
+    });
+  });
+
   window.MusePhotos = { watch: watch, fail: fail, MISSING: MISSING };
 })();

@@ -3149,3 +3149,6 @@ img.is-broken{
   .grad-actions{ align-items:stretch; }
   .grad-actions .btn{ justify-content:center; }
 }
+
+/* Photos can't be long-press saved on iOS or dragged out (the mark is in the file either way) */
+img[alt]:not([alt=""]){ -webkit-touch-callout:none; -webkit-user-drag:none; user-select:none; }
