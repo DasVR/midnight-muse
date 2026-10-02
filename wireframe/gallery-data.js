@@ -11,7 +11,7 @@ window.GALLERY = {
     },
     {
       "id": "y2k",
-      "title": "Y2K & Pop"
+      "title": "Y2K"
     },
     {
       "id": "love",

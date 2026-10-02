@@ -8,7 +8,6 @@
   var scroller = document.getElementById("tier-scroller");
   var tierTable = document.getElementById("tier-table");
   var sessionPanel = document.getElementById("session-panel");
-  var standIn = document.getElementById("stand-in");
   var tabs = Array.prototype.slice.call(document.querySelectorAll("[role='tab']"));
   var nav = document.getElementById("site-nav");
   var currentSession = "portraits";
@@ -27,7 +26,10 @@
     },
     couples: {
       standIn: true,
-      tiers: blankTiers(5)
+      // Maternity is booked as a couples session, so it lives here as a tier.
+      tiers: blankTiers(5).concat([
+        { num: "VI", name: "Maternity", price: "Confirm", perk: "+ shot like a couples session", rows: [["Session", "TBC"], ["Edited photos", "TBC"], ["Locations", "TBC"], ["Travel", "TBC"]] }
+      ])
     },
     graduations: {
       standIn: true,
@@ -141,7 +143,6 @@
   function renderTiers(key) {
     var session = sessions[key];
     currentSession = key;
-    standIn.hidden = !session.standIn;
     renderFrom(key, session);
     scroller.innerHTML = session.tiers.map(function (tier) {
       var rows = tier.rows.map(function (row) {
@@ -348,9 +349,12 @@
     }
   });
 
-  // Maternity books as a Couples session.
-  document.getElementById("plan-maternity").addEventListener("click", function () {
-    prefillBooking("couples", sessions.couples.tiers[0].num);
+  // Links elsewhere on the page can open a session tab, e.g. the FAQ's "Couples".
+  document.addEventListener("click", function (event) {
+    var link = event.target.closest("[data-open-session]");
+    if (!link) return;
+    var tab = document.getElementById("tab-" + link.getAttribute("data-open-session"));
+    if (tab) selectTab(tab);
   });
 
   // Open Dates: which days Dani is free, read from her Cal.com availability.
