@@ -3076,25 +3076,95 @@ img.is-broken{
   }
 }
 
-/* The viewer: the board copy stands in, softened, until the full size lands */
-.lightbox-figure{ position:relative; }
-.lightbox-img.is-preview{ filter:blur(6px) saturate(0.85); clip-path:inset(0); }
-.lightbox-img{ transition:filter 260ms ease-out; object-fit:contain; }
-.lightbox-figure.is-loading::after{
-  content:"";
+/* The viewer: the board copy stands in, softened, under a burning candle */
+.lb-stage{
+  position:relative;
+  max-width:100%;
+  overflow:hidden;
+  background:var(--cloth);
+  outline:1px solid var(--rule-in);
+  outline-offset:-1px;
+}
+
+.lb-stage .lightbox-img{
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  object-fit:contain;
+  outline:0;
+}
+
+.lb-preview{
   position:absolute;
-  left:50%;
-  top:calc(50% - 16px);
-  width:56px;
-  height:56px;
-  margin:-28px 0 0 -28px;
-  border-radius:50%;
-  background:rgba(10, 10, 10, 0.72) url("assets/photo-loading.svg") center / 18px auto no-repeat;
-  box-shadow:inset 0 0 0 1px var(--rule-in);
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:blur(7px) saturate(0.85);
+  transform:scale(1.04);
+  transition:opacity 260ms ease-out;
   pointer-events:none;
 }
+
+.lb-wax{
+  position:absolute;
+  left:-2%;
+  top:0;
+  width:104%;
+  height:clamp(36px, 9%, 64px);
+  opacity:0;
+  transform:translateY(-100%);
+  filter:drop-shadow(0 4px 6px rgba(10, 10, 10, 0.35));
+  pointer-events:none;
+}
+.lb-wax svg{ display:block; width:100%; height:100%; }
+/* A thin sheen of fresh wax trails behind the front */
+.lb-wax::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:60%;
+  height:220%;
+  background:linear-gradient(to bottom, transparent, var(--wax-sheen));
+}
+
+.lb-candle{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:76px;
+  height:76px;
+  margin:-38px 0 0 -38px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(10, 10, 10, 0.6) 40%, transparent 72%);
+  opacity:0;
+  transition:opacity 200ms ease-out;
+  pointer-events:none;
+}
+.lb-stage.is-loading .lb-candle{ opacity:1; }
+.lb-candle svg{ display:block; width:26px; height:48px; margin:14px auto 0; overflow:visible; }
+.lb-body{ transform-box:fill-box; transform-origin:50% 100%; }
+.lb-top{ transform-box:view-box; }
+.lb-flame{
+  transform-box:fill-box;
+  transform-origin:50% 90%;
+  animation:lb-flicker 1.6s ease-in-out infinite;
+}
+.lb-stage.is-melting .lb-flame{ animation:none; }
+.lb-smoke{ opacity:0; }
+
+@keyframes lb-flicker{
+  0%, 100%{ transform:scale(1, 1); opacity:0.9; }
+  30%{ transform:scale(0.94, 1.06); opacity:0.7; }
+  60%{ transform:scale(1.04, 0.97); opacity:1; }
+}
+
+:root{ --wax-sheen:rgba(242, 238, 230, 0.16); }
+
 @media (prefers-reduced-motion:reduce){
-  .lightbox-figure.is-loading::after{ background-image:url("assets/photo-loading-still.svg"); }
+  .lb-preview{ transition:none; }
 }
 
 /* The review tools step aside while a photo is open, so they never cover Next */

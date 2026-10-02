@@ -468,11 +468,25 @@
     lightbox.setAttribute("aria-modal", "true");
     lightbox.setAttribute("aria-label", "Photograph");
     var figure = el("figure", "lightbox-figure");
+    var stage = el("div", "lb-stage");
     var img = el("img", "lightbox-img");
     // The viewer handles its own loading state, photo by photo.
     img.setAttribute("data-manual", "");
+    var preview = el("img", "lb-preview");
+    preview.alt = "";
+    preview.setAttribute("aria-hidden", "true");
+    var wax = el("div", "lb-wax");
+    wax.setAttribute("aria-hidden", "true");
+    wax.innerHTML = WAX;
+    var candle = el("div", "lb-candle");
+    candle.setAttribute("aria-hidden", "true");
+    candle.innerHTML = CANDLE;
     var caption = el("figcaption", "lightbox-caption");
-    figure.appendChild(img);
+    stage.appendChild(img);
+    stage.appendChild(preview);
+    stage.appendChild(wax);
+    stage.appendChild(candle);
+    figure.appendChild(stage);
     figure.appendChild(caption);
     var prev = el("button", "lightbox-nav lightbox-prev", "Previous");
     var next = el("button", "lightbox-nav lightbox-next", "Next");
@@ -514,56 +528,145 @@
     return { w: Math.round(photo.w * scale), h: Math.round(photo.h * scale) };
   }
 
+  // While a photo loads a candle burns down over its softened preview. If the
+  // wait runs past two seconds, the candle gutters out and its wax runs down
+  // the frame, and the photo comes sharp behind the wax. Quick loads simply
+  // sharpen.
+  var CANDLE =
+    '<svg viewBox="0 0 40 72" aria-hidden="true" focusable="false">' +
+      '<path class="lb-smoke" d="M20 22c-3-4 3-7 0-11s2-6 0-9" fill="none" stroke="#D9D2C5" stroke-width="1.4" stroke-linecap="round"/>' +
+      '<g class="lb-top">' +
+        '<path class="lb-flame" d="M20 10c4 6 7 10 7 15a7 7 0 0 1-14 0c0-5 3-9 7-15Z" fill="#F2EEE6"/>' +
+        '<path d="M20 26v6" stroke="#8C8983" stroke-width="1.5" stroke-linecap="round"/>' +
+      '</g>' +
+      '<rect class="lb-body" x="13" y="32" width="14" height="36" rx="1.5" fill="#F2EEE6" opacity="0.9"/>' +
+    "</svg>";
+  var WAX =
+    '<svg viewBox="0 0 400 48" preserveAspectRatio="none" aria-hidden="true" focusable="false">' +
+      '<path d="M0 0H400V16c-8 0-9 8-11 18s-7 10-8 0-3-12-14-12-10 6-12 10-6 4-7-2-6-8-20-8-14 14-16 26-8 12-9 0-4-18-16-18-14 4-17 9-6 5-7-1-8-8-22-8-16 8-18 16-7 9-8 0-6-15-19-15-12 3-14 7-6 4-7-1-7-6-19-6-16 12-18 24-8 10-9-1-5-22-17-22-13 5-15 10-6 3-7-3-8-7-20-7-15 9-17 17-7 8-8-2-4-14-15-14-12 4-14 9-5 3-6-2-6-6-13-6Z" fill="#F2EEE6"/>' +
+    "</svg>";
+
   var showing = 0;
+  var burning = [];
+  function stopBurning() {
+    burning.forEach(function (a) { a.cancel(); });
+    burning = [];
+  }
+
   function render(direction) {
     var photo = state.list[state.lightboxIndex];
     var img = lightbox.querySelector(".lightbox-img");
-    var figure = lightbox.querySelector(".lightbox-figure");
+    var stage = lightbox.querySelector(".lb-stage");
+    var preview = lightbox.querySelector(".lb-preview");
+    var candle = lightbox.querySelector(".lb-candle");
     var caption = lightbox.querySelector(".lightbox-caption");
     var mine = ++showing;
     var box = fitBox(photo);
     var label = titles[photo.category] + " · " + (state.lightboxIndex + 1) + " of " + state.list.length;
+    var started = performance.now();
 
-    // Show this photo's small board copy straight away, softened, with the
-    // candle on top; the full size replaces it when it arrives.
+    stopBurning();
+    stage.style.width = box.w + "px";
+    stage.style.height = box.h + "px";
+    stage.classList.add("is-loading");
+    // The sharp layer stays empty until the full size is in hand, so the
+    // previous photo can never show through.
     img.classList.remove("is-broken");
-    img.classList.add("is-preview", "is-loading");
-    figure.classList.add("is-loading");
-    img.style.width = box.w + "px";
-    img.style.height = box.h + "px";
+    img.removeAttribute("src");
     img.alt = photo.alt;
     img.width = photo.w;
     img.height = photo.h;
-    img.src = photo.thumb || photo.src;
+    preview.src = photo.thumb || photo.src;
+    preview.style.opacity = "1";
     caption.textContent = label;
     lightbox.setAttribute("aria-busy", "true");
     if (animate && direction) {
-      img.animate([
+      burning.push(stage.animate([
         { opacity: 0, transform: "translateX(" + direction * 18 + "px)" },
         { opacity: 1, transform: "none" }
-      ], { duration: 200, easing: "cubic-bezier(0.25, 1, 0.5, 1)" });
+      ], { duration: 200, easing: "cubic-bezier(0.25, 1, 0.5, 1)" }));
+    }
+    if (animate) {
+      // The candle burns down slowly for as long as the photo takes.
+      var burn = { duration: 9000, easing: "cubic-bezier(0.2, 0.6, 0.4, 1)", fill: "forwards" };
+      burning.push(candle.querySelector(".lb-body").animate([{ transform: "scaleY(1)" }, { transform: "scaleY(0.3)" }], burn));
+      burning.push(candle.querySelector(".lb-top").animate([{ transform: "translateY(0)" }, { transform: "translateY(25px)" }], burn));
+    }
+
+    function done() {
+      if (mine !== showing) return;
+      stage.classList.remove("is-loading", "is-melting");
+      preview.style.opacity = "0";
+      stopBurning();
+      lightbox.setAttribute("aria-busy", "false");
+      preloadNeighbours();
     }
 
     var loader = new Image();
     loader.decoding = "async";
     loader.onload = function () {
       if (mine !== showing) return;
-      img.src = photo.src;
-      img.classList.remove("is-preview", "is-loading");
-      figure.classList.remove("is-loading");
-      lightbox.setAttribute("aria-busy", "false");
-      preloadNeighbours();
+      // The image that just loaded becomes the sharp layer itself, so nothing
+      // has to be fetched or decoded again behind the wax.
+      loader.className = "lightbox-img";
+      loader.alt = photo.alt;
+      loader.width = photo.w;
+      loader.height = photo.h;
+      loader.setAttribute("data-manual", "");
+      img.replaceWith(loader);
+      var slow = performance.now() - started > 2000;
+      if (animate && slow) melt(stage, preview, candle, box.h, mine, done);
+      else done();
     };
     loader.onerror = function () {
       if (mine !== showing) return;
-      img.classList.remove("is-preview", "is-loading");
+      stopBurning();
+      stage.classList.remove("is-loading");
+      preview.style.opacity = "0";
       img.classList.add("is-broken");
-      figure.classList.remove("is-loading");
       img.src = window.MusePhotos ? window.MusePhotos.MISSING : "";
       caption.textContent = label + " · didn't load";
       lightbox.setAttribute("aria-busy", "false");
     };
     loader.src = photo.src;
+  }
+
+  // The flame gutters out, the stub melts, and the wax runs down the frame.
+  // Where the wax has passed, the blurred preview is gone and the photo is sharp.
+  function melt(stage, preview, candle, height, mine, done) {
+    var wax = stage.querySelector(".lb-wax");
+    var band = wax.offsetHeight;
+    var fill = { fill: "forwards" };
+    stage.classList.add("is-melting");
+    burning.push(candle.querySelector(".lb-flame").animate([
+      { transform: "scale(1)", opacity: 1 },
+      { transform: "scale(1.15, 0.7)", opacity: 0.8, offset: 0.4 },
+      { transform: "scale(0.2, 0.1)", opacity: 0 }
+    ], Object.assign({ duration: 320, easing: "ease-in" }, fill)));
+    burning.push(candle.querySelector(".lb-smoke").animate([
+      { opacity: 0, transform: "translateY(4px)" },
+      { opacity: 0.75, transform: "translateY(-4px)", offset: 0.3 },
+      { opacity: 0, transform: "translateY(-16px)" }
+    ], Object.assign({ duration: 900, delay: 220, easing: "ease-out" }, fill)));
+    burning.push(candle.animate([
+      { opacity: 1, transform: "translateY(0) scaleY(1)" },
+      { opacity: 0, transform: "translateY(10px) scaleY(0.4)" }
+    ], Object.assign({ duration: 360, delay: 520, easing: "ease-in" }, fill)));
+
+    // The wax front and the sharp edge travel together, gathering speed.
+    var flow = { duration: 900, delay: 700, easing: "cubic-bezier(0.55, 0, 0.75, 0.6)", fill: "forwards" };
+    var front = band * 0.55;
+    burning.push(wax.animate([
+      { transform: "translateY(" + -band + "px)", opacity: 1 },
+      { transform: "translateY(" + (height - front) + "px)", opacity: 1, offset: 0.92 },
+      { transform: "translateY(" + (height - front + 8) + "px)", opacity: 0 }
+    ], flow));
+    var last = preview.animate([
+      { clipPath: "inset(0 0 0 0)" },
+      { clipPath: "inset(" + height + "px 0 0 0)" }
+    ], flow);
+    burning.push(last);
+    last.finished.then(function () { if (mine === showing) done(); }, function () {});
   }
 
   // The photos either side load quietly, so stepping through feels instant.
@@ -582,7 +685,7 @@
     lightbox.hidden = false;
     document.documentElement.classList.add("lightbox-open");
     render(0);
-    var img = lightbox.querySelector(".lightbox-img");
+    var img = lightbox.querySelector(".lb-stage");
     if (animate && pin) {
       // Grow from the pinned photo that was tapped.
       var from = pin.getBoundingClientRect();
