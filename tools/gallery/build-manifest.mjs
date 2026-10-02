@@ -69,11 +69,15 @@ for (const cat of CATEGORIES) {
   const dir = path.join(galleryDir, cat.id);
   if (!fs.existsSync(dir)) continue;
   for (const name of fs.readdirSync(dir).sort()) {
+    if (name === "thumbs") continue;
     if (!/\.(jpe?g|png|webp)$/i.test(name)) { if (!name.startsWith(".")) skipped.push(`${cat.id}/${name}`); continue; }
     const src = `img/gallery/${cat.id}/${name}`;
     const size = imageSize(path.join(dir, name));
     if (!size) { skipped.push(`${cat.id}/${name} (unreadable)`); continue; }
-    photos.push({ src, w: size.w, h: size.h, category: cat.id, alt: existingAlt.get(src) || `Photograph by Dani, ${cat.title}.` });
+    const photo = { src, w: size.w, h: size.h, category: cat.id, alt: existingAlt.get(src) || `Photograph by Dani, ${cat.title}.` };
+    // Small copies for the pinned board live in thumbs/ under the same name.
+    if (fs.existsSync(path.join(dir, "thumbs", name))) photo.thumb = `img/gallery/${cat.id}/thumbs/${name}`;
+    photos.push(photo);
   }
 }
 
