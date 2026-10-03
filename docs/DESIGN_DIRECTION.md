@@ -56,7 +56,10 @@ An antique keepsake box opened at midnight: lace doilies, a skeleton key, handwr
 
 Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for ≥14px secondary text. The current site's grey-on-black body text must not return.
 
-## Type (all Google Fonts)
+## Type (Google Fonts, served from the site)
+
+The three families live in `wireframe/fonts/` (latin subset, WOFF2) with `@font-face` rules at the top of `styles.css`. Pinyon Script, Cormorant and Plex Mono 400 are preloaded. Nothing waits on fonts.googleapis.com, which used to hold up the first paint by over a second.
+
 
 - Script display (wordmark, section titles): **Pinyon Script** (closest to "Cordelia Rose" / "To One's Heart"). Alternates: **Monsieur La Doulaise**, **Italianno**. Large sizes only (≥48px), never body copy
 - Serif: **Cormorant Garamond** 300/400 + italic, for subheads, quotes and intro text
@@ -80,10 +83,14 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 
 ## Motion (quiet, like turning pages)
 
-- **Lenis** smooth scroll
-- **GSAP + ScrollTrigger**: script headlines draw in (stroke reveal via SVG or clip-path), lace frames fade/scale in from 0.96, photos fade from grayscale → color as they enter (reinforces "all color comes from the photos")
-- Hover on gallery photos: grayscale 60% → full color
-- Respect `prefers-reduced-motion`
+Plain CSS and a few small scripts, no libraries. Every effect sits on top of a page that's complete without it, and `prefers-reduced-motion` turns all of it off.
+
+- **Hero shader** (`hero-gl.js`): a WebGL fragment shader redraws the hero photo. It develops from grey to colour (driven by the CSS `bloom` animation, so the two can't drift), a warm candle glow breathes over it and follows the pointer on a desktop, film grain moves through it at 24 frames a second, and it pushes in and darkens as the page scrolls away. It draws at 30fps, at most 1.5x pixel density, only while the hero is on screen and the tab is visible. It stays off with Data Saver, without WebGL, on software renderers (no graphics chip), and it stops on its own if a device can't keep up. The `<img>` underneath is always the real photo.
+- **Hero entrance**: the title is written in left to right (a clip-path wipe), then the line, quote and buttons rise in 80ms apart. Pure CSS from the first paint, done in 1.4s.
+- **Hero scroll-away**: the hero copy drifts and fades with the scrollbar (CSS scroll-driven animation, in browsers that have it).
+- **Reveals** (`motion.js`): four groups only (gallery covers, sets, Blind Date steps, Kind Words letters) rise in once, staggered in reading order. A sideways strip arrives as one row. Nothing re-animates on the way back up.
+- **Candlelight on covers**: on a desktop, a warm light follows the pointer across a gallery cover as it turns to colour.
+- Already in place: the menu opens as a circle from its button, tabs slide their ink, months slide in from the arrow pressed, buttons press to 0.96, doll houses draw their roofs and light their rooms, the wardrobe's wax-melt loader.
 
 ## Site structure
 

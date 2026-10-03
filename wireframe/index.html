@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#0A0A0A">
   <title>Midnight Muse - Wirefram</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/pinyon-script.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/cormorant-garamond.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body id="top">
@@ -44,7 +44,7 @@
 
   <main id="main">
     <section class="hero">
-      <img class="hero-photo" src="img/hero-veil.jpg" width="2400" height="1600" alt="Woman in a white lace veil and a satin corset holds a dark red rose in the dark." fetchpriority="high">
+      <img class="hero-photo" src="img/sized/hero-veil-1200.webp" srcset="img/sized/hero-veil-480.webp 480w, img/sized/hero-veil-800.webp 800w, img/sized/hero-veil-1200.webp 1200w, img/sized/hero-veil-1800.webp 1800w, img/sized/hero-veil-2400.webp 2400w" sizes="(orientation:portrait) 150vh, 100vw" width="2400" height="1600" alt="Woman in a white lace veil and a satin corset holds a dark red rose in the dark." fetchpriority="high">
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-copy">
         <h1 class="hero-title">Midnight Muse</h1>
@@ -61,7 +61,7 @@
     <section class="section" id="meet">
       <div class="wrap meet">
         <div class="cameo">
-          <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/dani-portrait.jpg" width="1200" height="1800" alt="Dani in profile and silhouette, wearing white feathered wings, a ring light glowing behind her head like a halo.">
+          <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/sized/dani-portrait-1200.webp" srcset="img/sized/dani-portrait-480.webp 480w, img/sized/dani-portrait-800.webp 800w, img/sized/dani-portrait-1200.webp 1200w" sizes="290px" width="1200" height="1800" alt="Dani in profile and silhouette, wearing white feathered wings, a ring light glowing behind her head like a halo.">
           <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
         </div>
         <div class="letter">
@@ -78,23 +78,23 @@
         <p class="sub">Built by hand, for you</p>
         <div class="sets-layout" tabindex="0" role="region" aria-label="Sets, scroll sideways for more">
           <figure class="set">
-            <img loading="lazy" decoding="async" class="js-photo" src="img/IMG_6754.jpg" alt="Woman with black lipstick reclines on a floral bed holding a candle, a brass candelabra lit behind her against red velvet.">
+            <img loading="lazy" decoding="async" class="js-photo" src="img/sized/IMG_6754-1067.webp" srcset="img/sized/IMG_6754-480.webp 480w, img/sized/IMG_6754-800.webp 800w, img/sized/IMG_6754-1067.webp 1067w" sizes="(min-width:1025px) 240px, (min-width:701px) 380px, 300px" alt="Woman with black lipstick reclines on a floral bed holding a candle, a brass candelabra lit behind her against red velvet.">
             <figcaption>Set no. 01 · Candlelight &amp; red velvet</figcaption>
           </figure>
           <figure class="set">
-            <img loading="lazy" decoding="async" class="js-photo set-blue" src="img/set-blue-tech.jpg" alt="A woman in silhouette against a glowing blue curtain, cables hanging around her.">
+            <img loading="lazy" decoding="async" class="js-photo set-blue" src="img/sized/set-blue-tech-1200.webp" srcset="img/sized/set-blue-tech-480.webp 480w, img/sized/set-blue-tech-800.webp 800w, img/sized/set-blue-tech-1200.webp 1200w, img/sized/set-blue-tech-1600.webp 1600w" sizes="(min-width:1025px) 240px, (min-width:701px) 380px, 300px" alt="A woman in silhouette against a glowing blue curtain, cables hanging around her.">
             <figcaption>Set no. 02 · Blue tech</figcaption>
           </figure>
           <figure class="set">
-            <img loading="lazy" decoding="async" class="js-photo" src="img/IMG_8200.jpg" alt="A woman in a floral lace dress reflected in an ornate oval mirror, candles at the side.">
+            <img loading="lazy" decoding="async" class="js-photo" src="img/sized/IMG_8200-1067.webp" srcset="img/sized/IMG_8200-480.webp 480w, img/sized/IMG_8200-800.webp 800w, img/sized/IMG_8200-1067.webp 1067w" sizes="(min-width:1025px) 240px, (min-width:701px) 380px, 300px" alt="A woman in a floral lace dress reflected in an ornate oval mirror, candles at the side.">
             <figcaption>Set no. 03 · The mirror</figcaption>
           </figure>
           <figure class="set">
-            <img loading="lazy" decoding="async" class="js-photo" src="img/IMG_5769.jpg" alt="A costumed figure in red and pink stands in a round spotlight against a brick wall.">
+            <img loading="lazy" decoding="async" class="js-photo" src="img/sized/IMG_5769-1067.webp" srcset="img/sized/IMG_5769-480.webp 480w, img/sized/IMG_5769-800.webp 800w, img/sized/IMG_5769-1067.webp 1067w" sizes="(min-width:1025px) 240px, (min-width:701px) 380px, 300px" alt="A costumed figure in red and pink stands in a round spotlight against a brick wall.">
             <figcaption>Set no. 04 · Spotlight</figcaption>
           </figure>
           <figure class="set">
-            <img loading="lazy" decoding="async" class="js-photo" src="img/set-siren.jpg" alt="A woman in a white lace dress lounges on dark rocks by the sea at dusk, a lit candle in a shell beside her.">
+            <img loading="lazy" decoding="async" class="js-photo" src="img/sized/set-siren-1067.webp" srcset="img/sized/set-siren-480.webp 480w, img/sized/set-siren-800.webp 800w, img/sized/set-siren-1067.webp 1067w" sizes="(min-width:1025px) 240px, (min-width:701px) 380px, 300px" alt="A woman in a white lace dress lounges on dark rocks by the sea at dusk, a lit candle in a shell beside her.">
             <figcaption>Set no. 05 · The siren</figcaption>
           </figure>
         </div>
@@ -112,35 +112,35 @@
         <div class="work-grid">
           <article class="work-card" data-gallery="candlelit">
             <div class="work-frame">
-              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_6064.jpg" alt="Woman in a black leather jacket plays an electric guitar in stage smoke.">
+              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/sized/IMG_6064-1051.webp" srcset="img/sized/IMG_6064-480.webp 480w, img/sized/IMG_6064-800.webp 800w, img/sized/IMG_6064-1051.webp 1051w" sizes="(min-width:1025px) 440px, (min-width:701px) 50vw, 94vw" alt="Woman in a black leather jacket plays an electric guitar in stage smoke.">
               <span class="numeral" aria-hidden="true">I</span>
             </div>
             <h3>Candlelit &amp; Gothic</h3>
           </article>
           <article class="work-card" data-gallery="coquette">
             <div class="work-frame">
-              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_7984.jpg" alt="Woman in a white lace veil and feathered wings kneels in sunlit grass.">
+              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/sized/IMG_7984-1067.webp" srcset="img/sized/IMG_7984-480.webp 480w, img/sized/IMG_7984-800.webp 800w, img/sized/IMG_7984-1067.webp 1067w" sizes="(min-width:1025px) 440px, (min-width:701px) 50vw, 94vw" alt="Woman in a white lace veil and feathered wings kneels in sunlit grass.">
               <span class="numeral" aria-hidden="true">II</span>
             </div>
             <h3>Lace &amp; Coquette</h3>
           </article>
           <article class="work-card" data-gallery="y2k">
             <div class="work-frame">
-              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_3620.jpg" alt="Close portrait of a woman with pink hair and decorated nails against a purple wall and disco ball.">
+              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/sized/IMG_3620-1067.webp" srcset="img/sized/IMG_3620-480.webp 480w, img/sized/IMG_3620-800.webp 800w, img/sized/IMG_3620-1067.webp 1067w" sizes="(min-width:1025px) 440px, (min-width:701px) 50vw, 94vw" alt="Close portrait of a woman with pink hair and decorated nails against a purple wall and disco ball.">
               <span class="numeral" aria-hidden="true">III</span>
             </div>
             <h3>Y2K</h3>
           </article>
           <article class="work-card" data-gallery="love">
             <div class="work-frame">
-              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_9442.jpg" alt="Two people share a close portrait against a red curtain, one hand resting on the other's face.">
+              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/sized/IMG_9442-1067.webp" srcset="img/sized/IMG_9442-480.webp 480w, img/sized/IMG_9442-800.webp 800w, img/sized/IMG_9442-1067.webp 1067w" sizes="(min-width:1025px) 440px, (min-width:701px) 50vw, 94vw" alt="Two people share a close portrait against a red curtain, one hand resting on the other's face.">
               <span class="numeral" aria-hidden="true">IV</span>
             </div>
             <h3>Love Stories</h3>
           </article>
           <article class="work-card" id="work-grads" data-gallery="grads">
             <div class="work-frame">
-              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/IMG_6802.jpg" alt="Graduate in a black dress holds a blue mortarboard over their face in front of a sticker-covered door.">
+              <img loading="lazy" decoding="async" class="work-photo js-work" src="img/sized/IMG_6802-1067.webp" srcset="img/sized/IMG_6802-480.webp 480w, img/sized/IMG_6802-800.webp 800w, img/sized/IMG_6802-1067.webp 1067w" sizes="(min-width:1025px) 440px, (min-width:701px) 50vw, 94vw" alt="Graduate in a black dress holds a blue mortarboard over their face in front of a sticker-covered door.">
               <span class="numeral" aria-hidden="true">V</span>
             </div>
             <h3>Grads</h3>
@@ -310,7 +310,7 @@
                 </blockquote>
             <div class="letter-foot">
               <div class="cameo cameo-sm">
-                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/IMG_6016.jpg" alt="Client portrait paired with Mel's review: a woman in a leather jacket holds a guitar across her shoulders.">
+                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/sized/IMG_6016-1200.webp" srcset="img/sized/IMG_6016-480.webp 480w, img/sized/IMG_6016-800.webp 800w, img/sized/IMG_6016-1200.webp 1200w, img/sized/IMG_6016-1600.webp 1600w" sizes="80px" alt="Client portrait paired with Mel's review: a woman in a leather jacket holds a guitar across her shoulders.">
                   <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
                 </div>
               <div>
@@ -325,7 +325,7 @@
                 </blockquote>
             <div class="letter-foot">
               <div class="cameo cameo-sm">
-                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/IMG_9842.jpg" alt="Client portrait paired with Bradyn and Carter's review: a couple sits together under a sunlit tree.">
+                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/sized/IMG_9842-1067.webp" srcset="img/sized/IMG_9842-480.webp 480w, img/sized/IMG_9842-800.webp 800w, img/sized/IMG_9842-1067.webp 1067w" sizes="80px" alt="Client portrait paired with Bradyn and Carter's review: a couple sits together under a sunlit tree.">
                   <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
                 </div>
               <div>
@@ -340,7 +340,7 @@
                 </blockquote>
             <div class="letter-foot">
               <div class="cameo cameo-sm">
-                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/IMG_0567.jpg" alt="Client portrait paired with Riley's review: a graduate in a black gown reaches toward purple flowers.">
+                  <img loading="lazy" decoding="async" class="cameo-photo js-photo" src="img/sized/IMG_0567-1200.webp" srcset="img/sized/IMG_0567-480.webp 480w, img/sized/IMG_0567-800.webp 800w, img/sized/IMG_0567-1200.webp 1200w, img/sized/IMG_0567-1600.webp 1600w" sizes="80px" alt="Client portrait paired with Riley's review: a graduate in a black gown reaches toward purple flowers.">
                   <img class="cameo-lace js-lace" src="assets/lace-oval.svg" alt="">
                 </div>
               <div>
@@ -491,20 +491,14 @@
       </nav>
       <p class="copy">© 2026 Midnight Muse · Florida</p>
     </div>
-    <div class="load-rest" aria-hidden="true">
-      <img loading="lazy" decoding="async" src="img/IMG_2636.jpg" alt="Person in a record store holds a Descendents album in front of their face.">
-      <img loading="lazy" decoding="async" src="img/IMG_2683.jpg" alt="Woman in a white lace dress sits in a garden with a lace parasol over her face.">
-      <img loading="lazy" decoding="async" src="img/IMG_4432.jpg" alt="Two people lie head to head on a floral quilt, photographed from above.">
-      <img loading="lazy" decoding="async" src="img/IMG_7504.jpg" alt="Two people sit against a tree with a cat in a harness between them.">
-      <img loading="lazy" decoding="async" src="img/IMG_9590.jpg" alt="Person with green-tinted bangs reclines on red fabric in a black mesh top.">
-      <img loading="lazy" decoding="async" src="img/IMG_9596.jpg" alt="Person with green-tinted bangs reclines on red velvet, looking upward.">
-    </div>
   </footer>
 
 
   <script src="photo-states.js"></script>
+  <script src="hero-gl.js"></script>
   <script src="unlock.js"></script>
   <script src="main.js"></script>
+  <script src="motion.js"></script>
   <script src="letter.js"></script>
   <script src="gallery-data.js"></script>
   <script src="wardrobe.js"></script>
