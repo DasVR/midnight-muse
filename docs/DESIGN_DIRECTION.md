@@ -97,7 +97,7 @@ Contrast rule: body text is `--bone` on `--ink` (passes AA). `--pewter` only for
 8. **Maternity**: a tier under Couples in Sessions, not its own section; shot like a couples session
 9. **Doll Houses**: sample photos of sets Dani has built (The Dollhouse, The Tea Party, The Laundromat, The Rock Room). Each set is drawn as a house and its photos are the rooms. Not for sale; it ends in "Describe your set"
 10. **Kind Words**: opens on the first review as a large pull quote (the heading is a small label); the other two letters sit side by side beneath, each with a lace cameo portrait
-11. **FAQ**: accordion inside an antique frame. Answers Dani still has to give (deposit, turnaround) are marked as drafts on the page
+11. **FAQ**: accordion inside an antique frame. The deposit answer is still marked as a draft on the page; turnaround is 1 to 2 weeks
 12. **Book**: skeleton key CTA → inquiry form styled like stationery (underlined fields, mono labels)
 
 ## Assets we need (don't lift from Pinterest)
