@@ -3157,3 +3157,24 @@ html{ background:var(--ink); }
 .work-card{ scroll-margin-top:calc(var(--nav-h) + var(--safe-top) + 24px); }
 .cal-detail{ scroll-margin-top:calc(var(--nav-h) + var(--safe-top) + 16px); }
 section[id]{ scroll-margin-top:var(--safe-top); }
+
+/* Five sets: one row on wide screens, a sideways swipe below that */
+@media (min-width:1025px){
+  .sets-layout{ grid-template-columns:repeat(5, minmax(0, 1fr)); gap:24px 16px; }
+}
+@media (min-width:701px) and (max-width:1024px){
+  .sets-layout{
+    display:flex;
+    gap:16px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    margin-right:calc(var(--pad) * -1);
+    padding-right:var(--pad);
+    padding-bottom:6px;
+    scrollbar-width:none;
+  }
+  .sets-layout::-webkit-scrollbar{ display:none; }
+  .set{ flex:0 0 40%; scroll-snap-align:start; }
+}
+/* The blue set's photo is landscape; keep her silhouette in the frame */
+.set img.set-blue{ object-position:40% center; }
