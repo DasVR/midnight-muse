@@ -3135,3 +3135,25 @@ img[alt]:not([alt=""]){ -webkit-touch-callout:none; -webkit-user-drag:none; user
     mask-image:linear-gradient(to right, transparent 0, #000 28%);
   }
 }
+
+/* Phones with a notch or status bar: the page runs to the very top of the
+   screen, and the header, menu and wardrobe pad themselves past the status
+   bar so nothing shows through above them. */
+:root{ --safe-top:env(safe-area-inset-top, 0px); }
+html{ background:var(--ink); }
+.site-nav{
+  padding-top:calc(10px + var(--safe-top));
+  min-height:calc(var(--nav-h) + var(--safe-top));
+}
+.nav-overlay{ padding-top:calc(72px + var(--safe-top)); }
+.close-menu{ margin-top:var(--safe-top); }
+.wardrobe-bar{ padding-top:calc(16px + var(--safe-top)); }
+.lightbox-close{ top:calc(14px + var(--safe-top)); }
+.hero{
+  margin-top:calc((var(--nav-h) + var(--safe-top)) * -1);
+  padding-top:calc(var(--nav-h) + var(--safe-top) + 24px);
+}
+@media (max-width:860px){ .menu-btn{ top:calc(50% + var(--safe-top) / 2); } }
+.work-card{ scroll-margin-top:calc(var(--nav-h) + var(--safe-top) + 24px); }
+.cal-detail{ scroll-margin-top:calc(var(--nav-h) + var(--safe-top) + 16px); }
+section[id]{ scroll-margin-top:var(--safe-top); }
