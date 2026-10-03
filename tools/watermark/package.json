@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "description": "Stamps the Midnight Muse corner mark into every photo in wireframe/img.",
-  "scripts": { "stamp": "node watermark.mjs" },
+  "scripts": { "stamp": "node watermark.mjs && node sizes.mjs", "sizes": "node sizes.mjs" },
   "dependencies": { "sharp": "^0.33.5" }
 }

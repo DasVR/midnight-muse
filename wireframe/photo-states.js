@@ -12,11 +12,12 @@
     if (img.classList.contains("is-broken")) return;
     img.classList.remove("is-loading");
     img.classList.add("is-broken");
-    img.setAttribute("data-failed-src", img.getAttribute("src") || "");
+    img.setAttribute("data-failed-src", img.currentSrc || img.getAttribute("src") || "");
     img.title = "This photograph didn't load";
     // Swapped on the next tick: a new src set inside the error event is ignored.
     img.loading = "eager";
-    setTimeout(function () { img.src = MISSING; }, 0);
+    // srcset wins over src, so it goes too.
+    setTimeout(function () { img.removeAttribute("srcset"); img.removeAttribute("sizes"); img.src = MISSING; }, 0);
   }
 
   function watch(img) {

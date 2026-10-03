@@ -18,6 +18,14 @@ npm run stamp
 ```
 
 Only photos that haven't been stamped yet are touched.
+
+`npm run stamp` then cuts WebP copies of the page's photos (the ones in
+`wireframe/img/` itself) at 480, 800, 1200, 1800 and 2400px wide into
+`wireframe/img/sized/`, so phones download a photo sized for their screen.
+They're cut from the stamped files, so they carry the mark too. To put a new
+photo on the page, add it as `img/NAME.jpg` in `index.html`, run
+`npm run stamp`, then swap the tag to the `img/sized/NAME-*.webp` files with a
+`srcset` like the other photos.
 `wireframe/img/.watermarked.json` records which files are already marked.
 
 The wordmark is set in Pinyon Script. Install `PinyonScript-Regular.ttf`

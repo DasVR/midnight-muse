@@ -28,7 +28,8 @@ function sha(buf) { return crypto.createHash("sha1").update(buf).digest("hex"); 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((d) => {
     const p = path.join(dir, d.name);
-    if (d.isDirectory()) return walk(p);
+    // sized/ holds WebP copies cut from photos that are already stamped.
+    if (d.isDirectory()) return d.name === "sized" ? [] : walk(p);
     return /\.(jpe?g|webp|png)$/i.test(d.name) ? [p] : [];
   });
 }
