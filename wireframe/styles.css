@@ -3115,40 +3115,8 @@ img.is-broken{
   .mystery .tier-dates{ justify-content:flex-start; }
 }
 
-/* Graduation portfolio: a strip of her grads, with the way into the gallery and the packages */
-.grad{
-  display:grid;
-  grid-template-columns:minmax(0, 22rem) minmax(0, 1fr);
-  gap:32px 48px;
-  align-items:end;
-}
-.grad-head .kicker{ margin:0 0 6px; }
-.grad-lede{ margin:18px 0 0; font-size:19px; line-height:1.5; color:var(--bone); }
-.grad-actions{ display:flex; flex-direction:column; align-items:flex-start; gap:4px; margin-top:24px; }
-.grad-actions .btn{ margin:0; }
-.grad-actions .tier-dates{ width:auto; justify-content:flex-start; }
-.grad-strip{
-  display:flex;
-  gap:12px;
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  margin-right:calc(var(--pad) * -1);
-  padding:0 var(--pad) 8px 0;
-  scrollbar-width:thin;
-  scrollbar-color:var(--smoke) transparent;
-}
-.grad-strip:focus-visible{ outline:1px solid var(--ivory); outline-offset:6px; }
-.grad-shot{ flex:0 0 auto; margin:0; height:clamp(260px, 30vw, 380px); aspect-ratio:2 / 3; scroll-snap-align:start; }
-.grad-shot.is-wide{ aspect-ratio:3 / 2; }
-.grad-shot img{ display:block; width:100%; height:100%; object-fit:cover; }
-@media (max-width:860px){
-  .grad{ grid-template-columns:1fr; }
-}
-@media (max-width:700px){
-  .grad-shot{ height:300px; }
-  .grad-actions{ align-items:stretch; }
-  .grad-actions .btn{ justify-content:center; }
-}
+/* Nav links can land on a single gallery cover, clear of the fixed header */
+.work-card{ scroll-margin-top:calc(var(--nav-h) + 24px); }
 
 /* Photos can't be long-press saved on iOS or dragged out (the mark is in the file either way) */
 img[alt]:not([alt=""]){ -webkit-touch-callout:none; -webkit-user-drag:none; user-select:none; }
