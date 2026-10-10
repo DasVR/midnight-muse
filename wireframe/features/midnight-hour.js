@@ -11,9 +11,14 @@
   if (!heroCopy || !heroPhoto) return;
 
   var forced = /[?&]midnight=1\b/.test(location.search);
-  var dayPhoto = { src: heroPhoto.getAttribute("src"), alt: heroPhoto.getAttribute("alt") };
+  var dayPhoto = {
+    src: heroPhoto.getAttribute("src"),
+    srcset: heroPhoto.getAttribute("srcset"),
+    alt: heroPhoto.getAttribute("alt")
+  };
   var nightPhoto = {
-    src: "img/IMG_6754.jpg",
+    src: "img/sized/IMG_6754-1067.webp",
+    srcset: "img/sized/IMG_6754-480.webp 480w, img/sized/IMG_6754-800.webp 800w, img/sized/IMG_6754-1067.webp 1067w",
     alt: "Woman with black lipstick reclines on a floral bed holding a candle, a brass candelabra lit behind her against red velvet."
   };
 
@@ -51,6 +56,9 @@
     if (on === root.classList.contains("midnight")) return;
     root.classList.toggle("midnight", on);
     var photo = on ? nightPhoto : dayPhoto;
+    // The hero has a srcset, which wins over src, so swap both.
+    if (photo.srcset) heroPhoto.setAttribute("srcset", photo.srcset);
+    else heroPhoto.removeAttribute("srcset");
     heroPhoto.setAttribute("src", photo.src);
     heroPhoto.setAttribute("alt", photo.alt);
   }

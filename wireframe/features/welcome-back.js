@@ -26,6 +26,10 @@
     var cover = match.querySelector(".work-photo");
     var title = match.querySelector("h3");
     if (cover) {
+      // The hero has a srcset, which wins over src, so carry the cover's over too.
+      var coverSet = cover.getAttribute("srcset");
+      if (coverSet) heroPhoto.setAttribute("srcset", coverSet);
+      else heroPhoto.removeAttribute("srcset");
       heroPhoto.setAttribute("src", cover.getAttribute("src"));
       heroPhoto.setAttribute("alt", cover.getAttribute("alt") || "");
     }
