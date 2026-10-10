@@ -61,6 +61,20 @@
   updateNav();
   window.addEventListener("scroll", updateNav, { passive: true });
 
+  // The hero already says "Midnight Muse" in huge script, so the nav's
+  // wordmark waits until that title has scrolled away, then writes itself in.
+  var heroTitle = document.querySelector(".hero-title");
+  if (heroTitle && "IntersectionObserver" in window) {
+    var root = document.documentElement;
+    root.classList.add("wm-handoff");
+    var navHeight = nav ? nav.offsetHeight : 68;
+    new IntersectionObserver(function (entries) {
+      var entry = entries[entries.length - 1];
+      var gone = !entry.isIntersecting && entry.boundingClientRect.top < navHeight;
+      root.classList.toggle("past-hero", gone);
+    }, { rootMargin: "-" + navHeight + "px 0px 0px 0px" }).observe(heroTitle);
+  }
+
   var menuAnim = null;
 
   function setMenu(open) {
