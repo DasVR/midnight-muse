@@ -28,11 +28,28 @@
       '<path d="M15.5 30.5h9M16.5 33.5h7M20 27v51M20 60h8v5h-4v4h5v5h-9"/>' +
     "</svg>";
 
-  cards.forEach(function (card) {
+  var countEl = document.getElementById("unlock-count");
+
+  function updateCount() {
+    if (!countEl) return;
+    var open = cards.filter(function (c) { return !c.classList.contains("is-locked"); }).length;
+    countEl.textContent = open === cards.length
+      ? "Every gallery unlocked"
+      : open + " of " + cards.length + " galleries unlocked";
+  }
+
+  cards.forEach(function (card, index) {
     var frame = card.querySelector(".work-frame");
     var photo = card.querySelector(".work-photo");
     var title = card.querySelector("h3");
     if (!frame || !photo) return;
+
+    // The first gallery is her strongest work: it opens on arrival, so the
+    // section never greets a visitor with six sealed doors.
+    if (index === 0) {
+      card.classList.add("is-unlocked");
+      return;
+    }
 
     // The scroll-in grayscale tween would fight the unlock bloom, so locked
     // photos opt out of it.
@@ -57,6 +74,8 @@
     });
   });
 
+  updateCount();
+
   function play(el, frames, options) {
     return el.animate(frames, Object.assign({ fill: "forwards" }, options)).finished;
   }
@@ -69,6 +88,7 @@
     card.classList.remove("is-locked", "is-unlocking");
     card.classList.add("is-unlocked");
     lock.remove();
+    updateCount();
     var door = card.querySelector(".step-inside");
     if (door) {
       door.focus({ preventScroll: true });
