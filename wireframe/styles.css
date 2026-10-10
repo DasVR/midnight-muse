@@ -1361,6 +1361,39 @@ a { color:inherit; }
   color:var(--bone);
 }
 
+/* The page closes like a letter: a postscript and her signature */
+.ps{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  max-width:34rem;
+  margin:8px 0 6px;
+}
+
+.ps-text{
+  margin:0;
+  font-family:var(--serif);
+  font-style:italic;
+  font-size:22px;
+  line-height:1.4;
+  color:var(--bone);
+  text-wrap:balance;
+}
+
+.ps-mark{
+  font-style:normal;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  margin-right:6px;
+  color:var(--ivory);
+}
+
+.ps .signature{ width:min(150px, 50%); }
+
+.to-top{ display:inline-flex; align-items:center; gap:8px; }
+
 .copy{
   margin:0;
   font-family:var(--mono);
