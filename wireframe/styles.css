@@ -8,6 +8,20 @@
   --nav-h:68px;
   --wrap:1240px;
   --pad:clamp(20px, 4vw, 48px);
+  /* Section rhythm: photo sections breathe, text sections move quickly */
+  --space-photo:128px;
+  --space-section:96px;
+  --space-text:72px;
+  --space-chapter:140px;
+}
+
+@media (max-width:700px){
+  :root{
+    --space-photo:72px;
+    --space-section:48px;
+    --space-text:40px;
+    --space-chapter:64px;
+  }
 }
 
 *,
@@ -298,7 +312,7 @@ a { color:inherit; }
 
 
 
-.section{ padding:96px 0 88px; }
+.section{ padding:var(--space-section) 0 calc(var(--space-section) - 8px); }
 
 
 .section h2,
@@ -1674,12 +1688,17 @@ a { color:inherit; }
 /* FAQ bodies slide */
 .faq-body{ overflow:hidden; }
 
-/* Rhythm: related sections sit close, new chapters get air */
-#sessions{ padding-bottom:40px; }
-#availability{ padding-top:40px; }
+/* Rhythm: photo sections breathe, text sections move quickly, related
+   sections sit close and new chapters get air */
+#sets,
 #work,
+#doll-houses{ padding:var(--space-photo) 0 calc(var(--space-photo) - 8px); }
+#blind-date,
+#faq{ padding:var(--space-text) 0 calc(var(--space-text) - 8px); }
+#sessions{ padding-bottom:40px; }
+#availability{ padding-top:40px; padding-bottom:calc(var(--space-text) - 8px); }
 #kind-words,
-#book{ padding-top:140px; }
+#book{ padding-top:var(--space-chapter); }
 
 @media (max-width:700px){
 
@@ -2693,10 +2712,6 @@ html.wardrobe-open{ overflow:hidden; }
 
 /* ---------- Phones ---------- */
 @media (max-width:700px){
-  .section{ padding:64px 0 56px; }
-  #work,
-  #kind-words,
-  #book{ padding-top:88px; }
   #availability{ padding-top:24px; }
 
   /* The Sets: one photo at a time, swiped sideways */
@@ -2762,10 +2777,6 @@ html.wardrobe-open{ overflow:hidden; }
 #sessions{ padding-top:48px; }
 
 @media (max-width:700px){
-  .section{ padding:48px 0 40px; }
-  #work,
-  #kind-words,
-  #book{ padding-top:64px; }
   #sessions{ padding-top:24px; }
   #availability{ padding-top:16px; }
   .wardrobe-cta{ margin-top:36px; }
