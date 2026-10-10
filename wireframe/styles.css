@@ -8,6 +8,11 @@
   --nav-h:68px;
   --wrap:1240px;
   --pad:clamp(20px, 4vw, 48px);
+  --ease-out:cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out:cubic-bezier(0.65, 0, 0.35, 1);
+  /* Above every pinned photo in the wardrobe; wardrobe.js sets inline z-index on pins. */
+  --z-pin:999;
 }
 
 *,
@@ -84,7 +89,7 @@ a { color:inherit; }
   min-height:var(--nav-h);
   padding:10px var(--pad);
   background:transparent;
-  transition:background-color 0.3s ease, border-color 0.3s ease;
+  transition:background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
   border-bottom:1px solid transparent;
 }
 
@@ -136,6 +141,32 @@ a { color:inherit; }
   letter-spacing:0;
   text-transform:none;
   padding:0 12px;
+}
+
+/* Hand-off: hidden while the hero title is on screen, then wiped in left to
+   right like a pen stroke. Without JS (no .wm-handoff) it simply shows. */
+.wm-handoff .wordmark{
+  clip-path:inset(0 100% 0 0);
+  visibility:hidden;
+  transition:clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 900ms;
+}
+
+.wm-handoff.past-hero .wordmark{
+  clip-path:inset(0 0 0 0);
+  visibility:visible;
+  transition:clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .wm-handoff .wordmark{
+    clip-path:none;
+    opacity:0;
+    transition:opacity 150ms linear, visibility 0s linear 150ms;
+  }
+  .wm-handoff.past-hero .wordmark{
+    opacity:1;
+    transition:opacity 150ms linear, visibility 0s;
+  }
 }
 
 .menu-btn{ display:none; }
@@ -199,7 +230,7 @@ a { color:inherit; }
   object-fit:cover;
   object-position:center 28%;
   filter:grayscale(1) brightness(0.7);
-  animation:bloom 1.6s ease forwards;
+  animation:bloom 1.6s var(--ease-out) forwards;
 }
 
 @keyframes bloom{
@@ -308,17 +339,25 @@ a { color:inherit; }
   font-weight:400;
   font-size:clamp(64px, 8vw, 108px);
   line-height:0.85;
+  /* Pinyon's descenders hang well below the line box; keep them off the text beneath. */
+  padding-bottom:0.14em;
   color:var(--ivory);
 }
 
-.sub{
-  margin:8px 0 0;
-  font-family:var(--mono);
-  font-size:12px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--bone);
+/* Script is kept for the big moments (hero, Sets, Sessions, Book), the way a
+   letter saves its flourishes for the greeting and the signature. Everything
+   else opens on a quieter roman serif. */
+.section h2.h-quiet{
+  font-family:var(--serif);
+  font-weight:300;
+  font-style:normal;
+  font-size:clamp(40px, 5vw, 64px);
+  line-height:1.05;
+  letter-spacing:-0.01em;
 }
+
+/* "Hello!~" is the letter's greeting: still script, a size down from the section titles */
+.letter h2{ font-size:clamp(56px, 6vw, 84px); }
 
 .meet{
   display:grid;
@@ -497,7 +536,7 @@ a { color:inherit; }
   object-fit:cover;
   filter:grayscale(0.6);
   transform:scale(1);
-  transition:filter 0.45s ease, transform 0.45s ease;
+  transition:filter 0.45s var(--ease-out), transform 0.45s var(--ease-out);
 }
 
 .work-card:focus-within .work-photo{
@@ -614,7 +653,7 @@ a { color:inherit; }
   transform-origin:50% 86.67%;
   opacity:0;
   transform:translateY(-40px);
-  transition:opacity 0.35s ease, transform 0.5s cubic-bezier(.3,.7,.3,1);
+  transition:opacity 0.35s var(--ease-out), transform 0.5s cubic-bezier(.3,.7,.3,1);
   filter:drop-shadow(0 6px 10px color-mix(in srgb, var(--ink) 80%, transparent));
 }
 
@@ -1186,7 +1225,7 @@ a { color:inherit; }
   font-family:var(--serif);
   font-size:32px;
   line-height:1;
-  transition:transform 0.25s ease;
+  transition:transform 0.25s var(--ease-out);
 }
 
 .faq details[open]:not(.is-closing) summary::after{ transform:rotate(45deg); }
@@ -1227,7 +1266,7 @@ a { color:inherit; }
 
 .stationery{
   width:min(640px, 100%);
-  margin:28px auto 0;
+  margin:44px auto 0;
   text-align:left;
 }
 
@@ -1554,7 +1593,7 @@ a { color:inherit; }
   .tier-book:hover{ text-decoration-color:var(--ivory); }
 }
 
-/* Fewer shouting labels: subtitles, notes and step lists read as sentences */
+/* Subtitles read as sentences, not shouting labels */
 .sub{
   margin:12px 0 0;
   font-family:var(--serif);
@@ -2085,6 +2124,17 @@ a { color:inherit; }
   text-align:center;
 }
 
+.wardrobe-cta .unlock-count{
+  order:-1;
+  margin:0 0 4px;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+.wardrobe-cta .unlock-count:empty{ display:none; }
+
 .wardrobe-cta .sub{ margin-top:10px; }
 
 html.wardrobe-open{ overflow:hidden; }
@@ -2298,7 +2348,7 @@ html.wardrobe-open{ overflow:hidden; }
 }
 
 .pin:focus-visible{
-  z-index:999 !important;
+  z-index:var(--z-pin) !important;
   transform:rotate(0deg) scale(1.05);
   outline:1px solid var(--ivory);
   outline-offset:4px;
@@ -2306,7 +2356,7 @@ html.wardrobe-open{ overflow:hidden; }
 
 @media (hover:hover) and (pointer:fine){
   .pin:hover{
-    z-index:999 !important;
+    z-index:var(--z-pin) !important;
     transform:rotate(0deg) scale(1.05);
     box-shadow:0 18px 40px color-mix(in srgb, var(--ink) 70%, transparent);
   }
@@ -3115,7 +3165,9 @@ img.is-broken{
   gap:32px 64px;
   align-items:center;
 }
-.blind-copy .kicker{ margin:0 0 6px; }
+.blind-copy .kicker{ margin:0; }
+/* The B's ascender climbs above the line box; give it room under the kicker. */
+.blind-copy .kicker + h2{ margin-top:0.18em; }
 .blind-lede{ margin:20px 0 0; font-size:21px; line-height:1.5; color:var(--ivory); max-width:30rem; }
 .blind-copy .btn{ margin-top:28px; }
 .blind-steps{ list-style:none; margin:0; padding:0; counter-reset:none; }
