@@ -2027,6 +2027,17 @@ a { color:inherit; }
   text-align:center;
 }
 
+.wardrobe-cta .unlock-count{
+  order:-1;
+  margin:0 0 4px;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+.wardrobe-cta .unlock-count:empty{ display:none; }
+
 .wardrobe-cta .sub{ margin-top:10px; }
 
 html.wardrobe-open{ overflow:hidden; }
