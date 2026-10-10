@@ -311,6 +311,21 @@ a { color:inherit; }
   color:var(--ivory);
 }
 
+/* Script is kept for the big moments (hero, Sets, Sessions, Book), the way a
+   letter saves its flourishes for the greeting and the signature. Everything
+   else opens on a quieter roman serif. */
+.section h2.h-quiet{
+  font-family:var(--serif);
+  font-weight:300;
+  font-style:normal;
+  font-size:clamp(40px, 5vw, 64px);
+  line-height:1.05;
+  letter-spacing:-0.01em;
+}
+
+/* "Hello!~" is the letter's greeting: still script, a size down from the section titles */
+.letter h2{ font-size:clamp(56px, 6vw, 84px); }
+
 .sub{
   margin:8px 0 0;
   font-family:var(--mono);
