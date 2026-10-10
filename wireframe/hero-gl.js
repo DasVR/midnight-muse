@@ -224,6 +224,23 @@
     });
     canvas.addEventListener("webglcontextlost", teardown);
 
+    // Other scripts can change the photo later (the Midnight Hour, a returning
+    // visitor's gallery): when the <img> loads a new picture, upload that one.
+    img.addEventListener("load", function () {
+      if (stopped && !canvas.isConnected) return;
+      texture().then(function (next) {
+        try {
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, next);
+        } catch (e) {
+          teardown();
+          return;
+        }
+        if (next.close) next.close();
+        if (gl.getError() !== gl.NO_ERROR) { teardown(); return; }
+        size();
+      });
+    });
+
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
       hero.addEventListener("pointermove", function (event) {
         var r = canvas.getBoundingClientRect();
@@ -249,13 +266,23 @@
     }).catch(function () { return img; });
   }
 
+  var begun = false;
+
   function whenReady() {
-    if (img.classList.contains("is-broken")) return;
+    if (begun || img.classList.contains("is-broken")) return;
     (img.decode ? img.decode() : Promise.resolve()).then(function () {
       // Set up once the page has settled, so it never holds up a first tap.
       var idle = window.requestIdleCallback || function (fn) { setTimeout(fn, 200); };
-      idle(function () { texture().then(begin); }, { timeout: 1200 });
-    }, function () {});
+      idle(function () {
+        if (begun) return;
+        begun = true;
+        texture().then(begin);
+      }, { timeout: 1200 });
+    }, function () {
+      // The decode fails if the photo is swapped mid-way (the Midnight Hour
+      // does this on arrival): wait for the new one instead.
+      img.addEventListener("load", whenReady, { once: true });
+    });
   }
 
   if (img.complete && img.naturalWidth) whenReady();
