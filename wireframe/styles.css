@@ -143,6 +143,32 @@ a { color:inherit; }
   padding:0 12px;
 }
 
+/* Hand-off: hidden while the hero title is on screen, then wiped in left to
+   right like a pen stroke. Without JS (no .wm-handoff) it simply shows. */
+.wm-handoff .wordmark{
+  clip-path:inset(0 100% 0 0);
+  visibility:hidden;
+  transition:clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 900ms;
+}
+
+.wm-handoff.past-hero .wordmark{
+  clip-path:inset(0 0 0 0);
+  visibility:visible;
+  transition:clip-path 900ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .wm-handoff .wordmark{
+    clip-path:none;
+    opacity:0;
+    transition:opacity 150ms linear, visibility 0s linear 150ms;
+  }
+  .wm-handoff.past-hero .wordmark{
+    opacity:1;
+    transition:opacity 150ms linear, visibility 0s;
+  }
+}
+
 .menu-btn{ display:none; }
 
 .nav-overlay{
