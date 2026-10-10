@@ -1,0 +1,92 @@
+/* Feature: Letters into sets (see features/letters-to-sets.js) */
+
+.lts{ margin-top:72px; }
+
+.lts-title{
+  margin:0 0 20px;
+  font-family:var(--mono);
+  font-size:12px;
+  font-weight:400;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--bone);
+}
+
+.lts-pair{
+  display:grid;
+  grid-template-columns:minmax(0, 5fr) auto minmax(0, 6fr);
+  align-items:center;
+  gap:20px;
+}
+
+.lts-pair + .lts-pair{ margin-top:40px; }
+
+.lts-greeting{
+  margin:0 0 10px;
+  font-family:var(--script);
+  font-size:34px;
+  line-height:1.1;
+  color:var(--ivory);
+}
+
+.lts-words p{
+  margin:0;
+  font-style:italic;
+  font-size:21px;
+  line-height:1.5;
+  color:var(--ivory);
+}
+
+.lts-letter .sig{ margin-top:14px; }
+
+.lts-arrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--pewter);
+}
+
+.lts-set{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:8px;
+}
+
+.lts-set img{
+  display:block;
+  width:100%;
+  aspect-ratio:4 / 5;
+  object-fit:cover;
+}
+
+/* Placeholder until a real, permitted pair exists */
+.lts-blank{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:220px;
+  padding:22px;
+  border:1px dashed var(--smoke);
+  background:var(--cloth);
+}
+
+.lts-set.lts-blank{ align-items:center; }
+
+.lts-blank-note{
+  margin:0;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--pewter);
+}
+
+.lts-draft{ grid-column:1 / -1; justify-self:start; }
+
+@media (max-width:700px){
+  .lts{ margin-top:48px; }
+  .lts-pair{ grid-template-columns:minmax(0, 1fr); gap:12px; }
+  .lts-arrow{ justify-self:center; }
+  .lts-blank{ min-height:140px; }
+}

@@ -1,0 +1,51 @@
+/* Feature: Midnight Hour (see features/midnight-hour.js) */
+
+.midnight-note{ display:none; }
+
+.midnight .midnight-note{
+  display:block;
+  max-width:28rem;
+  margin-top:28px;
+  padding:16px 18px;
+  border:1px solid var(--pewter);
+  background:color-mix(in srgb, var(--ink) 72%, transparent);
+}
+
+.midnight-time{
+  margin:0;
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--ivory);
+}
+
+.midnight-line{
+  margin:8px 0 0;
+  font-size:18px;
+  line-height:1.45;
+  color:var(--bone);
+}
+
+.midnight-ask{
+  display:inline-flex;
+  align-items:center;
+  min-height:44px;
+  font-size:18px;
+  color:var(--ivory);
+  text-underline-offset:4px;
+}
+
+.midnight-note .faq-draft{ display:block; font-size:14px; }
+
+/* The house turns its lamps down: lace and ornaments dim, the hero darkens */
+.midnight .lace-edge,
+.midnight .cameo-lace,
+.midnight .filigree,
+.midnight .corner{ opacity:0.45; }
+
+.midnight .hero-photo{ object-position:center 42%; }
+
+.midnight .hero-shade{
+  background:linear-gradient(to top, color-mix(in srgb, var(--ink) 94%, transparent) 0%, color-mix(in srgb, var(--ink) 62%, transparent) 34%, color-mix(in srgb, var(--ink) 25%, transparent) 70%, color-mix(in srgb, var(--ink) 10%, transparent) 100%);
+}

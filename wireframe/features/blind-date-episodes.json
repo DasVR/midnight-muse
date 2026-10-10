@@ -1,0 +1,12 @@
+{
+  "_readme": "One object per matched pair, newest first. Add a pair only with both people's permission. 'photos' are paths under wireframe/ (up to 3). 'secondDate' is the answer revealed when a visitor opens the envelope; leave it empty to keep the envelope sealed ('Dani will tell you soon').",
+  "_example": {
+    "episode": 1,
+    "names": "First name & First name",
+    "where": "Where the date was",
+    "photos": ["img/gallery/love/thumbs/IMG_0913.webp"],
+    "alts": ["Describe each photo for screen readers."],
+    "secondDate": "Yes, a week later, at the same diner."
+  },
+  "episodes": []
+}
