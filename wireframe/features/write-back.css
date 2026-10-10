@@ -1,0 +1,72 @@
+/* Feature: Write back to Dani (write-back.html) */
+
+.wb-head{
+  display:flex;
+  justify-content:center;
+  padding:16px var(--pad) 0;
+}
+
+.wb{
+  width:min(680px, calc(100% - var(--pad) * 2));
+  margin:0 auto;
+  padding:48px 0 96px;
+  text-align:center;
+}
+
+.wb-key{ height:64px; width:auto; }
+
+.wb-title{
+  margin:12px 0 0;
+  font-family:var(--script);
+  font-weight:400;
+  font-size:clamp(52px, 10vw, 92px);
+  line-height:0.95;
+  padding-bottom:0.14em;
+  color:var(--ivory);
+  overflow-wrap:anywhere;
+}
+
+.wb-lede{
+  max-width:34rem;
+  margin:12px auto 0;
+  font-size:20px;
+  line-height:1.5;
+  color:var(--bone);
+}
+
+.wb-form{ margin-top:40px; }
+
+.wb-sealed{ margin-top:40px; text-align:left; }
+
+.wb-sealed-title{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(32px, 5vw, 44px);
+  color:var(--ivory);
+}
+
+.wb-sealed p{ font-size:19px; color:var(--bone); }
+
+.wb-copy-label{
+  margin-top:32px;
+  font-family:var(--mono);
+  font-size:12px !important;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.wb-letter-copy{
+  margin:8px 0 0;
+  padding:22px;
+  white-space:pre-wrap;
+  font-style:italic;
+  font-size:20px;
+  line-height:1.5;
+  color:var(--ivory);
+  background:var(--cloth);
+  border:1px solid var(--smoke);
+}
+
+.wb [hidden]{ display:none !important; }
+.wb-sealed .faq-draft{ font-size:14px; }
