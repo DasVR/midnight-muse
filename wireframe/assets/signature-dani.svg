@@ -1,0 +1,21 @@
+<!--
+  Dani's signature: a STAND-IN until she signs for real.
+  This one is hand-drawn as plain strokes so it can draw itself on the page.
+
+  To swap in her real signature:
+  1. Have Dani sign a few times on white paper with a fine black pen (or on an iPad).
+  2. Vectorise the best one as a single-line (centre-line) stroke, not a filled
+     outline. Inkscape: Path > Trace Bitmap > Centerline, or draw over it with the pen tool.
+  3. Replace the <path> elements below. Keep them as strokes (fill="none"),
+     in the order the pen moved; anything drawn after lifting the pen (an
+     i-dot, a cross-stroke) goes last.
+  4. Keep the outer <svg> attributes. Adjust viewBox to fit her strokes.
+  Nothing else on the site needs to change; signature.js reads this file.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 100" width="220" height="100" fill="none" stroke="#F2EEE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(14 0) skewX(-14)">
+    <path d="M40 22C38 40 35 58 31 76C29 82 22 82 22 77C22 71 33 69 42 72C66 79 94 62 91 40C88 16 52 10 26 20C14 25 11 33 18 36"/>
+    <path d="M120 52C112 43 98 48 98 61C98 73 112 72 118 61L122 50L120 70C120 76 126 76 130 70C133 61 134 54 135 50L133 72C137 58 147 46 153 51C157 56 153 67 155 72C157 77 164 75 168 67C170 61 172 55 173 51C172 60 171 68 173 72C176 78 186 74 194 60C198 52 196 80 152 86C112 91 72 90 48 86"/>
+    <path d="M176 37l2.5-3.5"/>
+  </g>
+</svg>

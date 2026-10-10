@@ -1,0 +1,11 @@
+{
+  "_readme": "Pairs of a client's booking letter and the set Dani built from it. Add one object per pair to 'pairs' ONLY with the client's written permission. 'photos' are paths under wireframe/ (2 to 4 work best). 'letter' is their words, unedited apart from trimming.",
+  "_example": {
+    "client": "First name",
+    "shoot": "Candlelit portrait",
+    "letter": "What they wrote in the 'Your vision' box.",
+    "photos": ["img/gallery/candlelit/thumbs/IMG_3242.webp"],
+    "alts": ["Describe each photo for screen readers."]
+  },
+  "pairs": []
+}
