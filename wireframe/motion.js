@@ -1,9 +1,7 @@
 // Page motion that isn't tied to one feature:
 // - four chosen groups (gallery covers, sets, the blind date steps and the
 //   kind words letters) rise into place once, the first time they're seen,
-//   and never again on the way back up;
-// - on a desktop, a gallery cover lights up where the pointer holds a candle
-//   to it.
+//   and never again on the way back up.
 // The page is complete without this file; it only adds motion on top.
 (function () {
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -46,26 +44,5 @@
         });
     }, { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
     targets.forEach(function (target) { seen.observe(target); });
-  }
-
-  // ---------- Candlelight on the gallery covers (mouse and trackpad only) ----------
-  if (!reduce && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    Array.prototype.forEach.call(document.querySelectorAll(".work-frame"), function (frame) {
-      var queued = false;
-      var x = 0;
-      var y = 0;
-      frame.addEventListener("pointermove", function (event) {
-        var r = frame.getBoundingClientRect();
-        x = event.clientX - r.left;
-        y = event.clientY - r.top;
-        if (queued) return;
-        queued = true;
-        requestAnimationFrame(function () {
-          queued = false;
-          frame.style.setProperty("--lx", x + "px");
-          frame.style.setProperty("--ly", y + "px");
-        });
-      });
-    });
   }
 })();
