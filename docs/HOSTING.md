@@ -44,8 +44,12 @@ proxy for HTTPS and caching.
   destination: a form service (Formspree, Basin), or a small Cloudflare
   Worker that emails Dani. This is the one piece of back end the site needs.
 
-## The current preview
+## Search and sharing
 
-`.github/workflows/pages.yml` publishes `wireframe/` to GitHub Pages on
-every push to `main`. Once Cloudflare is live, that workflow can be
-deleted.
+The live domain is `https://midnightmuse.pics`. `wireframe/robots.txt` and
+`wireframe/sitemap.xml` point at it, and every page carries absolute
+canonical and Open Graph URLs. If the domain ever changes, search and
+replace `midnightmuse.pics` across `wireframe/`.
+
+The old GitHub Pages preview workflow has been removed; Cloudflare is the
+only deploy.
