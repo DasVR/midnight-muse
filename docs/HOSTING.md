@@ -40,9 +40,25 @@ proxy for HTTPS and caching.
 
 - **Open Dates** reads Dani's availability from Cal.com's public API in the
   browser; no server or key needed.
-- **The letter form** is not wired to anything yet. Before launch it needs a
-  destination: a form service (Formspree, Basin), or a small Cloudflare
-  Worker that emails Dani. This is the one piece of back end the site needs.
+- **The letter form** posts to `/api/letter`, handled by the Worker in
+  `worker/` (the only code that runs; everything else is static). It checks
+  the fields, drops bot submissions, and emails Dani with the client's
+  address as Reply-To. If sending fails, the visitor sees an error and an
+  Instagram link instead of a false "sent".
+
+  **One-time setup in the Cloudflare dashboard** (the site works without it,
+  but letters will show the error until it's done):
+  1. Domain → **Email** → **Email Routing** → enable it for `midnightmuse.pics`
+     (Cloudflare adds the MX/TXT records).
+  2. Email Routing → **Destination addresses** → add Dani's real inbox and
+     click the verification link Cloudflare emails her.
+  3. Workers & Pages → `midnight-muse` → **Settings** → **Variables and
+     Secrets** → add a secret named `LETTER_TO` with that same address.
+     (Optional `LETTER_FROM`, default `letters@midnightmuse.pics`.)
+  4. Redeploy (push to `main`, or Deployments → Retry). `wrangler.jsonc`
+     already declares the `send_email` binding.
+
+  Test the Worker's rules with `node worker/letter.test.mjs`.
 
 ## The current preview
 

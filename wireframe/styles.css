@@ -3387,3 +3387,6 @@ section[id]{ scroll-margin-top:var(--safe-top); }
     transition-duration:250ms;
   }
 }
+
+/* Spam trap: present for bots, invisible and unreachable for people. */
+.field-trap{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
