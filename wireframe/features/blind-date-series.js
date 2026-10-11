@@ -83,6 +83,8 @@
     .catch(function () { return { episodes: [] }; })
     .then(function (data) {
       var episodes = (data && data.episodes) || [];
+      var draft = /[?&]draft=1/.test(location.search);
+      if (!episodes.length && !draft) return;
       mount.appendChild(el("h3", "bd-title", "The episodes"));
       var strip = el("div", "bd-strip");
       if (!episodes.length) strip.appendChild(renderComingSoon());

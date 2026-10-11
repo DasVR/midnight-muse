@@ -61,6 +61,8 @@
     .catch(function () { return { pairs: [] }; })
     .then(function (data) {
       var pairs = (data && data.pairs) || [];
+      var draft = /[?&]draft=1/.test(location.search);
+      if (!pairs.length && !draft) return;
       mount.appendChild(el("h3", "lts-title", "From letter to set"));
       if (!pairs.length) {
         mount.appendChild(renderPlaceholder());

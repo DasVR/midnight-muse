@@ -2935,6 +2935,8 @@ html.wardrobe-open{ overflow:hidden; }
 }
 
 .faq-answer a{ color:var(--ivory); text-underline-offset:4px; }
+.faq .faq-draft{ display:none; }
+html.draft .faq .faq-draft{ display:inline-block; }
 .faq-draft{
   display:inline-block;
   padding:2px 8px;
