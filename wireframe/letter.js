@@ -5,6 +5,7 @@
   var form = document.getElementById("book-form");
   var status = document.getElementById("form-status");
   if (!form) return;
+  var sendBtn = form.querySelector(".send-btn");
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var canAnimate = typeof Element.prototype.animate === "function";
@@ -109,7 +110,6 @@
     note.setAttribute("tabindex", "-1");
     note.appendChild(el("h3", "sent-title", "Your letter is on its way"));
     note.appendChild(el("p", "sent-body", "Dani will write back to " + (value("email") || "you") + "."));
-    note.appendChild(el("p", "form-status", "Wireframe: nothing was actually sent."));
     var again = el("button", "btn btn-ghost", "Write another letter");
     again.type = "button";
     again.addEventListener("click", function () {
@@ -117,6 +117,7 @@
       form.querySelectorAll(".field.is-inked").forEach(function (f) { f.classList.remove("is-inked"); });
       document.getElementById("shoot-type").dispatchEvent(new Event("change"));
       note.remove();
+      sendBtn.disabled = false;
       form.hidden = false;
       document.getElementById("name").focus();
     });
@@ -130,18 +131,59 @@
     note.scrollIntoView({ block: "center" });
   }
 
+  // Posts the form to the Worker. Resolves true only when the server says the
+  // letter was sent; anything else is a failure the visitor should see.
+  function post() {
+    var field = function (name) { var f = form.elements[name]; return f ? f.value.trim() : ""; };
+    var payload = {
+      name: field("name"), email: field("email"), phone: field("phone"),
+      instagram: field("instagram"), shoot: value("shoot-type"), package: value("package"),
+      pinterest: field("pinterest"), vision: field("vision"), dates: field("dates"),
+      hear: field("hear"), website: field("website")
+    };
+    return fetch("/api/letter", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function (res) { return res.ok; }, function () { return false; });
+  }
+
+  // The letter failed to send: say so plainly. The form comes back with
+  // everything still typed, and Instagram is the fallback.
+  function showFailed() {
+    status.textContent = "";
+    status.appendChild(document.createTextNode("Your letter didn\u2019t go through. Please try again, or message Dani on "));
+    var a = el("a", "", "Instagram");
+    a.href = "https://www.instagram.com/midnights.muse";
+    a.rel = "noopener noreferrer";
+    status.appendChild(a);
+    status.appendChild(document.createTextNode("."));
+    form.hidden = false;
+    sendBtn.disabled = false;
+    status.scrollIntoView({ block: "center" });
+  }
+
+  function settle(letter, sending) {
+    sending.then(function (ok) {
+      if (ok) showSent(letter); else showFailed();
+    });
+  }
+
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+    if (sendBtn.disabled) return;
     var letter = composeLetter();
+    sendBtn.disabled = true;
+    status.textContent = "Sending your letter.";
+    var sending = post();
     if (reduce || !canAnimate) {
-      showSent(letter);
+      settle(letter, sending);
       return;
     }
-    status.textContent = "Sending your letter.";
-    mail(letter);
+    mail(letter, sending);
   });
 
-  function mail(letter) {
+  function mail(letter, sending) {
     var vw = window.innerWidth;
     var vh = window.innerHeight;
     var skipping = false;
@@ -381,7 +423,7 @@
       document.removeEventListener("keydown", onKey);
       layer.remove();
       form.getAnimations().forEach(function (anim) { anim.cancel(); });
-      showSent(letter);
+      settle(letter, sending);
       // The dimming and the slot fade away over the confirmation.
       [backdrop, slot].forEach(function (node) {
         if (!node.isConnected) return;

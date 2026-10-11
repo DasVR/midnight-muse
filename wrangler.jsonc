@@ -1,11 +1,15 @@
-// Cloudflare Workers static assets: serves the site in ./wireframe as-is.
-// Deploy with `npx wrangler deploy`, or connect the GitHub repo in the
-// Cloudflare dashboard (Workers & Pages → Create → Import a repository) so
-// every push to main deploys. See docs/HOSTING.md.
+// Cloudflare Workers: serves the static site in ./wireframe, and runs the
+// Worker in ./worker only for /api/* (the booking letter). Deploy with
+// `npx wrangler deploy`, or connect the GitHub repo in the Cloudflare
+// dashboard so every push to main deploys. See docs/HOSTING.md.
 {
   "name": "midnight-muse",
+  "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
   "assets": {
-    "directory": "./wireframe"
-  }
+    "directory": "./wireframe",
+    "run_worker_first": ["/api/*"]
+  },
+  // Dani's address is the secret LETTER_TO, never committed here.
+  "send_email": [{ "name": "LETTER_MAIL" }]
 }
