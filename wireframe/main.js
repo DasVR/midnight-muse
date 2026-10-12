@@ -1,4 +1,5 @@
 (function () {
+  if (/[?&]draft=1/.test(location.search)) document.documentElement.classList.add("draft");
   var menuBtn = document.getElementById("menu-toggle");
   var overlay = document.getElementById("nav-overlay");
   var form = document.getElementById("book-form");
