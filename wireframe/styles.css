@@ -378,7 +378,7 @@ a { color:inherit; }
   letter-spacing:-0.01em;
 }
 
-/* "Hello!~" is the letter's greeting: still script, a size down from the section titles */
+/* "hey, i'm dani!" is the letter's greeting: still script, a size down from the section titles */
 .letter h2{ font-size:clamp(56px, 6vw, 84px); }
 
 .meet{
@@ -3392,3 +3392,217 @@ section[id]{ scroll-margin-top:var(--safe-top); }
 
 /* Spam trap: present for bots, invisible and unreachable for people. */
 .field-trap{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+/* ---------- Dani's intro (#meet) ----------
+   Her own words, marked up the way she'd mark a note: "dreams" in soft focus,
+   "real life photos" underlined, "YOU" circled, a heart after her name.
+   Everything here reads finished without script; intro.js adds .intro-ready
+   (hold) and .is-in (play, once). */
+.intro-hello{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:0 0.18em;
+}
+
+.intro-heart{
+  width:0.42em;
+  height:auto;
+  flex:none;
+  margin-top:0.12em;
+  overflow:visible;
+  fill:none;
+  stroke:var(--ivory);
+  stroke-width:1.6;
+  stroke-linejoin:round;
+}
+
+.intro .intro-goal{ color:var(--ivory); }
+
+.intro-dream{
+  font-style:italic;
+  color:var(--ivory);
+}
+
+.intro-real,
+.intro-you{
+  position:relative;
+  white-space:nowrap;
+}
+
+.intro-you{
+  display:inline-block;
+  margin-left:0.12em;
+  letter-spacing:0.04em;
+  color:var(--ivory);
+}
+
+.intro-stroke,
+.intro-loop{
+  position:absolute;
+  pointer-events:none;
+  overflow:visible;
+  fill:none;
+  stroke:var(--ivory);
+  stroke-width:1.3;
+  stroke-linecap:round;
+  vector-effect:non-scaling-stroke;
+}
+
+.intro-stroke{
+  left:0;
+  right:0.3em;
+  bottom:-0.28em;
+  width:calc(100% - 0.3em);
+  height:0.4em;
+  opacity:0.75;
+}
+
+.intro-loop{
+  left:-0.3em;
+  top:-0.3em;
+  width:calc(100% + 0.6em);
+  height:calc(100% + 0.6em);
+  opacity:0.6;
+}
+
+.intro .intro-wish{ font-style:italic; }
+
+.intro-wish em{
+  font-family:var(--script);
+  font-style:normal;
+  font-size:1.45em;
+  line-height:0.8;
+  color:var(--ivory);
+}
+
+.intro-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px;
+  margin-top:10px;
+  font-family:var(--mono);
+  font-size:13px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--ivory);
+  text-decoration:none;
+  background:linear-gradient(currentColor, currentColor) left calc(100% - 10px) / 100% 1px no-repeat;
+  touch-action:manipulation;
+  transition:background-size 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-cta-arrow{
+  display:inline-block;
+  transition:transform 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-cta:active .intro-cta-arrow{ transform:translateX(6px); transition-duration:0ms; }
+
+@media (hover:hover) and (pointer:fine){
+  .intro-cta:hover{ background-size:40% 1px; }
+  .intro-cta:hover .intro-cta-arrow{ transform:translateX(4px); }
+}
+
+/* The ring light from her portrait, glowing behind the lace */
+#meet .cameo::before{
+  content:"";
+  position:absolute;
+  inset:2% 0 6%;
+  z-index:-1;
+  border-radius:50%;
+  background:radial-gradient(closest-side, rgb(242 238 230 / 0.14), rgb(242 238 230 / 0.05) 55%, transparent 100%);
+  pointer-events:none;
+}
+#meet .cameo{ isolation:isolate; }
+
+/* Held until the intro is seen... */
+.intro-ready .intro-ink{ clip-path:inset(-30% 100% -40% -12%); }
+.intro-ready .intro-heart path,
+.intro-ready .intro-stroke path,
+.intro-ready .intro-loop path{ stroke-dasharray:1; stroke-dashoffset:1; }
+.intro-ready .intro-line{ opacity:0; }
+.intro-ready .intro-dream{ filter:blur(6px); opacity:0.35; }
+.intro-ready .cameo-photo{ filter:blur(10px); transform:scale(1.06); }
+.intro-ready .cameo::before{ opacity:0; }
+
+/* ...then played once, in order: greeting, heart, words, marks. */
+.intro-ready.is-in .intro-ink{
+  animation:ink-in 1100ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+.intro-ready.is-in .intro-heart path{
+  animation:intro-draw 700ms cubic-bezier(0.65, 0, 0.35, 1) 850ms forwards;
+}
+.intro-ready.is-in .intro-heart{
+  transform-box:fill-box;
+  transform-origin:center;
+  animation:heart-beat 620ms cubic-bezier(0.22, 1, 0.36, 1) 1550ms both;
+}
+.intro-ready.is-in .intro-line{
+  animation:rise-in 640ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay:calc(300ms + var(--n, 0) * 80ms);
+}
+.intro-line:nth-of-type(2){ --n:1; }
+.intro-line:nth-of-type(3){ --n:2; }
+.intro-line.sign{ --n:3; }
+.intro-cta.intro-line{ --n:4; }
+
+.intro-ready.is-in .intro-dream{
+  animation:dream-focus 1000ms cubic-bezier(0.19, 1, 0.22, 1) 650ms both;
+}
+.intro-ready.is-in .intro-stroke path{
+  animation:intro-draw 600ms cubic-bezier(0.65, 0, 0.35, 1) 1150ms forwards;
+}
+.intro-ready.is-in .intro-loop path{
+  animation:intro-draw 800ms cubic-bezier(0.65, 0, 0.35, 1) 1450ms forwards;
+}
+.intro-ready.is-in .cameo-photo{
+  filter:none;
+  transform:none;
+  transition:filter 1400ms cubic-bezier(0.19, 1, 0.22, 1), transform 1600ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.intro-ready.is-in .cameo::before{
+  opacity:1;
+  transition:opacity 1200ms ease 400ms;
+  animation:halo-breathe 5s ease-in-out 1600ms infinite alternate paused;
+}
+.intro-ready.is-in.halo-on .cameo::before{ animation-play-state:running; }
+
+@keyframes intro-draw{
+  to{ stroke-dashoffset:0; }
+}
+
+@keyframes heart-beat{
+  0%{ transform:scale(1); }
+  30%{ transform:scale(1.22); }
+  55%{ transform:scale(0.96); }
+  75%{ transform:scale(1.1); }
+  100%{ transform:scale(1); }
+}
+
+@keyframes dream-focus{
+  from{ filter:blur(6px); opacity:0.35; text-shadow:0 0 18px rgb(242 238 230 / 0.6); }
+  to{ filter:blur(0); opacity:1; text-shadow:0 0 0 transparent; }
+}
+
+@keyframes halo-breathe{
+  from{ transform:scale(0.97); opacity:0.75; }
+  to{ transform:scale(1.04); opacity:1; }
+}
+
+/* "Tell me your dream" lands on the vision line and lights it, briefly */
+.field.is-beckoned{
+  animation:beckon 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes beckon{
+  from{
+    background-color:rgb(242 238 230 / 0.07);
+    box-shadow:0 0 0 12px rgb(242 238 230 / 0.07);
+  }
+  to{
+    background-color:transparent;
+    box-shadow:0 0 0 12px transparent;
+  }
+}
