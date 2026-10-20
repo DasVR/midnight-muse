@@ -11,5 +11,6 @@
     "run_worker_first": ["/api/*"]
   },
   // Dani's address is the secret LETTER_TO, never committed here.
+  "observability": { "enabled": true },
   "send_email": [{ "name": "LETTER_MAIL" }]
 }
