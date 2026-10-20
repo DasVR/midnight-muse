@@ -105,6 +105,8 @@ export async function handleLetter(request, env, send) {
   try {
     await send(buildEmail(fields, env, new Date()));
   } catch (e) {
+    // Shows in the Worker's Logs tab; the visitor only ever sees "send".
+    console.error("letter send failed:", e && e.message ? e.message : e);
     return json(502, { ok: false, error: "send" });
   }
   return json(200, { ok: true });
